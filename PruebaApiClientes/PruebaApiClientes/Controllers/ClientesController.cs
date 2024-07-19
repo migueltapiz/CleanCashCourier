@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using Clases;
+using CsvHelper;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PruebaApiClientes.Controllers
@@ -11,10 +13,10 @@ namespace PruebaApiClientes.Controllers
         [HttpGet]
         public IActionResult getPrueba()
         {
-           // Worker worker = new Worker();
-            return Ok();
+            var csvProcessor = new CsvFileProcessor(@"C:\datos\listaclientes.csv",string.Empty);
+            List<Cliente> clientes  = csvProcessor.Process();
+            return Ok(clientes);
         }
         
-       
     }
 }
