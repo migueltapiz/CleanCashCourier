@@ -6,13 +6,12 @@ namespace ApiClases_20270722_Proyecto.Controllers;
 [ApiController]
 public class TransaccionesController : ControllerBase{
     [HttpGet]
-    public IActionResult Get()
-    {
+    public IActionResult Get(){
         return Ok(TransaccionRepositorioMemoria.Instancia.Transacciones);
     }
+
     [HttpGet("{id}")]
-    public IActionResult Get(int id)
-    {
+    public IActionResult Get(int id){
         return Ok(TransaccionRepositorioMemoria.Instancia.Transacciones.FirstOrDefault(transaccion => transaccion.Id == id, new Transaccion()));
     }
 }

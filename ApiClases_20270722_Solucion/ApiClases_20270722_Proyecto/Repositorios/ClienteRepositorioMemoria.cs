@@ -1,12 +1,10 @@
 ﻿namespace ApiClases_20270722_Proyecto.Repositorios;
 
-public class ClienteRepositorioMemoria
-{
+public class ClienteRepositorioMemoria{
     public List<Cliente> Clientes { get; set; }
     public static ClienteRepositorioMemoria Instancia { get; } = new ClienteRepositorioMemoria();
 
-    public ClienteRepositorioMemoria()
-    {
+    public ClienteRepositorioMemoria(){
         //Agregar paises a la lista
         Clientes = new List<Cliente>() {
            new Cliente(){ Id = 1, Nombre = "Ana", Apellidos = "Juanes", Usuario = "ana777", Pais = "Reino Unido" },

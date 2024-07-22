@@ -2,14 +2,12 @@
 
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
-public class TransaccionRepositorioMemoria
-{
+public class TransaccionRepositorioMemoria{
 
     public List<Transaccion> Transacciones { get; set; }
     public static TransaccionRepositorioMemoria Instancia { get; } = new TransaccionRepositorioMemoria();
 
-    public TransaccionRepositorioMemoria()
-    {
+    public TransaccionRepositorioMemoria(){
         //Agregar paises a la lista
         Transacciones = new List<Transaccion>() {
             new Transaccion(){ Id = 1, IdEnvia = 101, CantidadEnvia = 50.5, IdRecibe = 201, CantidadRecibe = 30.2,Fecha = DateTime.Now },
