@@ -1,4 +1,5 @@
 ﻿using ApiClases_20270722_Proyecto.Repositorios;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ApiClases_20270722_Proyecto.Controllers;
 
@@ -12,6 +13,7 @@ public class TransaccionesController : ControllerBase{
 
     [HttpGet("{id}")]
     public IActionResult Get(int id){
-        return Ok(TransaccionRepositorioMemoria.Instancia.Transacciones.FirstOrDefault(transaccion => transaccion.Id == id, new Transaccion()));
+        var transaccion = TransaccionRepositorioMemoria.Instancia.Transacciones.FirstOrDefault(transaccion => transaccion.Id == id);
+        return transaccion == null ? NotFound(): Ok(transaccion);
     }
 }

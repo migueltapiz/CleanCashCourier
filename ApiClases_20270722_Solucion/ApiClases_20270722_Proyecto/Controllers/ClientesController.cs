@@ -12,6 +12,7 @@ public class ClientesController : ControllerBase{
 
     [HttpGet("{id}")]
     public IActionResult Get(int id){
-        return Ok(ClienteRepositorioMemoria.Instancia.Clientes.FirstOrDefault(cliente => cliente.Id == id, new Cliente()));
+        var cliente = ClienteRepositorioMemoria.Instancia.Clientes.FirstOrDefault(cliente => cliente.Id == id);
+        return cliente == null? NotFound(): Ok(cliente);
     }
 }
