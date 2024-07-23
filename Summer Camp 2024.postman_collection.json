@@ -5,11 +5,11 @@
 		"description": "Pruebas de las apis hechas en el summer camp",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "37146021",
-		"_collection_link": "https://bold-water-605479.postman.co/workspace/Team-Workspace~fd2e23b4-4a22-4516-8ab3-54b2f7beb85e/collection/37146021-47702334-8ba3-4623-b17d-2c16028e0af5?action=share&source=collection_link&creator=37146021"
+		"_collection_link": "https://bold-water-605479.postman.co/workspace/fd2e23b4-4a22-4516-8ab3-54b2f7beb85e/collection/37146021-47702334-8ba3-4623-b17d-2c16028e0af5?action=share&source=collection_link&creator=37146021"
 	},
 	"item": [
 		{
-			"name": "Api Clientes",
+			"name": "GET Cliente",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -29,10 +29,36 @@
 			"response": []
 		},
 		{
-			"name": "Cliente especifico",
+			"name": "GET Transacciones",
 			"request": {
 				"method": "GET",
 				"header": [],
+				"url": {
+					"raw": "https://localhost:7138/api/Transacciones",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7138",
+					"path": [
+						"api",
+						"Transacciones"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Cliente ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "https://localhost:7138/api/Clientes/1",
 					"protocol": "https",
@@ -50,7 +76,34 @@
 			"response": []
 		},
 		{
-			"name": "Cliente no existe",
+			"name": "GET Transaccion Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7138/api/Transacciones/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7138",
+					"path": [
+						"api",
+						"Transacciones",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Cliente No existe",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -64,6 +117,27 @@
 					"path": [
 						"api",
 						"Clientes",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Transacción No existe",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7138/api/Transacciones/7",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7138",
+					"path": [
+						"api",
+						"Transacciones",
 						"7"
 					]
 				}
