@@ -1,6 +1,7 @@
 ﻿namespace ApiClases_20270722_Proyecto.Models;
 
 public class TransaccionDto{
+    [Key]
     public int Id { get; set; }
     public int IdEnvia { get; set; }
     public double CantidadEnvia { get; set; }
