@@ -1,17 +1,34 @@
 ﻿namespace ApiClases_20270722_Proyecto.Repositorios;
 
-public class ClienteRepositorioMemoria{
+public class ClienteRepositorioMemoria
+{
     public List<ClienteDto> Clientes { get; set; }
     public static ClienteRepositorioMemoria Instancia { get; } = new ClienteRepositorioMemoria();
-
+    private static HttpClient _httpClient;
     public ClienteRepositorioMemoria() {
-        //Agregar paises a la lista
-        Clientes = new List<ClienteDto>() {
-           new ClienteDto(){ Id = 1, Nombre = "Ana", Apellidos = "Juanes", Usuario = "ana777", Pais = "Reino Unido" },
-            new ClienteDto(){ Id = 2, Nombre = "Pedro", Apellidos = "Sanchez", Usuario = "elcoletas", Pais = "Estados Unidos" },
-            new ClienteDto(){ Id = 3, Nombre = "Miguel", Apellidos = "Martinez", Usuario = "emanems", Pais = "España" },
-            new ClienteDto(){ Id = 4, Nombre = "Juan", Apellidos = "Lopez", Usuario = "jujalag", Pais = "España" },
-            new ClienteDto(){ Id = 5, Nombre = "Iñigo", Apellidos = "Vertiz", Usuario = "ibai", Pais = "Andorra" }
-        };
+        _httpClient = new HttpClient();
+        _httpClient.BaseAddress = new Uri("https://localhost:7107");
+    }
+    public async Task<List<ClienteDto>> ObtenerClientes() {
+        var response = await _httpClient.GetAsync("/api/clients");
+
+        response.EnsureSuccessStatusCode();
+
+        var contenido = await response.Content.ReadFromJsonAsync<List<ClienteDtoGrupo1>>();
+        List<ClienteDto> Clientes = new List<ClienteDto>();
+
+        foreach (var cliente in contenido){
+            Clientes.Add(
+                    new ClienteDto() { 
+                        Id = cliente.ClienteId,
+                        Nombre  = cliente.Nombre,
+                        Apellidos = cliente.Apellido,
+                        Pais    = cliente.PaisId.ToString(),
+                        Usuario = cliente.UserId
+                    }
+                );
+            
+        }
+        return Clientes;
     }
 }

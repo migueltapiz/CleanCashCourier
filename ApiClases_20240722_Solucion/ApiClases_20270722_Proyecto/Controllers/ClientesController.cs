@@ -6,8 +6,8 @@ namespace ApiClases_20270722_Proyecto.Controllers;
 [ApiController]
 public class ClientesController : ControllerBase{
     [HttpGet]
-    public IActionResult Get(){
-        return Ok(ClienteRepositorioMemoria.Instancia.Clientes);
+    public async Task<IActionResult> Get(){
+        return Ok(await ClienteRepositorioMemoria.Instancia.ObtenerClientes());
     }
 
     [HttpGet("{id}")]
