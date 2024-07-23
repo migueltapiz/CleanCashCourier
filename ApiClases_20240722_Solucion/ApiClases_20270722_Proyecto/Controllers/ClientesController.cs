@@ -13,6 +13,6 @@ public class ClientesController : ControllerBase{
     [HttpGet("{id}")]
     public IActionResult Get(int id){
         var cliente = ClienteRepositorioMemoria.Instancia.Clientes.FirstOrDefault(cliente => cliente.Id == id);
-        return cliente == null? NotFound(): Ok(cliente);
+        return cliente == null ? NotFound(): Ok(cliente);
     }
 }
