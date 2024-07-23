@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "47702334-8ba3-4623-b17d-2c16028e0af5",
+		"name": "Summer Camp 2024",
+		"description": "Pruebas de las apis hechas en el summer camp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37146021",
+		"_collection_link": "https://bold-water-605479.postman.co/workspace/Team-Workspace~fd2e23b4-4a22-4516-8ab3-54b2f7beb85e/collection/37146021-47702334-8ba3-4623-b17d-2c16028e0af5?action=share&source=collection_link&creator=37146021"
+	},
+	"item": [
+		{
+			"name": "Api Clientes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7138/api/Clientes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7138",
+					"path": [
+						"api",
+						"Clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cliente especifico",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7138/api/Clientes/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7138",
+					"path": [
+						"api",
+						"Clientes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cliente no existe",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7138/api/Clientes/7",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7138",
+					"path": [
+						"api",
+						"Clientes",
+						"7"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
