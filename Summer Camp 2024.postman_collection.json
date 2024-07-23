@@ -14,12 +14,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7138/api/Clientes",
+					"raw": "https://localhost:{{Puerto}}/api/Clientes",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "7138",
+					"port": "{{Puerto}}",
 					"path": [
 						"api",
 						"Clientes"
@@ -34,12 +34,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7138/api/Transacciones",
+					"raw": "https://localhost:{{Puerto}}/api/Transacciones",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "7138",
+					"port": "{{Puerto}}",
 					"path": [
 						"api",
 						"Transacciones"
@@ -60,12 +60,12 @@
 					}
 				],
 				"url": {
-					"raw": "https://localhost:7138/api/Clientes/1",
+					"raw": "https://localhost:{{Puerto}}/api/Clientes/1",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "7138",
+					"port": "{{Puerto}}",
 					"path": [
 						"api",
 						"Clientes",
@@ -87,12 +87,12 @@
 					}
 				],
 				"url": {
-					"raw": "https://localhost:7138/api/Transacciones/1",
+					"raw": "https://localhost:{{Puerto}}/api/Transacciones/1",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "7138",
+					"port": "{{Puerto}}",
 					"path": [
 						"api",
 						"Transacciones",
@@ -108,12 +108,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7138/api/Clientes/7",
+					"raw": "https://localhost:{{Puerto}}/api/Clientes/7",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "7138",
+					"port": "{{Puerto}}",
 					"path": [
 						"api",
 						"Clientes",
@@ -129,12 +129,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7138/api/Transacciones/7",
+					"raw": "https://localhost:{{Puerto}}/api/Transacciones/7",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "7138",
+					"port": "{{Puerto}}",
 					"path": [
 						"api",
 						"Transacciones",
@@ -143,6 +143,35 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Puerto",
+			"value": "7138",
+			"type": "string"
 		}
 	]
 }
