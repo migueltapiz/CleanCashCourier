@@ -1,6 +1,6 @@
-﻿namespace ApiClases_20270722_Proyecto.Models;
+﻿namespace ApiClases_20270722_Proyecto.Entidades;
 
-public class TransaccionDto{
+public class Transaccion{
     public int Id { get; set; }
     public int IdEnvia { get; set; }
     public double CantidadEnvia { get; set; }
