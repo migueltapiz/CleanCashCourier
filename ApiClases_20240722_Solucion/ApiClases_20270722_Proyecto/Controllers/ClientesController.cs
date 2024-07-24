@@ -18,15 +18,8 @@ public class ClientesController : ControllerBase{
 
     [HttpPost]
     public ActionResult<ClienteDto> Post(ClienteDto cliente) {
-        int maxId = 0;
-        if(ClienteRepositorioMemoria.Instancia.Clientes != null)
-        {
-            maxId = ClienteRepositorioMemoria.Instancia.Clientes.Max(cliente => cliente.Id);
-        }
-        else { 
-             ClienteRepositorioMemoria.Instancia.Clientes = new List<ClienteDto>();
-        }
-       
+        int maxId = ClienteRepositorioMemoria.Instancia.Clientes.Max(cliente => cliente.Id);
+     
         var clienteNuevo = new ClienteDto()
         {
             Id = maxId + 1,
