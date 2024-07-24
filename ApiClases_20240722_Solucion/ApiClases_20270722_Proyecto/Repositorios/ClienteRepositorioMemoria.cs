@@ -1,13 +1,11 @@
 ﻿namespace ApiClases_20270722_Proyecto.Repositorios;
 
-public class ClienteRepositorioMemoria
+public class ClienteRepositorioMemoria: IClienteRepositorio
 {
     public List<ClienteDto> Clientes { get; set; }
     public static ClienteRepositorioMemoria Instancia { get; } = new ClienteRepositorioMemoria();
     private static HttpClient _httpClient;
     public ClienteRepositorioMemoria() {
-        Clientes = new List<ClienteDto>();
-        
             _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri("https://localhost:7107");
     }
@@ -15,10 +13,9 @@ public class ClienteRepositorioMemoria
         var response = await _httpClient.GetAsync("/api/clients");
 
         response.EnsureSuccessStatusCode();
-
+        var Clientes = new List<ClienteDto>();
         var contenido = await response.Content.ReadFromJsonAsync<List<ClienteDtoGrupo1>>();
-        if(Clientes.Count == 0)
-        {
+        
             foreach(var cliente in contenido)
             {
                 Clientes.Add(
@@ -31,9 +28,6 @@ public class ClienteRepositorioMemoria
                             Usuario = cliente.UserId
                         }
                     );
-
-            }
-
         }
         
         return Clientes;

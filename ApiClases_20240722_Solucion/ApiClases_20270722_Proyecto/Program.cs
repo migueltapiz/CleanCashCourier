@@ -1,3 +1,5 @@
+using ApiClases_20270722_Proyecto.Repositorios;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //Agregar servicio MVC
@@ -7,6 +9,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+var dondeSacoDatos = "memoria";
+if(dondeSacoDatos == "memoria") {
+    builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioMemoria>();
+}else if(dondeSacoDatos == "csv"){
+
+    builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioCsv>();
+}
 
 
 //Agregar servicios a la aplicación

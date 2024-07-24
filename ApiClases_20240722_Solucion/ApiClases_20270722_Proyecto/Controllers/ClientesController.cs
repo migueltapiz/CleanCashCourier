@@ -5,9 +5,13 @@ namespace ApiClases_20270722_Proyecto.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class ClientesController : ControllerBase{
+    public readonly IClienteRepositorio repositorio;
+    public ClientesController(IClienteRepositorio repositorio){
+        this.repositorio = repositorio;
+    }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ClienteDtoGrupo1>>> Get(){
-        return Ok(await ClienteRepositorioMemoria.Instancia.ObtenerClientes());
+        return Ok(await repositorio.ObtenerClientes());
     }
 
     [HttpGet("{id}", Name = "getCliente")]
