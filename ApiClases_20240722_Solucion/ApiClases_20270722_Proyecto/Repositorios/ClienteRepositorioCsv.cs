@@ -1,7 +1,4 @@
-﻿
-using ApiClases_20270722_Proyecto.Entidades;
-
-namespace ApiClases_20270722_Proyecto.Repositorios;
+﻿namespace ApiClases_20270722_Proyecto.Repositorios;
 
 public class ClienteRepositorioCsv : IClienteRepositorio
 {
