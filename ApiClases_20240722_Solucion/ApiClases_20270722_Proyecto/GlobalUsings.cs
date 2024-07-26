@@ -9,3 +9,5 @@ global using ApiClases_20270722_Proyecto.Grupo1;
 
 global using CsvHelper;
 global using CsvHelper.Configuration;
+
+global using ApiClases_20270722_Proyecto.Validators;
