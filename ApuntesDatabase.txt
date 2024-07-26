@@ -1,0 +1,58 @@
+1) ClientID -> Id (recomendacion) -> atributo [key]
+
+2) Instalar paquetes NuGet:
+	- EntityFrameworkCore.sqlserver
+	- EntityFrameworkCore.tools
+
+3) Crear el contecto -> el suele crear una carpeta especifica para eso
+	3.1) Agregar clase nueva pej Contexto -> heredamos de DBContext
+	Añadir al global
+El constructor lo copiamos (esta en ContextoApi.cs)
+
+
+Ponemos todas las entidades 1 por 1 y las ponemos antes del public, etc
+Lista de tipo dBset
+public DBset <Cliente> Clientes get;set;
+
+
+4.1) Del ejercicio 10 de ejemploApi, copiar el json ->el conectionstring
+	opcionalternativa-> proyecto nuevo -> autenticacion -> ~~~ individuales
+	copiamos el conexion string al proyecto nuevo
+	cambiamos el nombre da la base de datos
+
+4.2) Como el tiempo de  ____ es muy bajo, copiamos lo de 
+Copiamos lo que viene despues del comentario //agregar base de datos
+lo ponemos entre el 1 y el 2 de nuestro program.cs (antes del build)
+
+5) Abrir la consola powershell
+escribir add-migration "nombre de la migracion" (nuevo en cada iteracion)
+Saldra en un apartado de migration
+6) Ir al explorador de objetos de sqlserver (tu cclase no se puede llamar context). Está en "ver" -> Ver a todo lo que se tiene acceso
+Despues de pone update-database
+(cuidado por que el powershell puede estar trabajando en otro proyecto)
+
+7) Actualizamos la ventana que sacamos del paso 6, en lo de ver. Nos aparecera la info ahi y nos quedara meter las cosas en el repo.
+Falta explicar una parte del codigo del contexto , podenos llevarnos cosas del contextoApi-> OnConfiguring, OnModeCreating 
+Cambiarlo a nuestras variables
+
+8Batiburrillo)
+En el repo 1 constructor que use la base de datos como contexto->
+	En la clase del repositorio
+	public class "nombredelrepositorio" : I"NombredelRepositorio"
+	{
+		private readonly Contexto contexto;
+		public ClienteRepositorio(Contexto contextoç){
+			this.contexto = contexto;
+			...
+			...
+			...
+		}
+	}
+
+
+	public Task<Pais>  ObtenerPais(int id){
+		return await contexto.pais. .....
+	}
+	guardar
+	update
+	return
