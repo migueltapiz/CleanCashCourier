@@ -1,3 +1,4 @@
+using ApiClases_20270722_Proyecto.ContextoCarpeta;
 using ApiClases_20270722_Proyecto.Repositorios;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,12 @@ if(dondeSacoDatos == "memoria") {
 
     builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioCsv>();
 }
+
+// Agregar BBDD (SQLServer)
+builder.Services.AddDbContext<Contexto>(options =>{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
 
 
 //Agregar servicios a la aplicación
