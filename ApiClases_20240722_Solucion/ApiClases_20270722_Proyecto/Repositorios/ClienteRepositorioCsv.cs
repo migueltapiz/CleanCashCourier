@@ -2,8 +2,14 @@
 
 public class ClienteRepositorioCsv : IClienteRepositorio
 {
+    public List<ClienteDto> Clientes { get; set; }
+    public ClienteRepositorioCsv() {
+         Clientes = new List<ClienteDto>();
+    }
+    
+
     public async Task<List<ClienteDto>> ObtenerClientes() {
-        List<ClienteDto> Clientes = new List<ClienteDto>();
+        
         using(TextReader input = File.OpenText(@"C:\datos\listaclientes.csv"))
         using(CsvReader csvReader = new CsvReader(input))
         {
@@ -33,4 +39,11 @@ public class ClienteRepositorioCsv : IClienteRepositorio
         return Clientes;
        
     }
+    public ClienteDto ObtenerClienteId(int id) {
+        return Clientes.FirstOrDefault(c => c.Id == id);
+    }
+
+    public ClienteDto Agregar(ClienteDto cliente) => throw new NotImplementedException();
+    public ClienteDto Actualizar(int id, ClienteDto cliente) => throw new NotImplementedException();
+    public ClienteDto Borrar(int id) => throw new NotImplementedException();
 }

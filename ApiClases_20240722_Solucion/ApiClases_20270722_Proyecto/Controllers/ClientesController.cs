@@ -16,30 +16,38 @@ public class ClientesController : ControllerBase{
 
     [HttpGet("{id}", Name = "getCliente")]
     public ActionResult<ClienteDto> Get(int id){
-        var cliente = ClienteRepositorioMemoria.Instancia.Clientes.FirstOrDefault(cliente => cliente.Id == id);
+        var cliente = repositorio.ObtenerClienteId(id);
         return cliente == null ? NotFound(): Ok(cliente);
     }
 
     [HttpPost]
     public ActionResult<ClienteDto> Post(ClienteDto cliente) {
-        int maxId = ClienteRepositorioMemoria.Instancia.Clientes.Max(cliente => cliente.Id);
-     
-        var clienteNuevo = new ClienteDto()
-        {
-            Id = maxId + 1,
-            Nombre = cliente.Nombre,
-            Apellidos = cliente.Apellidos,
-            Usuario = cliente.Usuario,
-            Pais = cliente.Pais
-        };
-        ClienteRepositorioMemoria.Instancia.Clientes.Add(clienteNuevo);
-
+        
+        var clienteNuevo = repositorio.Agregar(cliente);
         return CreatedAtRoute("getCliente",
                  new
                  {
                      id = clienteNuevo.Id
                  },
                  clienteNuevo);
+    }
+
+    [HttpPut]
+    public ActionResult<ClienteDto> Put(int id, ClienteDto cliente) {
+        var clienteActualizado =  repositorio.Actualizar(id,cliente);
+        return clienteActualizado == null ? NotFound() : CreatedAtRoute("getCliente",
+                  new
+                  {
+                      id = clienteActualizado.Id
+                  },
+                  clienteActualizado);
+    }
+
+    [HttpDelete]
+    public ActionResult<ClienteDto> Delete(int id) {
+        var clienteBorrado = repositorio.Borrar(id);
+
+        return clienteBorrado == null ? NotFound() : Ok("Se ha borrado correctamente");
     }
 }
 
