@@ -22,9 +22,8 @@ public class ClienteDto: IValidatableObject{
         if(Char.IsDigit(Usuario[0])) {
             yield return new ValidationResult("El usuario no puede empezar por un número", new[] { "Usuario" });
         }
-        var años = (DateTime.Now.Year - FechaNacimiento.Year);
-        años -= (DateTime.Now.Month < FechaNacimiento.Month) ? 1 : 0;
-        if(años < 18){
+        
+        if(FechaNacimiento.ComprobarMayoriaEdad()){
             yield return new ValidationResult("No se puede registrar un menor de edad", new[] {"Edad"});
         }
         

@@ -17,3 +17,6 @@ global using CsvHelper.Configuration;
 global using ApiClases_20270722_Proyecto.Validators;
 
 global using Microsoft.EntityFrameworkCore;
+
+
+global using ApiClases_20270722_Proyecto.Utilidades;
