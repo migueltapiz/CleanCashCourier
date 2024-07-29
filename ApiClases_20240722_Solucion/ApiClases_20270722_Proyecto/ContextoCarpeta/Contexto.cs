@@ -26,11 +26,11 @@ public class Contexto: DbContext{
 
             // Agregar tres paises por defecto a la base de datos
             modelBuilder.Entity<Cliente>().HasData(
-                                            new Cliente() { Id = 1, Nombre = "Ana", Apellidos = "Juanes", Usuario = "ana777", Pais = "Reino Unido" },
-                                            new Cliente() { Id = 2, Nombre = "Pedro", Apellidos = "Sanchez", Usuario = "elcoletas", Pais = "Estados Unidos" },
-                                            new Cliente() { Id = 3, Nombre = "Miguel", Apellidos = "Martinez", Usuario = "emanems", Pais = "España" },
-                                            new Cliente() { Id = 4, Nombre = "Juan", Apellidos = "Lopez", Usuario = "jujalag", Pais = "España" },
-                                            new Cliente() { Id = 5, Nombre = "Iñigo", Apellidos = "Vertiz", Usuario = "ibai", Pais = "Andorra" }
+                                            new Cliente() { Id = 1, Nombre = "Ana", Apellidos = "Juanes", Usuario = "ana777", Pais = "Reino Unido",FechaNacimiento = new DateTime(1900,1,1) },
+                                            new Cliente() { Id = 2, Nombre = "Pedro", Apellidos = "Sanchez", Usuario = "elcoletas", Pais = "Estados Unidos", FechaNacimiento = new DateTime(1900, 1, 1) },
+                                            new Cliente() { Id = 3, Nombre = "Miguel", Apellidos = "Martinez", Usuario = "emanems", Pais = "España", FechaNacimiento = new DateTime(1900, 1, 1) },
+                                            new Cliente() { Id = 4, Nombre = "Juan", Apellidos = "Lopez", Usuario = "jujalag", Pais = "España", FechaNacimiento = new DateTime(1900, 1, 1) },
+                                            new Cliente() { Id = 5, Nombre = "Iñigo", Apellidos = "Vertiz", Usuario = "ibai", Pais = "Andorra", FechaNacimiento = new DateTime(1900, 1, 1) }
                                           );
 
             

@@ -25,36 +25,25 @@ public class ClientesController : ControllerBase{
     }
 
     [HttpPost]
-    public ActionResult<ClienteDto> Post(ClienteDto cliente) {
+    public async Task<ActionResult<ClienteDto>> PostAsync(ClienteDto cliente) {
         var finalClienteNuevo =_mapper.Map<ClienteDto,Cliente>(cliente);
-        var clienteNuevo = repositorio.Agregar(finalClienteNuevo);
-        var createdClienteToReturn = _mapper.Map<ClienteDto>(clienteNuevo);
-        return CreatedAtRoute("getCliente",
-                 new
-                 {
-                     id = createdClienteToReturn.Id
-                 },
-                 createdClienteToReturn);
+        repositorio.Agregar(finalClienteNuevo);
+       
+        return await repositorio.GuardarCambios()? Ok("Cliente añadido correctamente"): BadRequest();
+
     }
 
     [HttpPut]
-    public ActionResult<ClienteDto> Put(int id, ClienteDto cliente) {
+    public async Task<ActionResult<ClienteDto>> PutAsync(int id, ClienteDto cliente) {
         var finalClienteActualizado = _mapper.Map<Cliente>(cliente);
-        var clienteActualizado =  repositorio.Actualizar(id, finalClienteActualizado);
-        var createdClienteToReturn = _mapper.Map<ClienteDto>(clienteActualizado);
-        return createdClienteToReturn == null ? NotFound() : CreatedAtRoute("getCliente",
-                  new
-                  {
-                      id = createdClienteToReturn.Id
-                  },
-                  createdClienteToReturn);
+        repositorio.Actualizar(id, finalClienteActualizado);
+        return await repositorio.GuardarCambios() ? Ok("Cliente actualizado correctamente") : BadRequest();
     }
 
     [HttpDelete]
-    public ActionResult<ClienteDto> Delete(int id) {
-        var clienteBorrado = repositorio.Borrar(id);
-
-        return clienteBorrado == null ? NotFound() : Ok("Se ha borrado correctamente");
+    public async Task<ActionResult<ClienteDto>> DeleteAsync(int id) {
+        repositorio.Borrar(id);
+        return await repositorio.GuardarCambios() ? Ok("Cliente borrado correctamente") : BadRequest();
     }
 }
 

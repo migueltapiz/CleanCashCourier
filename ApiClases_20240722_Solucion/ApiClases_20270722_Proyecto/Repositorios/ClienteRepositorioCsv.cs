@@ -44,7 +44,8 @@ public class ClienteRepositorioCsv : IClienteRepositorio
         return Clientes.FirstOrDefault(c => c.Id == id);
     }
 
-    public Cliente Agregar(Cliente cliente) => throw new NotImplementedException();
-    public Cliente Actualizar(int id, Cliente cliente) => throw new NotImplementedException();
-    public Cliente Borrar(int id) => throw new NotImplementedException();
+    public void Agregar(Cliente cliente) => throw new NotImplementedException();
+    public void Actualizar(int id, Cliente cliente) => throw new NotImplementedException();
+    public void Borrar(int id) => throw new NotImplementedException();
+    public Task<bool> GuardarCambios() => throw new NotImplementedException();
 }

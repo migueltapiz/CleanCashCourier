@@ -11,12 +11,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-var dondeSacoDatos = "memoria";
-if(dondeSacoDatos == "memoria") {
+var dondeSacoDatos = "BBDD";
+if(dondeSacoDatos == "memoria")
+{
     builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioMemoria>();
-}else if(dondeSacoDatos == "csv"){
+}
+else if(dondeSacoDatos == "csv")
+{
 
     builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioCsv>();
+}
+else if(dondeSacoDatos == "BBDD") { 
+    builder.Services.AddTransient<IClienteRepositorio,ClienteRepositorioBBDD>();
 }
 
 // Agregar BBDD (SQLServer)

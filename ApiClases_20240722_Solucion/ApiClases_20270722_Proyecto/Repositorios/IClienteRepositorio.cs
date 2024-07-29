@@ -5,10 +5,11 @@ public interface IClienteRepositorio{
     Task<List<Cliente>> ObtenerClientes();
     Cliente ObtenerClienteId(int id);
 
-    Cliente Agregar(Cliente cliente);
+    void Agregar(Cliente cliente);
 
-    Cliente Actualizar(int id,Cliente cliente);
+    void Actualizar(int id,Cliente cliente);
 
-    Cliente Borrar(int id);
+    void Borrar(int id);
+    public Task<bool> GuardarCambios();
 
 }

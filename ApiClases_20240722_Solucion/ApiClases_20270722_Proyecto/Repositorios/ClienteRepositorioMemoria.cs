@@ -44,7 +44,7 @@ public class ClienteRepositorioMemoria: IClienteRepositorio
         return Clientes.FirstOrDefault(cliente => cliente.Id == id);
     }
 
-    public Cliente Agregar(Cliente cliente) {
+    public void Agregar(Cliente cliente) {
         int maxId = Clientes.Max(cliente => cliente.Id);
 
         var clienteNuevo = new Cliente()
@@ -57,33 +57,36 @@ public class ClienteRepositorioMemoria: IClienteRepositorio
             FechaNacimiento = cliente.FechaNacimiento
         };
         Clientes.Add(clienteNuevo);
-        return clienteNuevo;
+       
     }
 
-    public Cliente Actualizar(int id, Cliente cliente) {
+    public void Actualizar(int id, Cliente cliente) {
 
         var clienteActual = this.ObtenerClienteId(id);
-        if(clienteActual == null){
-            return clienteActual;
-        }
+        
         // Actualizar paisActual con los datos de pais
         // TODO: Implementar AutoMapper
+         if( clienteActual != null )
+        {
+            clienteActual.Id = id;
+            clienteActual.Nombre = cliente.Nombre;
+            clienteActual.Apellidos = cliente.Apellidos;
+            clienteActual.Usuario = cliente.Usuario;
+            clienteActual.Pais = cliente.Pais;
+            clienteActual.FechaNacimiento = cliente.FechaNacimiento;
+        }
+        
 
-        clienteActual.Id = id;
-        clienteActual.Nombre = cliente.Nombre;
-        clienteActual.Apellidos = cliente.Apellidos;
-        clienteActual.Usuario   = cliente.Usuario;
-        clienteActual.Pais = cliente.Pais;
-        clienteActual.FechaNacimiento = cliente.FechaNacimiento;
-
-        return clienteActual;
+       
     }
 
-    public Cliente Borrar(int id) { 
+    public void Borrar(int id) { 
         var cliente = this.Clientes.FirstOrDefault(c => c.Id == id);
         if(cliente != null) { 
             this.Clientes.Remove(cliente);
         }
-        return cliente; 
+       
     }
+
+    public Task<bool> GuardarCambios() => throw new NotImplementedException();
 }
