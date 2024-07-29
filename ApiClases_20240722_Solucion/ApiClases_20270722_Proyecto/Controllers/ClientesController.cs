@@ -1,4 +1,5 @@
 ﻿using ApiClases_20270722_Proyecto.Repositorios;
+using System.Collections.Generic;
 namespace ApiClases_20270722_Proyecto.Controllers;
 
 [Route("api/[controller]")]
@@ -8,11 +9,12 @@ public class ClientesController : ControllerBase{
     private readonly IMapper _mapper;
     public ClientesController(IClienteRepositorio repositorio,IMapper mapper){
         this.repositorio = repositorio;
-        _mapper = mapper;
+        _mapper = mapper ??
+               throw new ArgumentNullException(nameof(mapper));
     }
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ClienteDtoGrupo1>>> Get(){
-        return Ok(await repositorio.ObtenerClientes());
+    public async Task<ActionResult<IEnumerable<ClienteDto>>> Get(){
+        return Ok(_mapper.Map < IEnumerable < ClienteDto >>(await repositorio.ObtenerClientes()));
     }
 
     [HttpGet("{id}", Name = "getCliente")]

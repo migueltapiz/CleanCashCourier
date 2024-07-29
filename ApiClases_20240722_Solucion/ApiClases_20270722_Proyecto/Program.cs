@@ -24,6 +24,9 @@ builder.Services.AddDbContext<Contexto>(options =>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+//Añadir Autommaper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 
 //Agregar servicios a la aplicación
