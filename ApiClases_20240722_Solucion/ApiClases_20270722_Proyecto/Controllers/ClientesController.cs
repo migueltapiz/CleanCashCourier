@@ -26,7 +26,7 @@ public class ClientesController : ControllerBase{
 
     [HttpPost]
     public ActionResult<ClienteDto> Post(ClienteDto cliente) {
-        var finalClienteNuevo = _mapper.Map<Cliente>(cliente);
+        var finalClienteNuevo =_mapper.Map<ClienteDto,Cliente>(cliente);
         var clienteNuevo = repositorio.Agregar(finalClienteNuevo);
         var createdClienteToReturn = _mapper.Map<ClienteDto>(clienteNuevo);
         return CreatedAtRoute("getCliente",

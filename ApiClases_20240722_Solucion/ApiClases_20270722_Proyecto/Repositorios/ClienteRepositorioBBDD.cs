@@ -2,10 +2,10 @@
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
 public class ClienteRepositorioBBDD : IClienteRepositorio{
-    private readonly Contexto contexto;
+    private readonly Contexto _contexto;
 
     public ClienteRepositorioBBDD(Contexto contexto) {
-        this.contexto = contexto;
+        _contexto = contexto;
     }
     public Cliente Actualizar(int id, Cliente cliente) => throw new NotImplementedException();
     public Cliente Agregar(Cliente cliente) => throw new NotImplementedException();
