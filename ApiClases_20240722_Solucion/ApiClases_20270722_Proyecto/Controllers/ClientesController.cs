@@ -1,13 +1,14 @@
 ﻿using ApiClases_20270722_Proyecto.Repositorios;
-
 namespace ApiClases_20270722_Proyecto.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 public class ClientesController : ControllerBase{
     public readonly IClienteRepositorio repositorio;
-    public ClientesController(IClienteRepositorio repositorio){
+    private readonly IMapper _mapper;
+    public ClientesController(IClienteRepositorio repositorio,IMapper mapper){
         this.repositorio = repositorio;
+        _mapper = mapper;
     }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ClienteDtoGrupo1>>> Get(){
@@ -17,30 +18,34 @@ public class ClientesController : ControllerBase{
     [HttpGet("{id}", Name = "getCliente")]
     public ActionResult<ClienteDto> Get(int id){
         var cliente = repositorio.ObtenerClienteId(id);
-        return cliente == null ? NotFound(): Ok(cliente);
+        var finalClienteDto = _mapper.Map<ClienteDto>(cliente);
+        return finalClienteDto == null ? NotFound(): Ok(finalClienteDto);
     }
 
     [HttpPost]
     public ActionResult<ClienteDto> Post(ClienteDto cliente) {
-        
-        var clienteNuevo = repositorio.Agregar(cliente);
+        var finalClienteNuevo = _mapper.Map<Cliente>(cliente);
+        var clienteNuevo = repositorio.Agregar(finalClienteNuevo);
+        var createdClienteToReturn = _mapper.Map<ClienteDto>(clienteNuevo);
         return CreatedAtRoute("getCliente",
                  new
                  {
-                     id = clienteNuevo.Id
+                     id = createdClienteToReturn.Id
                  },
-                 clienteNuevo);
+                 createdClienteToReturn);
     }
 
     [HttpPut]
     public ActionResult<ClienteDto> Put(int id, ClienteDto cliente) {
-        var clienteActualizado =  repositorio.Actualizar(id,cliente);
-        return clienteActualizado == null ? NotFound() : CreatedAtRoute("getCliente",
+        var finalClienteActualizado = _mapper.Map<Cliente>(cliente);
+        var clienteActualizado =  repositorio.Actualizar(id, finalClienteActualizado);
+        var createdClienteToReturn = _mapper.Map<ClienteDto>(clienteActualizado);
+        return createdClienteToReturn == null ? NotFound() : CreatedAtRoute("getCliente",
                   new
                   {
-                      id = clienteActualizado.Id
+                      id = createdClienteToReturn.Id
                   },
-                  clienteActualizado);
+                  createdClienteToReturn);
     }
 
     [HttpDelete]

@@ -7,9 +7,9 @@ public class ClienteRepositorioBBDD : IClienteRepositorio{
     public ClienteRepositorioBBDD(Contexto contexto) {
         this.contexto = contexto;
     }
-    public ClienteDto Actualizar(int id, ClienteDto cliente) => throw new NotImplementedException();
-    public ClienteDto Agregar(ClienteDto cliente) => throw new NotImplementedException();
-    public ClienteDto Borrar(int id) => throw new NotImplementedException();
-    public ClienteDto ObtenerClienteId(int id) => throw new NotImplementedException();
-    Task<List<ClienteDto>> IClienteRepositorio.ObtenerClientes() => throw new NotImplementedException();
+    public Cliente Actualizar(int id, Cliente cliente) => throw new NotImplementedException();
+    public Cliente Agregar(Cliente cliente) => throw new NotImplementedException();
+    public Cliente Borrar(int id) => throw new NotImplementedException();
+    public Cliente ObtenerClienteId(int id) => throw new NotImplementedException();
+    Task<List<Cliente>> IClienteRepositorio.ObtenerClientes() => throw new NotImplementedException();
 }

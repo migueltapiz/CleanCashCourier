@@ -9,5 +9,5 @@ public class Cliente{
     [StringLength(20)]
     public string? Usuario { get; set; }
     public string? Pais { get; set; }
-
+    public DateTime FechaNacimiento { get; internal set; }
 }

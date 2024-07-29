@@ -2,13 +2,13 @@
 
 public interface IClienteRepositorio{
 
-    Task<List<ClienteDto>> ObtenerClientes();
-    ClienteDto ObtenerClienteId(int id);
+    Task<List<Cliente>> ObtenerClientes();
+    Cliente ObtenerClienteId(int id);
 
-    ClienteDto Agregar(ClienteDto cliente);
+    Cliente Agregar(Cliente cliente);
 
-    ClienteDto Actualizar(int id,ClienteDto cliente);
+    Cliente Actualizar(int id,Cliente cliente);
 
-    ClienteDto Borrar(int id);
+    Cliente Borrar(int id);
 
 }

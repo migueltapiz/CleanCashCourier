@@ -20,3 +20,5 @@ global using Microsoft.EntityFrameworkCore;
 
 
 global using ApiClases_20270722_Proyecto.Utilidades;
+
+global using AutoMapper;

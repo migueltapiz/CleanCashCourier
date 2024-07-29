@@ -2,17 +2,17 @@
 
 public class ClienteRepositorioMemoria: IClienteRepositorio
 {
-    public List<ClienteDto> Clientes { get; set; }
+    public List<Cliente> Clientes { get; set; }
     public int heLeido;
     public static ClienteRepositorioMemoria Instancia { get; } = new ClienteRepositorioMemoria();
     private static HttpClient _httpClient;
     public ClienteRepositorioMemoria() {
         heLeido = 0;
-        Clientes = new List<ClienteDto>();
+        Clientes = new List<Cliente>();
             _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri("https://localhost:7107");
     }
-    public async Task<List<ClienteDto>> ObtenerClientes() {
+    public async Task<List<Cliente>> ObtenerClientes() {
         if(heLeido == 0)
         {
             var response = await _httpClient.GetAsync("/api/clients");
@@ -23,7 +23,7 @@ public class ClienteRepositorioMemoria: IClienteRepositorio
             foreach(var cliente in contenido)
             {
                 Clientes.Add(
-                        new ClienteDto()
+                        new Cliente()
                         {
                             Id = cliente.ClienteId,
                             Nombre = cliente.Nombre,
@@ -40,14 +40,14 @@ public class ClienteRepositorioMemoria: IClienteRepositorio
         return Clientes;
     }
 
-    public ClienteDto ObtenerClienteId(int id) {
+    public Cliente ObtenerClienteId(int id) {
         return Clientes.FirstOrDefault(cliente => cliente.Id == id);
     }
 
-    public ClienteDto Agregar(ClienteDto cliente) {
+    public Cliente Agregar(Cliente cliente) {
         int maxId = Clientes.Max(cliente => cliente.Id);
 
-        var clienteNuevo = new ClienteDto()
+        var clienteNuevo = new Cliente()
         {
             Id = maxId + 1,
             Nombre = cliente.Nombre,
@@ -60,7 +60,7 @@ public class ClienteRepositorioMemoria: IClienteRepositorio
         return clienteNuevo;
     }
 
-    public ClienteDto Actualizar(int id, ClienteDto cliente) {
+    public Cliente Actualizar(int id, Cliente cliente) {
 
         var clienteActual = this.ObtenerClienteId(id);
         if(clienteActual == null){
@@ -79,7 +79,7 @@ public class ClienteRepositorioMemoria: IClienteRepositorio
         return clienteActual;
     }
 
-    public ClienteDto Borrar(int id) { 
+    public Cliente Borrar(int id) { 
         var cliente = this.Clientes.FirstOrDefault(c => c.Id == id);
         if(cliente != null) { 
             this.Clientes.Remove(cliente);
