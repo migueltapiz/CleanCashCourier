@@ -11,7 +11,5 @@ public class ClienteRepositorioBBDD : IClienteRepositorio{
     public ClienteDto Agregar(ClienteDto cliente) => throw new NotImplementedException();
     public ClienteDto Borrar(int id) => throw new NotImplementedException();
     public ClienteDto ObtenerClienteId(int id) => throw new NotImplementedException();
-    public async Task<List<Cliente>> ObtenerClientes() {
-       return await contexto.Clientes.ToListAsync();
-    }
+    Task<List<ClienteDto>> IClienteRepositorio.ObtenerClientes() => throw new NotImplementedException();
 }
