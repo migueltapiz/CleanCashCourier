@@ -8,7 +8,7 @@ public class ClienteRepositorioCsv : IClienteRepositorio
     }
     
 
-    public async Task<List<Cliente>> ObtenerTransacciones() {
+    public async Task<List<Cliente>> ObtenerClientes() {
         
         using(TextReader input = File.OpenText(@"C:\datos\listaclientes.csv"))
         using(CsvReader csvReader = new CsvReader(input))
@@ -48,4 +48,5 @@ public class ClienteRepositorioCsv : IClienteRepositorio
     public void Actualizar(int id, Cliente cliente) => throw new NotImplementedException();
     public void Borrar(int id) => throw new NotImplementedException();
     public Task<bool> GuardarCambios() => throw new NotImplementedException();
+    public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(string nombre) => throw new NotImplementedException();
 }
