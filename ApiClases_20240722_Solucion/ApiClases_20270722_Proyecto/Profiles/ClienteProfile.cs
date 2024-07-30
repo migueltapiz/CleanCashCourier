@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-namespace ApiClases_20270722_Proyecto.Profiles;
+﻿namespace ApiClases_20270722_Proyecto.Profiles;
 
 public class ClienteProfile:Profile {
 

@@ -23,6 +23,7 @@ else if(dondeSacoDatos == "csv")
 }
 else if(dondeSacoDatos == "BBDD") { 
     builder.Services.AddTransient<IClienteRepositorio,ClienteRepositorioBBDD>();
+    builder.Services.AddTransient<ITransaccionRepositorio,TransaccionRepositorioBBDD>();
 }
 
 // Agregar BBDD (SQLServer)

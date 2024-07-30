@@ -20,7 +20,7 @@ public class ClienteRepositorioBBDD : IClienteRepositorio {
     public Cliente ObtenerClienteId(int id) {
         return _contexto.Clientes.FirstOrDefault(c => c.Id == id);
     }
-    public Task<List<Cliente>> ObtenerClientes() { 
+    public Task<List<Cliente>> ObtenerTransacciones() { 
         
         return _contexto.Clientes.ToListAsync();
 

@@ -14,7 +14,7 @@ public class ClientesController : ControllerBase{
     }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ClienteDto>>> Get(){
-        return Ok(_mapper.Map < IEnumerable < ClienteDto >>(await repositorio.ObtenerClientes()));
+        return Ok(_mapper.Map < IEnumerable < ClienteDto >>(await repositorio.ObtenerTransacciones()));
     }
 
     [HttpGet("{id}", Name = "getCliente")]

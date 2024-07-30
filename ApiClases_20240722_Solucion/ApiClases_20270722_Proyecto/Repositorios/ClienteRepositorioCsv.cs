@@ -8,7 +8,7 @@ public class ClienteRepositorioCsv : IClienteRepositorio
     }
     
 
-    public async Task<List<Cliente>> ObtenerClientes() {
+    public async Task<List<Cliente>> ObtenerTransacciones() {
         
         using(TextReader input = File.OpenText(@"C:\datos\listaclientes.csv"))
         using(CsvReader csvReader = new CsvReader(input))

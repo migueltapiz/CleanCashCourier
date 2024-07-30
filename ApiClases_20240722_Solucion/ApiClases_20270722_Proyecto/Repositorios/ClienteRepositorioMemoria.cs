@@ -12,7 +12,7 @@ public class ClienteRepositorioMemoria: IClienteRepositorio
             _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri("https://localhost:7107");
     }
-    public async Task<List<Cliente>> ObtenerClientes() {
+    public async Task<List<Cliente>> ObtenerTransacciones() {
         if(heLeido == 0)
         {
             var response = await _httpClient.GetAsync("/api/clients");
