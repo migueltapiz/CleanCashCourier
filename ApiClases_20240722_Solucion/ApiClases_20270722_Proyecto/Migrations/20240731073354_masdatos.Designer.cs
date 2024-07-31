@@ -4,6 +4,7 @@ using ApiClases_20270722_Proyecto.ContextoCarpeta;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiClases_20270722_Proyecto.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20240731073354_masdatos")]
+    partial class masdatos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,7 +270,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 1,
                             CantidadEnvia = 1000.5,
                             CantidadRecibe = 1130.5699999999999,
-                            Fecha = new DateTime(2015, 3, 15, 9, 30, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2015, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 6,
                             IdRecibe = 7
                         },
@@ -276,7 +279,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 2,
                             CantidadEnvia = 2000.75,
                             CantidadRecibe = 2560.96,
-                            Fecha = new DateTime(2018, 6, 10, 14, 45, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2018, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 8,
                             IdRecibe = 9
                         },
@@ -285,7 +288,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 3,
                             CantidadEnvia = 1500.25,
                             CantidadRecibe = 1740.29,
-                            Fecha = new DateTime(2020, 8, 21, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2020, 8, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 10,
                             IdRecibe = 11
                         },
@@ -294,7 +297,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 4,
                             CantidadEnvia = 2500.3299999999999,
                             CantidadRecibe = 3500.46,
-                            Fecha = new DateTime(2011, 11, 30, 11, 15, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2011, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 12,
                             IdRecibe = 13
                         },
@@ -303,7 +306,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 5,
                             CantidadEnvia = 3000.6700000000001,
                             CantidadRecibe = 4260.9499999999998,
-                            Fecha = new DateTime(2017, 2, 7, 8, 30, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2017, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 14,
                             IdRecibe = 15
                         },
@@ -312,7 +315,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 6,
                             CantidadEnvia = 4000.9899999999998,
                             CantidadRecibe = 2920.73,
-                            Fecha = new DateTime(2021, 12, 25, 19, 45, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2021, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 16,
                             IdRecibe = 17
                         },
@@ -321,7 +324,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 7,
                             CantidadEnvia = 500.44999999999999,
                             CantidadRecibe = 790.58000000000004,
-                            Fecha = new DateTime(2012, 4, 18, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2012, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 18,
                             IdRecibe = 19
                         },
@@ -330,7 +333,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 8,
                             CantidadEnvia = 600.35000000000002,
                             CantidadRecibe = 888.48000000000002,
-                            Fecha = new DateTime(2019, 7, 13, 13, 30, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2019, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 20,
                             IdRecibe = 6
                         },
@@ -339,7 +342,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 9,
                             CantidadEnvia = 700.12,
                             CantidadRecibe = 1085.55,
-                            Fecha = new DateTime(2014, 5, 9, 10, 15, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2014, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 7,
                             IdRecibe = 8
                         },
@@ -348,7 +351,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 10,
                             CantidadEnvia = 800.75,
                             CantidadRecibe = 1240.9200000000001,
-                            Fecha = new DateTime(2016, 9, 14, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2016, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 9,
                             IdRecibe = 10
                         },
@@ -357,7 +360,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 11,
                             CantidadEnvia = 900.63,
                             CantidadRecibe = 1350.3599999999999,
-                            Fecha = new DateTime(2022, 3, 12, 12, 30, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2022, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 11,
                             IdRecibe = 12
                         },
@@ -366,7 +369,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 12,
                             CantidadEnvia = 100.90000000000001,
                             CantidadRecibe = 140.72999999999999,
-                            Fecha = new DateTime(2023, 1, 1, 6, 45, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 13,
                             IdRecibe = 14
                         },
@@ -375,7 +378,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 13,
                             CantidadEnvia = 200.33000000000001,
                             CantidadRecibe = 246.40000000000001,
-                            Fecha = new DateTime(2024, 6, 17, 17, 30, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2024, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 15,
                             IdRecibe = 16
                         },
@@ -384,7 +387,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 14,
                             CantidadEnvia = 300.5,
                             CantidadRecibe = 402.67000000000002,
-                            Fecha = new DateTime(2013, 2, 25, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2013, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 17,
                             IdRecibe = 18
                         },
@@ -393,7 +396,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 15,
                             CantidadEnvia = 400.80000000000001,
                             CantidadRecibe = 548.34000000000003,
-                            Fecha = new DateTime(2020, 8, 11, 14, 15, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2020, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 19,
                             IdRecibe = 20
                         },
@@ -402,7 +405,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 16,
                             CantidadEnvia = 5000.9499999999998,
                             CantidadRecibe = 7250.4399999999996,
-                            Fecha = new DateTime(2010, 12, 31, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2010, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 6,
                             IdRecibe = 7
                         },
@@ -411,7 +414,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 17,
                             CantidadEnvia = 3500.4499999999998,
                             CantidadRecibe = 4270.8699999999999,
-                            Fecha = new DateTime(2017, 11, 5, 16, 45, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2017, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 8,
                             IdRecibe = 9
                         },
@@ -420,7 +423,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 18,
                             CantidadEnvia = 6000.25,
                             CantidadRecibe = 7680.3500000000004,
-                            Fecha = new DateTime(2015, 3, 24, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2015, 3, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 10,
                             IdRecibe = 11
                         },
@@ -429,7 +432,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 19,
                             CantidadEnvia = 4200.6700000000001,
                             CantidadRecibe = 4980.1199999999999,
-                            Fecha = new DateTime(2019, 5, 22, 7, 30, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2019, 5, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 12,
                             IdRecibe = 13
                         },
@@ -438,7 +441,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 20,
                             CantidadEnvia = 4800.8500000000004,
                             CantidadRecibe = 6960.3999999999996,
-                            Fecha = new DateTime(2011, 10, 10, 20, 15, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2011, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 14,
                             IdRecibe = 15
                         },
@@ -447,7 +450,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 21,
                             CantidadEnvia = 5500.25,
                             CantidadRecibe = 8030.5,
-                            Fecha = new DateTime(2021, 7, 18, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2021, 7, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 16,
                             IdRecibe = 17
                         },
@@ -456,7 +459,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 22,
                             CantidadEnvia = 3100.3400000000001,
                             CantidadRecibe = 4327.1499999999996,
-                            Fecha = new DateTime(2018, 4, 2, 15, 45, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2018, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 18,
                             IdRecibe = 19
                         },
@@ -465,7 +468,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 23,
                             CantidadEnvia = 2900.75,
                             CantidadRecibe = 3357.8600000000001,
-                            Fecha = new DateTime(2014, 11, 19, 9, 15, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2014, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 20,
                             IdRecibe = 6
                         },
@@ -474,7 +477,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 24,
                             CantidadEnvia = 1700.4400000000001,
                             CantidadRecibe = 2400.6300000000001,
-                            Fecha = new DateTime(2023, 8, 30, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2023, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 7,
                             IdRecibe = 8
                         },
@@ -483,7 +486,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 25,
                             CantidadEnvia = 650.91999999999996,
                             CantidadRecibe = 995.71000000000004,
-                            Fecha = new DateTime(2012, 6, 5, 8, 30, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2012, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 9,
                             IdRecibe = 10
                         },
@@ -492,7 +495,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 26,
                             CantidadEnvia = 4500.5500000000002,
                             CantidadRecibe = 6120.8800000000001,
-                            Fecha = new DateTime(2020, 1, 27, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2020, 1, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 11,
                             IdRecibe = 12
                         },
@@ -501,7 +504,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 27,
                             CantidadEnvia = 3800.6799999999998,
                             CantidadRecibe = 4346.7799999999997,
-                            Fecha = new DateTime(2022, 4, 8, 11, 15, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2022, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 13,
                             IdRecibe = 14
                         },
@@ -510,7 +513,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 28,
                             CantidadEnvia = 2700.4499999999998,
                             CantidadRecibe = 3159.52,
-                            Fecha = new DateTime(2013, 9, 15, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2013, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 15,
                             IdRecibe = 16
                         },
@@ -519,7 +522,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 29,
                             CantidadEnvia = 1900.3399999999999,
                             CantidadRecibe = 2652.8699999999999,
-                            Fecha = new DateTime(2016, 12, 22, 15, 45, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2016, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 17,
                             IdRecibe = 18
                         },
@@ -528,7 +531,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 30,
                             CantidadEnvia = 5100.1499999999996,
                             CantidadRecibe = 6120.5699999999997,
-                            Fecha = new DateTime(2024, 10, 18, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            Fecha = new DateTime(2024, 10, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 19,
                             IdRecibe = 20
                         });

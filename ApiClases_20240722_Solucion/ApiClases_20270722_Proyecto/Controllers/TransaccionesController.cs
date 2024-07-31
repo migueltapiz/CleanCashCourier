@@ -4,7 +4,8 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace ApiClases_20270722_Proyecto.Controllers;
 
-[Route("api/[controller]")]
+//[Route("api/[controller]")]
+[Route("api/Clientes/{id_cliente}/Transacciones")]
 [ApiController]
 public class TransaccionesController : ControllerBase{
 
@@ -16,16 +17,19 @@ public class TransaccionesController : ControllerBase{
                throw new ArgumentNullException(nameof(mapper));
     }
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TransaccionDto>>> GetAsync([FromQuery] DateTime? fechaInicio, [FromQuery] DateTime? fechaFin, [FromQuery] double? cantidadEnviadaMin, [FromQuery] double? cantidadEnviadaMax, [FromQuery] double? cantidadRecibidaMin, [FromQuery] double? cantidadRecibidaMax) {
+    public async Task<ActionResult<IEnumerable<TransaccionDto>>> GetAsync([FromRoute]int id_cliente,[FromQuery] DateTime? fechaInicio, [FromQuery] DateTime? fechaFin, [FromQuery] double? cantidadEnviadaMin, [FromQuery] double? cantidadEnviadaMax, [FromQuery] double? cantidadRecibidaMin, [FromQuery] double? cantidadRecibidaMax) {
         return Ok(_mapper.Map<IEnumerable<TransaccionDto>>(await repositorio.ObtenerTodosFiltrado(fechaInicio,fechaFin,cantidadEnviadaMin, cantidadEnviadaMax, cantidadRecibidaMin, cantidadRecibidaMax)));
     }
 
-    [HttpGet("{id}",  Name = "getTransaccion") ]
-    public ActionResult<TransaccionDto> Get(int id){
-        var transaccion = repositorio.ObtenerTransaccionId(id);
+    [HttpGet("{id_transaccion}",  Name = "getTransaccion") ]
+    public ActionResult<TransaccionDto> Get([FromRoute] int id_cliente, [FromRoute] int id_transaccion){
+        var transaccion = repositorio.ObtenerTransaccionId(id_transaccion);
         var finalTransaccionDto = _mapper.Map<TransaccionDto>(transaccion);
         return finalTransaccionDto == null ? NotFound() : Ok(finalTransaccionDto);
     }
+
+    
+
 
     [HttpPost]
     public async Task<ActionResult<TransaccionDto>> Post(TransaccionDto transaccion) {

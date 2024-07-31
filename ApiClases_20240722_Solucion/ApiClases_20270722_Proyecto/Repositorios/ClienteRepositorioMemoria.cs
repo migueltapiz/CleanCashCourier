@@ -90,4 +90,9 @@ public class ClienteRepositorioMemoria: IClienteRepositorio
 
     public Task<bool> GuardarCambios() => throw new NotImplementedException();
     public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(string nombre) => throw new NotImplementedException();
+
+    //public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

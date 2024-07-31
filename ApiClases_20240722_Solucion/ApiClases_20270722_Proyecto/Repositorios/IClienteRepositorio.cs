@@ -12,5 +12,6 @@ public interface IClienteRepositorio{
     void Borrar(int id);
     public Task<bool> GuardarCambios();
 
-    Task<List<Transaccion>> ObtenerTransaccionesPorCliente(string nombre);
+    //Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id);
+    Task<List<Transaccion>> ObtenerTransaccionesPorCliente(string username);
 }

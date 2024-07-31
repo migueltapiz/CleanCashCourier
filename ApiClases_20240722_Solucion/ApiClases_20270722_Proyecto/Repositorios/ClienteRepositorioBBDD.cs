@@ -31,11 +31,21 @@ public class ClienteRepositorioBBDD : IClienteRepositorio {
 
     }
 
-    public async Task<List<Transaccion>> ObtenerTransaccionesPorCliente(string nombre) {
-        //var consulta = _contexto.Transacciones.Select(transaccion => transaccion).GroupJoin(_contexto.Clientes,transaccion => transaccion.IdEnvia, cliente => cliente.Id);
+    public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(string username)
+    {
+        int user_id = _contexto.Clientes.Where(c => c.Usuario == username).Select(c => c.Id).FirstOrDefault();
+        var consulta = _contexto.Transacciones.Where(t => t.IdEnvia == user_id || t.IdRecibe == user_id);
 
-
-        return await _contexto.Transacciones.ToListAsync();
+        return consulta.ToListAsync();
     }
-}
-  
+        /*
+         public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id) {
+            //var consulta = _contexto.Transacciones.Select(transaccion => transaccion).GroupJoin(_contexto.Clientes,transaccion => transaccion.IdEnvia, cliente => cliente.Id);
+            IQueryable<Transaccion> consulta = _contexto.Transacciones.Where(t => t.IdEnvia == user_id || t.IdRecibe == user_id);
+            return consulta.ToListAsync();
+
+
+            //return await _contexto.Transacciones.ToListAsync();
+        }
+         */
+    }
