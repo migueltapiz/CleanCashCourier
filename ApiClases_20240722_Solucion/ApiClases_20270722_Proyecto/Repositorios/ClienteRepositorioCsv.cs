@@ -48,7 +48,6 @@ public class ClienteRepositorioCsv : IClienteRepositorio
     public void Actualizar(int id, Cliente cliente) => throw new NotImplementedException();
     public void Borrar(int id) => throw new NotImplementedException();
     public Task<bool> GuardarCambios() => throw new NotImplementedException();
-    public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(string nombre) => throw new NotImplementedException();
 
     //public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id)
     //{

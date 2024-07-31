@@ -1,16 +1,13 @@
-﻿
+﻿namespace ApiClases_20270722_Proyecto.Repositorios;
 
-namespace ApiClases_20270722_Proyecto.Repositorios;
-
-public class TransaccionRepositorioBBDD : ITransaccionRepositorio
+public class TransaccionRepositorioBBDDMalo : ITransaccionRepositorioMalo
 {
     private readonly Contexto _contexto;
 
-    public TransaccionRepositorioBBDD(Contexto contexto) {
+    public TransaccionRepositorioBBDDMalo(Contexto contexto) {
         _contexto = contexto;
     }
     public void Actualizar(int id, Transaccion transaccion) {
-        transaccion.Id = id;
         _contexto.Transacciones.Update(transaccion);
     }
     public void Agregar(Transaccion transaccion) {
@@ -20,7 +17,9 @@ public class TransaccionRepositorioBBDD : ITransaccionRepositorio
         var transaccion = _contexto.Transacciones.FirstOrDefault(c => c.Id == id);
         _contexto.Transacciones.Remove(transaccion);
     }
-
+    public Transaccion ObtenerTransaccionId(int id,int id_transaccion) {
+        return _contexto.Transacciones.FirstOrDefault(c => c.Id == id_transaccion);
+    }
 
     public async Task<bool> GuardarCambios() {
 
@@ -30,7 +29,7 @@ public class TransaccionRepositorioBBDD : ITransaccionRepositorio
 
     public Task<List<Transaccion>> ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) {
 
-        var consulta = _contexto.Transacciones.Where(transaccion => transaccion.IdEnvia == id_cliente || transaccion.IdRecibe == id_cliente);
+        var consulta = _contexto.Transacciones.Select(transaccion => transaccion);
 
         if(fechaInicio != null)
         {
@@ -60,12 +59,6 @@ public class TransaccionRepositorioBBDD : ITransaccionRepositorio
         return consulta.ToListAsync();
     }
 
-    public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id) {
-        IQueryable<Transaccion> consulta = _contexto.Transacciones.Where(t => t.IdEnvia == user_id || t.IdRecibe == user_id);
-        return consulta.ToListAsync();
-    }
 
-    public Transaccion ObtenerTransaccionId(int id_cliente, int id_transaccion) {
-        return _contexto.Transacciones.Where(t => t.IdEnvia == id_cliente || t.IdRecibe == id_cliente).FirstOrDefault(c => c.Id == id_transaccion);
-    }
+    public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id) => throw new NotImplementedException();
 }

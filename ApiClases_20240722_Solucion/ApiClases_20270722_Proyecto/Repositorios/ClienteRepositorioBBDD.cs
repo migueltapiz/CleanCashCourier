@@ -7,6 +7,7 @@ public class ClienteRepositorioBBDD : IClienteRepositorio {
         _contexto = contexto;
     }
     public void Actualizar(int id, Cliente cliente) {
+        cliente.Id = id;
         _contexto.Clientes.Update(cliente);
     }
     public void Agregar(Cliente cliente) {
@@ -31,21 +32,6 @@ public class ClienteRepositorioBBDD : IClienteRepositorio {
 
     }
 
-    public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(string username)
-    {
-        int user_id = _contexto.Clientes.Where(c => c.Usuario == username).Select(c => c.Id).FirstOrDefault();
-        var consulta = _contexto.Transacciones.Where(t => t.IdEnvia == user_id || t.IdRecibe == user_id);
-
-        return consulta.ToListAsync();
-    }
-        /*
-         public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id) {
-            //var consulta = _contexto.Transacciones.Select(transaccion => transaccion).GroupJoin(_contexto.Clientes,transaccion => transaccion.IdEnvia, cliente => cliente.Id);
-            IQueryable<Transaccion> consulta = _contexto.Transacciones.Where(t => t.IdEnvia == user_id || t.IdRecibe == user_id);
-            return consulta.ToListAsync();
-
-
-            //return await _contexto.Transacciones.ToListAsync();
-        }
-         */
-    }
+  
+        
+}

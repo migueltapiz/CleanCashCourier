@@ -26,6 +26,7 @@ else if(dondeSacoDatos == "BBDD") {
 
     builder.Services.AddTransient<IClienteRepositorio,ClienteRepositorioBBDD>();
     builder.Services.AddTransient<ITransaccionRepositorio,TransaccionRepositorioBBDD>();
+    builder.Services.AddTransient<ITransaccionRepositorioMalo, TransaccionRepositorioBBDDMalo>();
 }
 
 // Agregar BBDD (SQLServer)

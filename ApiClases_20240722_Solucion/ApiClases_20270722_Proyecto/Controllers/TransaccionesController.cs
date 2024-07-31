@@ -18,12 +18,12 @@ public class TransaccionesController : ControllerBase{
     }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TransaccionDto>>> GetAsync([FromRoute]int id_cliente,[FromQuery] DateTime? fechaInicio, [FromQuery] DateTime? fechaFin, [FromQuery] double? cantidadEnviadaMin, [FromQuery] double? cantidadEnviadaMax, [FromQuery] double? cantidadRecibidaMin, [FromQuery] double? cantidadRecibidaMax) {
-        return Ok(_mapper.Map<IEnumerable<TransaccionDto>>(await repositorio.ObtenerTodosFiltrado(fechaInicio,fechaFin,cantidadEnviadaMin, cantidadEnviadaMax, cantidadRecibidaMin, cantidadRecibidaMax)));
+        return Ok(_mapper.Map<IEnumerable<TransaccionDto>>(await repositorio.ObtenerTodosFiltrado(id_cliente,fechaInicio,fechaFin,cantidadEnviadaMin, cantidadEnviadaMax, cantidadRecibidaMin, cantidadRecibidaMax)));
     }
 
     [HttpGet("{id_transaccion}",  Name = "getTransaccion") ]
     public ActionResult<TransaccionDto> Get([FromRoute] int id_cliente, [FromRoute] int id_transaccion){
-        var transaccion = repositorio.ObtenerTransaccionId(id_transaccion);
+        var transaccion = repositorio.ObtenerTransaccionId(id_cliente,id_transaccion);
         var finalTransaccionDto = _mapper.Map<TransaccionDto>(transaccion);
         return finalTransaccionDto == null ? NotFound() : Ok(finalTransaccionDto);
     }

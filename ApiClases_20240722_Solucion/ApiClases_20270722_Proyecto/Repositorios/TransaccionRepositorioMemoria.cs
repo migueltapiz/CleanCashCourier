@@ -2,7 +2,7 @@
 
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
-public class TransaccionRepositorioMemoria{
+public class TransaccionRepositorioMemoria:ITransaccionRepositorio{
 
     public List<TransaccionDto> Transacciones { get; set; }
     public static TransaccionRepositorioMemoria Instancia { get; } = new TransaccionRepositorioMemoria();
@@ -17,4 +17,13 @@ public class TransaccionRepositorioMemoria{
             new TransaccionDto(){ Id = 5, IdEnvia = 105, CantidadEnvia = 60.2, IdRecibe = 205, CantidadRecibe = 35.6,Fecha = DateTime.Now}
         };
     }
+
+    public void Agregar(Transaccion transaccion) => throw new NotImplementedException();
+    public void Actualizar(int id, Transaccion transaccion) => throw new NotImplementedException();
+    public void Borrar(int id) => throw new NotImplementedException();
+    public Task<bool> GuardarCambios() => throw new NotImplementedException();
+    public Task<List<Transaccion>> ObtenerTodosFiltrado(DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
+    public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id) => throw new NotImplementedException();
+    public Task<List<Transaccion>> ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
+    public Transaccion ObtenerTransaccionId(int id_cliente, int id_transaccion) => throw new NotImplementedException();
 }
