@@ -2,7 +2,7 @@
 
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
-public interface ITransaccionRepositorioMalo {
+public interface ITransaccionRepositorioEstadisticas {
 
     Transaccion ObtenerTransaccionId(int id_cliente,int id_transaccion);
 

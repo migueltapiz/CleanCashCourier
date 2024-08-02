@@ -1,17 +1,16 @@
-﻿using ApiClases_20270722_Proyecto.Entidades;
+﻿
 using ApiClases_20270722_Proyecto.Repositorios;
-using System.Reflection.Metadata.Ecma335;
 
 namespace ApiClases_20270722_Proyecto.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TransaccionMaloController : ControllerBase
+public class TransaccionEstadisticasController : ControllerBase
 {
 
-    public readonly ITransaccionRepositorioMalo repositorio;
+    public readonly ITransaccionRepositorioEstadisticas repositorio;
     private readonly IMapper _mapper;
-    public TransaccionMaloController(ITransaccionRepositorioMalo repositorio, IMapper mapper) {
+    public TransaccionEstadisticasController(ITransaccionRepositorioEstadisticas repositorio, IMapper mapper) {
         this.repositorio = repositorio;
         _mapper = mapper ??
                throw new ArgumentNullException(nameof(mapper));

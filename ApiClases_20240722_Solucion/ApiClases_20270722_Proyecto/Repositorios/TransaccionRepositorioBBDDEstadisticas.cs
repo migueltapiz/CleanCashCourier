@@ -1,10 +1,10 @@
 ﻿namespace ApiClases_20270722_Proyecto.Repositorios;
 
-public class TransaccionRepositorioBBDDMalo : ITransaccionRepositorioMalo
+public class TransaccionRepositorioBBDDEstadisticas: ITransaccionRepositorioEstadisticas
 {
     private readonly Contexto _contexto;
 
-    public TransaccionRepositorioBBDDMalo(Contexto contexto) {
+    public TransaccionRepositorioBBDDEstadisticas(Contexto contexto) {
         _contexto = contexto;
     }
     public void Actualizar(int id, Transaccion transaccion) {
