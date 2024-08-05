@@ -7,5 +7,17 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'PruebaNode';
-  
+  // constructor(private router: Router) {}
+
+  // navigateToHome() {
+  //   this.router.navigate(['/']);
+  // }
+
+  // navigateToAbout() {
+  //   this.router.navigate(['/about']);
+  // }
+
+  // navigateToSendMoney() {
+  //   this.router.navigate(['/send-money']);
+  // }
 }
