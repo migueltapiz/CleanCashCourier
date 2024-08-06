@@ -1,11 +1,60 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from "rxjs";
+import { ICliente } from "../clientes/cliente";
+import { ClienteService } from "../clientes/cliente.service";
 
 @Component({
   selector: 'pm-send-money',
   templateUrl: './send-money.component.html',
   styleUrl: './send-money.component.css'
 })
-export class SendMoneyComponent {
+export class SendMoneyComponent implements OnInit, OnDestroy{
+  errorMessage: string = '';
+  sub!: Subscription;
+  filteredClientes: ICliente[] = [];
+  clientes: ICliente[] = [];
+  selectedCliente: string | null = null;
+  constructor(private clienteService: ClienteService) { }
+
+  
+  
+  ngOnInit(): void {
+    this.sub = this.clienteService.getClientes().subscribe({
+      next: clientes => {
+        this.clientes = clientes;
+        console.log('send-money.ts');
+        console.log(JSON.stringify(clientes));
+        this.filteredClientes = [];
+      },
+      error: err => this.errorMessage = err
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
+  private _listFilter: string = '';
+  get listFilter(): string {
+    return this._listFilter;
+  }
+  set listFilter(value: string) {
+    this._listFilter = value;
+    console.log('In setter:', value);
+    this.filteredClientes = this.performFilter(value);
+  }
+  
+  performFilter(filterBy: string): ICliente[] {
+    filterBy = filterBy.toLocaleLowerCase();
+    return this.clientes.filter((cliente: ICliente) =>
+      cliente.usuario.toLocaleLowerCase().includes(filterBy));
+  }
+
+  selectCliente(cli: string) {
+    this.selectedCliente = cli;
+    this._listFilter = cli;
+    this.filteredClientes = [];
+  }
   recipientFilter = '';
   recipients = [
     'John Doe', 'Jane Smith', 'Alice Johnson', 'Bob Brown', 'Charlie Davis', 'David Wilson',

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,13 +20,14 @@ import { SendMoneyComponent } from './send-money/send-money.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    RouterModule.forRoot([
-      { path: 'about', component: AboutComponent, title: 'Acerca de Nosotros' },
-      // { path: 'products/:id', component: ProductDetailComponent },
-      { path: 'welcome', component: WelcomeComponentComponent },
-      { path: '', redirectTo: 'welcome', pathMatch: 'full' },
-      { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
-    ])
+    HttpClientModule,
+    // RouterModule.forRoot([
+    //   { path: 'about', component: AboutComponent, title: 'Acerca de Nosotros' },
+    //   // { path: 'products/:id', component: ProductDetailComponent },
+    //   { path: 'welcome', component: WelcomeComponentComponent },
+    //   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+    //   { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
+    // ])
   ],
   providers: [],
   bootstrap: [AppComponent]

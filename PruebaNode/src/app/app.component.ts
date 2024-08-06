@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'PruebaNode';
+  title: string = 'PruebaNode';
   // constructor(private router: Router) {}
 
   // navigateToHome() {
