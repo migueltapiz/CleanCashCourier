@@ -13,7 +13,8 @@ export class SendMoneyComponent implements OnInit, OnDestroy{
   sub!: Subscription;
   filteredClientes: ICliente[] = [];
   clientes: ICliente[] = [];
-  selectedCliente: string | null = null;
+  selectedCliente?: string;
+  clienteEnvia!: ICliente;
   constructor(private clienteService: ClienteService) { }
 
   
@@ -22,8 +23,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy{
     this.sub = this.clienteService.getClientes().subscribe({
       next: clientes => {
         this.clientes = clientes;
-        console.log('send-money.ts');
-        console.log(JSON.stringify(clientes));
         this.filteredClientes = [];
       },
       error: err => this.errorMessage = err
@@ -56,29 +55,9 @@ export class SendMoneyComponent implements OnInit, OnDestroy{
     this.filteredClientes = [];
   }
   recipientFilter = '';
-  recipients = [
-    'John Doe', 'Jane Smith', 'Alice Johnson', 'Bob Brown', 'Charlie Davis', 'David Wilson',
-    'Eve White', 'Frank Green', 'Grace Adams', 'Hank Thompson', 'Ivy Clark', 'Jack Lewis',
-    'Karen Walker', 'Liam Harris', 'Mia Robinson', 'Noah Young', 'Olivia Martinez', 'Paul Hall',
-    'Quincy Allen', 'Rachel Wright', 'Sam King', 'Tina Scott', 'Uma Hill', 'Victor Moore',
-    'Wendy Turner', 'Xander Phillips', 'Yara Cooper', 'Zane Rogers', 'Zoey Stewart', 'Oscar Perry'
-  ];
-  filteredRecipients: string[] = [];
-  selectedRecipient: string | null = null;
+ 
   amount: string = '';
   currency: string = 'EUR';
-
-  filterRecipients() {
-    this.filteredRecipients = this.recipients.filter(recipient =>
-      recipient.toLowerCase().includes(this.recipientFilter.toLowerCase())
-    );
-  }
-
-  selectRecipient(recipient: string) {
-    this.selectedRecipient = recipient;
-    this.recipientFilter = recipient;
-    this.filteredRecipients = [];
-  }
 
   validateAmount(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -111,7 +90,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy{
   }
 
   sendMoney() {
-    if (!this.selectedRecipient || !this.recipients.includes(this.selectedRecipient)) {
+    if (!this.selectCliente) {
       alert('El destinatario es inválido.');
       return;
     }
@@ -122,6 +101,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy{
     }
 
     const numericAmount = parseFloat(this.amount.replace(',', '.'));
-    alert(`Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${this.selectedRecipient}.`);
+    alert(`Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${this.selectedCliente}.`);
   }
 }
