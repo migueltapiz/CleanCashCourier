@@ -16,8 +16,8 @@ export class SendMoneyComponent {
   ];
   filteredRecipients: string[] = [];
   selectedRecipient: string | null = null;
-  mainAmount: number | null = null;
-  subAmount: number | null = null;
+  amount: string = '';
+  currency: string = 'EUR';
 
   filterRecipients() {
     this.filteredRecipients = this.recipients.filter(recipient =>
@@ -31,9 +31,34 @@ export class SendMoneyComponent {
     this.filteredRecipients = [];
   }
 
+  validateAmount(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+
+    // Replace commas with periods and remove invalid characters
+    value = value.replace(/,/g, '.').replace(/[^0-9.]/g, '');
+
+    // Prevent multiple periods
+    const parts = value.split('.');
+    if (parts.length > 2) {
+      value = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    // Ensure at least one digit before the period
+    if (value.startsWith('.')) {
+      value = '0' + value;
+    }
+
+    // Update the input value
+    this.amount = value;
+
+    // Update the input element value to ensure correct formatting
+    input.value = value;
+  }
+
   isValidAmount(): boolean {
-    const totalAmount = (this.mainAmount ?? 0) + (this.subAmount ? this.subAmount / 100 : 0);
-    return totalAmount >= 0.5;
+    const numericAmount = parseFloat(this.amount.replace(',', '.'));
+    return numericAmount >= 0.5;
   }
 
   sendMoney() {
@@ -43,14 +68,11 @@ export class SendMoneyComponent {
     }
 
     if (!this.isValidAmount()) {
-      alert('La cantidad mínima a enviar es 0.5.');
+      alert('La cantidad mínima a enviar es 0,5.');
       return;
     }
 
-    const mainAmount = this.mainAmount ?? 0;
-    const subAmount = this.subAmount ?? 0;
-    const totalAmount = mainAmount + subAmount / 100;
-
-    alert(`Enviando ${totalAmount.toFixed(2)} al destinatario ${this.selectedRecipient}.`);
+    const numericAmount = parseFloat(this.amount.replace(',', '.'));
+    alert(`Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${this.selectedRecipient}.`);
   }
 }

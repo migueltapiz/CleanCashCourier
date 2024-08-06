@@ -1,23 +1,22 @@
 <!-- send-money.component.html -->
 <div class="send-money-container">
-    <h2>Enviar Dinero</h2>
-    <form (ngSubmit)="sendMoney()">
-      <div class="form-group">
-        <label for="recipient">Elige destinatario:</label>
-        <input type="text" id="recipient" class="form-control" [(ngModel)]="recipientFilter" name="recipientFilter" (input)="filterRecipients()">
-        <ul class="dropdown-list" *ngIf="recipientFilter && filteredRecipients.length > 0">
-          <li *ngFor="let recipient of filteredRecipients" (click)="selectRecipient(recipient)">{{ recipient }}</li>
-        </ul>
+  <h2>Enviar Dinero</h2>
+  <form (ngSubmit)="sendMoney()">
+    <div class="form-group">
+      <label for="recipient">Elige destinatario:</label>
+      <input type="text" id="recipient" class="form-control" [(ngModel)]="recipientFilter" name="recipientFilter" (input)="filterRecipients()">
+      <ul class="dropdown-list" *ngIf="recipientFilter && filteredRecipients.length > 0">
+        <li *ngFor="let recipient of filteredRecipients" (click)="selectRecipient(recipient)">{{ recipient }}</li>
+      </ul>
+    </div>
+    <div class="form-group">
+      <label for="amount">Cantidad:</label>
+      <div class="amount-input-container">
+        <input type="text" id="amount" class="form-control amount-input" [(ngModel)]="amount" name="amount" placeholder="0,5" (input)="validateAmount($event)">
+        <div class="currency-display">EUR</div>
       </div>
-      <div class="form-group">
-        <label for="amount">Cantidad:</label>
-        <div class="amount-inputs">
-          <input type="number" id="mainAmount" class="form-control" [(ngModel)]="mainAmount" name="mainAmount" placeholder="Euros" min="0" step="0.01" onkeydown="return event.keyCode !== 69 && event.keyCode !== 107 && event.keyCode !== 109 && event.keyCode !== 187 && event.keyCode !== 189">
-          <input type="number" id="subAmount" class="form-control" [(ngModel)]="subAmount" name="subAmount" placeholder="50" min="0" max="99" maxlength="2" oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);">
-        </div>
-        <small class="amount-hint">La cantidad mínima a enviar es 0.5</small>
-      </div>
-      <button type="submit" class="send-button" [disabled]="!isValidAmount()">Enviar Dinero</button>
-    </form>
-  </div>
-  
+      <small class="amount-hint">La cantidad mínima a enviar es 0,5</small>
+    </div>
+    <button type="submit" class="send-button" [disabled]="!isValidAmount()">Enviar Dinero</button>
+  </form>
+</div>
