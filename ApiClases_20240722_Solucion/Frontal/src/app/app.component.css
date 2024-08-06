@@ -1,0 +1,95 @@
+/* app.component.css */
+body {
+  background-color: #D7D9D7;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #84BF49;
+  padding: 10px;
+}
+
+.navbar .logo {
+  height: 40px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.nav-items {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.nav-item, .register, .login-button {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.register {
+  color: #1A3540;
+}
+
+.login-button {
+  background-color: white;
+  color: #1A3540;
+  border: 2px solid #1A3540;
+  border-radius: 20px;
+  padding: 5px 15px;
+}
+
+.login-button:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropbtn {
+  background-color: #84BF49;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #84BF49;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #668F36;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.nav-item:hover {
+  border-bottom: 2px solid #1A3540;
+}
+
+/* Additional styles for About page */
+.section {
+  margin-bottom: 20px;
+}
+
+.section h2 {
+  margin-top: 20px;
+}

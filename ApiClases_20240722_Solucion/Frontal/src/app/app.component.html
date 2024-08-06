@@ -1,0 +1,24 @@
+<!-- app.component.html -->
+<div class="navbar">
+  <img src="assets/Logo.png" alt="Logo" class="logo" routerLink="/welcome">
+  <div class="nav-items">
+    <a routerLink="/about" class="nav-item">Sobre nosotros</a>
+    <a routerLink="/send-money" class="nav-item">Enviar Dinero</a>
+    <div class="dropdown">
+      <button class="dropbtn">
+        &#9776;
+      </button>
+      <div class="dropdown-content">
+        <a href="#">Cartera</a>
+        <a href="#">Perfil</a>
+        <a href="#">Registro de transacciones</a>
+      </div>
+    </div>
+    <a href="#" class="nav-item register">Registrarse</a>
+    <button class="login-button">Iniciar Sesión</button>
+  </div>
+</div>
+
+<div class='container'>
+  <router-outlet></router-outlet>
+</div>

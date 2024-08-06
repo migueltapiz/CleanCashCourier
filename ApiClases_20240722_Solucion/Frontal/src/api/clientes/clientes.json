@@ -1,0 +1,170 @@
+[
+    {
+      "id": 1,
+      "nombre": "Ana",
+      "apellidos": "Juanes",
+      "usuario": "ana777",
+      "pais": "Reino Unido",
+      "fechaNacimiento": "1900-01-01T00:00:00"
+    },
+    {
+      "id": 2,
+      "nombre": "Pedro",
+      "apellidos": "Sanchez",
+      "usuario": "elcoletas",
+      "pais": "Estados Unidos",
+      "fechaNacimiento": "1900-01-01T00:00:00"
+    },
+    {
+      "id": 3,
+      "nombre": "Miguel",
+      "apellidos": "Martinez",
+      "usuario": "emanems",
+      "pais": "España",
+      "fechaNacimiento": "1900-01-01T00:00:00"
+    },
+    {
+      "id": 4,
+      "nombre": "Juan",
+      "apellidos": "Lopez",
+      "usuario": "jujalag",
+      "pais": "España",
+      "fechaNacimiento": "1900-01-01T00:00:00"
+    },
+    {
+      "id": 5,
+      "nombre": "Iñigo",
+      "apellidos": "Vertiz",
+      "usuario": "ibai",
+      "pais": "Andorra",
+      "fechaNacimiento": "1900-01-01T00:00:00"
+    },
+    {
+      "id": 6,
+      "nombre": "Barack",
+      "apellidos": "Obama",
+      "usuario": "baracko",
+      "pais": "Estados Unidos",
+      "fechaNacimiento": "1961-08-04T00:00:00"
+    },
+    {
+      "id": 7,
+      "nombre": "Lionel",
+      "apellidos": "Messi",
+      "usuario": "leomessi",
+      "pais": "Argentina",
+      "fechaNacimiento": "1987-06-24T00:00:00"
+    },
+    {
+      "id": 8,
+      "nombre": "Elon",
+      "apellidos": "Musk",
+      "usuario": "elonmusk",
+      "pais": "Sudáfrica",
+      "fechaNacimiento": "1971-06-28T00:00:00"
+    },
+    {
+      "id": 9,
+      "nombre": "Oprah",
+      "apellidos": "Winfrey",
+      "usuario": "oprahw",
+      "pais": "Estados Unidos",
+      "fechaNacimiento": "1954-01-29T00:00:00"
+    },
+    {
+      "id": 10,
+      "nombre": "Bill",
+      "apellidos": "Gates",
+      "usuario": "billgates",
+      "pais": "Estados Unidos",
+      "fechaNacimiento": "1955-10-28T00:00:00"
+    },
+    {
+      "id": 11,
+      "nombre": "Angela",
+      "apellidos": "Merkel",
+      "usuario": "angelam",
+      "pais": "Alemania",
+      "fechaNacimiento": "1954-07-17T00:00:00"
+    },
+    {
+      "id": 12,
+      "nombre": "Shakira",
+      "apellidos": "Ripoll",
+      "usuario": "shakira",
+      "pais": "Colombia",
+      "fechaNacimiento": "1977-02-02T00:00:00"
+    },
+    {
+      "id": 13,
+      "nombre": "Steve",
+      "apellidos": "Jobs",
+      "usuario": "stevejobs",
+      "pais": "Estados Unidos",
+      "fechaNacimiento": "1955-02-24T00:00:00"
+    },
+    {
+      "id": 14,
+      "nombre": "Mark",
+      "apellidos": "Zuckerberg",
+      "usuario": "markz",
+      "pais": "Estados Unidos",
+      "fechaNacimiento": "1984-05-14T00:00:00"
+    },
+    {
+      "id": 15,
+      "nombre": "Serena",
+      "apellidos": "Williams",
+      "usuario": "serenaw",
+      "pais": "Estados Unidos",
+      "fechaNacimiento": "1981-09-26T00:00:00"
+    },
+    {
+      "id": 16,
+      "nombre": "Cristiano",
+      "apellidos": "Ronaldo",
+      "usuario": "cr7",
+      "pais": "Portugal",
+      "fechaNacimiento": "1985-02-05T00:00:00"
+    },
+    {
+      "id": 17,
+      "nombre": "LeBron",
+      "apellidos": "James",
+      "usuario": "lebronj",
+      "pais": "Estados Unidos",
+      "fechaNacimiento": "1984-12-30T00:00:00"
+    },
+    {
+      "id": 18,
+      "nombre": "Elena",
+      "apellidos": "Kagan",
+      "usuario": "elenak",
+      "pais": "Estados Unidos",
+      "fechaNacimiento": "1960-04-28T00:00:00"
+    },
+    {
+      "id": 19,
+      "nombre": "J.K.",
+      "apellidos": "Rowling",
+      "usuario": "jkrowling",
+      "pais": "Reino Unido",
+      "fechaNacimiento": "1965-07-31T00:00:00"
+    },
+    {
+      "id": 20,
+      "nombre": "Dwayne",
+      "apellidos": "Johnson",
+      "usuario": "therock",
+      "pais": "Estados Unidos",
+      "fechaNacimiento": "1972-05-02T00:00:00"
+    },
+    {
+      "id": 21,
+      "nombre": "Pedro",
+      "apellidos": "Pedropedrope",
+      "usuario": "mapache",
+      "pais": "Alemania",
+      "fechaNacimiento": "2000-07-30T08:45:00"
+    }
+  ]
