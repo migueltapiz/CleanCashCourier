@@ -14,7 +14,7 @@ export class ClienteService {
   
   getClientes(): Observable<ICliente[]> {
     return this.http.get<ICliente[]>(this.clientesUrl).pipe(
-      tap(data => console.log('All', JSON.stringify(data))),
+      tap(data => data),
       catchError(this.handleError)
     );
   }

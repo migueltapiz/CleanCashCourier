@@ -39,7 +39,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy{
   }
   set listFilter(value: string) {
     this._listFilter = value;
-    console.log('In setter:', value);
     this.filteredClientes = this.performFilter(value);
   }
   
