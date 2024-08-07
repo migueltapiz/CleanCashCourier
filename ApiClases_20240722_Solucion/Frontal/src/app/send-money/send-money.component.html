@@ -1,4 +1,3 @@
-<!-- send-money.component.html -->
 <div class="send-money-container">
   <h2>Enviar Dinero</h2>
   <form (ngSubmit)="sendMoney()">
@@ -17,6 +16,25 @@
       </div>
       <small class="amount-hint">La cantidad mínima a enviar es 0,5</small>
     </div>
-    <button type="submit" class="send-button" [disabled]="!isValidAmount()">Enviar Dinero</button>
+    <button type="submit" class="send-button btn btn-primary" [disabled]="!isValidAmount()">Enviar Dinero</button>
   </form>
+
+  <!-- Modal -->
+  <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="transactionModalLabel">Transacción</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {{ modalMessage }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+

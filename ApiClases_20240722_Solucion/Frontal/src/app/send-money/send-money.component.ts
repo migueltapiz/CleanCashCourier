@@ -3,22 +3,24 @@ import { Subscription } from "rxjs";
 import { ICliente } from "../clientes/cliente";
 import { ClienteService } from "../clientes/cliente.service";
 
+declare var bootstrap: any;
+
 @Component({
   selector: 'pm-send-money',
   templateUrl: './send-money.component.html',
-  styleUrl: './send-money.component.css'
+  styleUrls: ['./send-money.component.css']
 })
-export class SendMoneyComponent implements OnInit, OnDestroy{
+export class SendMoneyComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   sub!: Subscription;
   filteredClientes: ICliente[] = [];
   clientes: ICliente[] = [];
   selectedCliente?: string;
   clienteEnvia!: ICliente;
+  modalMessage: string = '';
+
   constructor(private clienteService: ClienteService) { }
 
-  
-  
   ngOnInit(): void {
     this.sub = this.clienteService.getClientes().subscribe({
       next: clientes => {
@@ -41,7 +43,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy{
     this._listFilter = value;
     this.filteredClientes = this.performFilter(value);
   }
-  
+
   performFilter(filterBy: string): ICliente[] {
     filterBy = filterBy.toLocaleLowerCase();
     return this.clientes.filter((cliente: ICliente) =>
@@ -53,8 +55,8 @@ export class SendMoneyComponent implements OnInit, OnDestroy{
     this._listFilter = cli;
     this.filteredClientes = [];
   }
+
   recipientFilter = '';
- 
   amount: string = '';
   currency: string = 'EUR';
 
@@ -89,17 +91,26 @@ export class SendMoneyComponent implements OnInit, OnDestroy{
   }
 
   sendMoney() {
-    if (!this.selectCliente) {
-      alert('El destinatario es inválido.');
+    if (!this.selectedCliente) {
+      this.modalMessage = 'El destinatario es inválido.';
+      this.showModal();
       return;
     }
 
     if (!this.isValidAmount()) {
-      alert('La cantidad mínima a enviar es 0,5.');
+      this.modalMessage = 'La cantidad mínima a enviar es 0,5.';
+      this.showModal();
       return;
     }
 
     const numericAmount = parseFloat(this.amount.replace(',', '.'));
-    alert(`Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${this.selectedCliente}.`);
+    this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${this.selectedCliente}.`;
+    this.showModal();
+  }
+
+  showModal() {
+    const modalElement = document.getElementById('transactionModal');
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
   }
 }
