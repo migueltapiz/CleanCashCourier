@@ -128,12 +128,12 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
     const numericAmount = parseFloat(this.amount.replace(',', '.'));
     this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${this.selectedCliente.usuario}.`;
-    //this.showModal();
+    this.showModal();
   }
 
   showModal() {
     const modalElement = document.getElementById('transactionModal');
-    //const modal = new bootstrap.Modal(modalElement);
-    //modal.show();
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
   }
 }
