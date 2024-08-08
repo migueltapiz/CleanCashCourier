@@ -5,7 +5,7 @@
       <label for="recipient">Elige destinatario:</label>
       <input type="text" id="recipient" class="form-control" [(ngModel)]="listFilter" name="recipientFilter">
       <ul class="dropdown-list" *ngIf="filteredClientes.length > 0">
-        <li *ngFor="let cliente of filteredClientes" (click)="selectCliente(cliente.usuario)">{{ cliente.usuario }}</li>
+        <li *ngFor="let cliente of filteredClientes" (click)="selectCliente(cliente)">{{ cliente.usuario }}</li>
       </ul>
     </div>
     <div class="form-group">

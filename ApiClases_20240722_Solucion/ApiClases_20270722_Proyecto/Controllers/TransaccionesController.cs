@@ -1,11 +1,13 @@
 ﻿using ApiClases_20270722_Proyecto.Entidades;
 using ApiClases_20270722_Proyecto.Repositorios;
+using Microsoft.AspNetCore.Cors;
 using System.Reflection.Metadata.Ecma335;
 
 namespace ApiClases_20270722_Proyecto.Controllers;
 
 //[Route("api/[controller]")]
 [Route("api/Clientes/{id_cliente}/Transacciones")]
+
 [ApiController]
 public class TransaccionesController : ControllerBase{
 
@@ -28,15 +30,15 @@ public class TransaccionesController : ControllerBase{
         return finalTransaccionDto == null ? NotFound() : Ok(finalTransaccionDto);
     }
 
-    
 
 
+    [EnableCors("AllowAllOrigins")]
     [HttpPost]
     public async Task<ActionResult<TransaccionDto>> Post(TransaccionDto transaccion) {
         var finalTransaccionNuevo = _mapper.Map<TransaccionDto, Transaccion>(transaccion);
         repositorio.Agregar(finalTransaccionNuevo);
 
-        return await repositorio.GuardarCambios() ? Ok("Transacción añadida correctamente") : BadRequest();
+        return await repositorio.GuardarCambios() ? Ok() : BadRequest();
     }
     [HttpPut]
     public async Task<ActionResult<TransaccionDto>> PutAsync(int id, TransaccionDto transaccion) {
