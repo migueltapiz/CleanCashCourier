@@ -3,7 +3,7 @@ import { Subscription } from "rxjs";
 import { ICliente } from "../clientes/cliente";
 import { ClienteService } from "../clientes/cliente.service";
 import { TransaccionService } from "../transaccion/transaccion.service";
-import { ITransaccion,Transaccion } from "../transaccion/transaccion";
+import { ITransaccion, Transaccion } from "../transaccion/transaccion";
 
 declare var bootstrap: any;
 
@@ -17,12 +17,12 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   sub!: Subscription;
   filteredClientes: ICliente[] = [];
   clientes: ICliente[] = [];
-  selectedCliente!: ICliente;
+  selectedCliente: ICliente | null = null;
   clienteEnvia!: ICliente;
   modalMessage: string = '';
   transaccion!: Transaccion;
 
-  constructor(private clienteService: ClienteService,private transaccionService:TransaccionService) { }
+  constructor(private clienteService: ClienteService, private transaccionService: TransaccionService) { }
 
   ngOnInit(): void {
     this.sub = this.clienteService.getClientes().subscribe({
@@ -45,6 +45,16 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   set listFilter(value: string) {
     this._listFilter = value;
     this.filteredClientes = this.performFilter(value);
+
+    // Invalidar el cliente seleccionado si el texto no coincide exactamente
+    if (this.selectedCliente && this.selectedCliente.usuario !== value) {
+      this.selectedCliente = null;
+    }
+
+    // Restablecer selectedCliente si se borra el texto o no hay coincidencias
+    if (this._listFilter === '' || this.filteredClientes.length === 0) {
+      this.selectedCliente = null;
+    }
   }
 
   performFilter(filterBy: string): ICliente[] {
@@ -70,42 +80,42 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     // Replace commas with periods and remove invalid characters
     value = value.replace(/,/g, '.').replace(/[^0-9.]/g, '');
 
-    // Prevent multiple periods
     const parts = value.split('.');
     if (parts.length > 2) {
       value = parts[0] + '.' + parts.slice(1).join('');
     }
 
-    // Ensure at least one digit before the period
     if (value.startsWith('.')) {
       value = '0' + value;
     }
 
-    // Update the input value
-    this.amount = value;
+    // Limit to two decimal places
+    if (parts.length > 1 && parts[1].length > 2) {
+      value = `${parts[0]}.${parts[1].substring(0, 2)}`;
+    }
 
-    // Update the input element value to ensure correct formatting
+    this.amount = value;
     input.value = value;
   }
 
   isValidAmount(): boolean {
     const numericAmount = parseFloat(this.amount.replace(',', '.'));
-    return numericAmount >= 0.5;
+    return numericAmount >= 0.5 && !!this.selectedCliente;
   }
 
   crearTransaccion() {
-    this.transaccion = new Transaccion;
-   
+    this.transaccion = new Transaccion();
+
     this.transaccion.cantidadEnvia = parseFloat(this.amount.replace(',', '.'));
     this.transaccion.cantidadRecibe = parseFloat(this.amount.replace(',', '.'));
-    this.transaccion.idEnvia = 1;
-    this.transaccion.idRecibe = this.selectedCliente.id;
+    this.transaccion.idEnvia = 1; // Ejemplo de ID del cliente que envía, esto debería configurarse adecuadamente
+    this.transaccion.idRecibe = this.selectedCliente?.id || 0;
     this.transaccion.fecha = new Date(Date.now()).toJSON();
   }
 
   sendMoney() {
     if (!this.selectedCliente) {
-      this.modalMessage = 'El destinatario es inválido.';
+      this.modalMessage = 'Por favor, seleccione un destinatario válido.';
       this.showModal();
       return;
     }
@@ -115,6 +125,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       this.showModal();
       return;
     }
+
     this.crearTransaccion();
 
     this.transaccionService.crearTransaccion(this.transaccion).subscribe({
@@ -122,7 +133,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
         console.log('Transacción creada: ' + JSON.stringify(data));
       },
       error: (err) => {
-        console.error('Error creando la transaccion: ', err);
+        console.error('Error creando la transacción: ', err);
       }
     });
 

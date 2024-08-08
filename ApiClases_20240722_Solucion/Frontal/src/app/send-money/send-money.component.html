@@ -4,7 +4,7 @@
     <div class="form-group">
       <label for="recipient">Elige destinatario:</label>
       <input type="text" id="recipient" class="form-control" [(ngModel)]="listFilter" name="recipientFilter">
-      <ul class="dropdown-list" *ngIf="filteredClientes.length > 0">
+      <ul class="dropdown-list" *ngIf="listFilter && filteredClientes.length > 0">
         <li *ngFor="let cliente of filteredClientes" (click)="selectCliente(cliente)">{{ cliente.usuario }}</li>
       </ul>
     </div>
@@ -31,10 +31,9 @@
           {{ modalMessage }}
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn-secondary" data-bs-dismiss="modal">Consultar transacción</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
