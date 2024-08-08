@@ -37,25 +37,36 @@ builder.Services.AddDbContext<Contexto>(options =>{
 //Añadir Autommaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+
+
 builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowSpecificOrigins",
-        policy =>
+
+    {
+
+        options.AddPolicy("AllowAllOrigins",
+
+        builder =>
+
         {
-            policy.WithOrigins("http://localhost:4200") // Cambia esto por el origen de tu frontend
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
+
+            builder.AllowAnyOrigin()
+
+    .AllowAnyMethod()
+
+    .AllowAnyHeader();
+
         });
-});
+
+    });
 
 
 
-//Agregar servicios a la aplicación
-var app = builder.Build();
+    //Agregar servicios a la aplicación
+    var app = builder.Build();
 
 
 
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("AllowAllOrigins");
 //Comprobar si el entorno es de desarrollo
 
 if (app.Environment.IsDevelopment())

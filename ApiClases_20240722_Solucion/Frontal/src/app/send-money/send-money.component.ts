@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs";
 import { ICliente } from "../clientes/cliente";
 import { ClienteService } from "../clientes/cliente.service";
+import { TransaccionService } from "../transaccion/transaccion.service";
+import { ITransaccion,Transaccion } from "../transaccion/transaccion";
 
 declare var bootstrap: any;
 
@@ -15,11 +17,12 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   sub!: Subscription;
   filteredClientes: ICliente[] = [];
   clientes: ICliente[] = [];
-  selectedCliente?: string;
+  selectedCliente!: ICliente;
   clienteEnvia!: ICliente;
   modalMessage: string = '';
+  transaccion!: Transaccion;
 
-  constructor(private clienteService: ClienteService) { }
+  constructor(private clienteService: ClienteService,private transaccionService:TransaccionService) { }
 
   ngOnInit(): void {
     this.sub = this.clienteService.getClientes().subscribe({
@@ -50,9 +53,9 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       cliente.usuario.toLocaleLowerCase().includes(filterBy));
   }
 
-  selectCliente(cli: string) {
+  selectCliente(cli: ICliente) {
     this.selectedCliente = cli;
-    this._listFilter = cli;
+    this._listFilter = cli.usuario;
     this.filteredClientes = [];
   }
 
@@ -90,6 +93,16 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     return numericAmount >= 0.5;
   }
 
+  crearTransaccion() {
+    this.transaccion = new Transaccion;
+   
+    this.transaccion.cantidadEnvia = parseFloat(this.amount.replace(',', '.'));
+    this.transaccion.cantidadRecibe = parseFloat(this.amount.replace(',', '.'));
+    this.transaccion.idEnvia = 1;
+    this.transaccion.idRecibe = this.selectedCliente.id;
+    this.transaccion.fecha = new Date(Date.now()).toJSON();
+  }
+
   sendMoney() {
     if (!this.selectedCliente) {
       this.modalMessage = 'El destinatario es inválido.';
@@ -102,15 +115,25 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       this.showModal();
       return;
     }
+    this.crearTransaccion();
+
+    this.transaccionService.crearTransaccion(this.transaccion).subscribe({
+      next: (data) => {
+        console.log('Transacción creada: ' + JSON.stringify(data));
+      },
+      error: (err) => {
+        console.error('Error creando la transaccion: ', err);
+      }
+    });
 
     const numericAmount = parseFloat(this.amount.replace(',', '.'));
-    this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${this.selectedCliente}.`;
-    this.showModal();
+    this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${this.selectedCliente.usuario}.`;
+    //this.showModal();
   }
 
   showModal() {
     const modalElement = document.getElementById('transactionModal');
-    const modal = new bootstrap.Modal(modalElement);
-    modal.show();
+    //const modal = new bootstrap.Modal(modalElement);
+    //modal.show();
   }
 }
