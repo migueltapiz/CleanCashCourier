@@ -61,7 +61,8 @@
       <tr *ngFor="let transaccion of transacciones">
         <td>{{ obtenerIdUsuario(transaccion) }}</td>
         <td>{{ obtenerCantidad(transaccion) }}</td>
-        <td>{{ transaccion.fecha | date: 'shortDate' }}</td>
+        <td>{{ obtenerFecha(transaccion) }}</td>
+<!--        <td>{{ transaccion.fecha | date: 'shortDate' }}</td>-->
         <td>{{ obtenerTipoTransaccion(transaccion) }}</td>
       </tr>
     </tbody>
