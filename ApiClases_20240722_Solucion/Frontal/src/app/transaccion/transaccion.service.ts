@@ -44,6 +44,38 @@ export class TransaccionService {
     console.error(errorMessage);
     return throwError(() => errorMessage);
   }
+  getTransacciones(): Observable<Transaccion[]> {
+    return this.http.get<Transaccion[]>(`${this.url}/1/Transacciones`).pipe(
+      tap(data => console.log('Transacciones obtenidas: ', JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+  }
 
+  getTransaccionesFiltradas(filtros: any): Observable<Transaccion[]> {
+    let urlConFiltros = `${this.url}/1/Transacciones`;
 
-}
+    const parametros = [];
+
+    if (filtros.fechaInicio) {
+      parametros.push(`fechaInicio=${filtros.fechaInicio}`);
+    }
+    if (filtros.fechaFin) {
+      parametros.push(`fechaFin=${filtros.fechaFin}`);
+    }
+    if (filtros.cantidadMin) {
+      parametros.push(`cantidadEnviadaMin=${filtros.cantidadMin}`);
+    }
+    if (filtros.cantidadMax) {
+      parametros.push(`cantidadEnviadaMax=${filtros.cantidadMax}`);
+    }
+
+    if (parametros.length > 0) {
+      urlConFiltros += '?' + parametros.join('&');
+    }
+
+    return this.http.get<Transaccion[]>(urlConFiltros).pipe(
+      tap(data => console.log('Transacciones filtradas obtenidas: ', JSON.stringify(data))),
+      catchError(this.handleError)
+    );
+    }
+  }

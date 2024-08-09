@@ -4,6 +4,7 @@ import { ICliente } from "../clientes/cliente";
 import { ClienteService } from "../clientes/cliente.service";
 import { TransaccionService } from "../transaccion/transaccion.service";
 import { ITransaccion, Transaccion } from "../transaccion/transaccion";
+import { Router } from '@angular/router';
 
 declare var bootstrap: any;
 
@@ -22,7 +23,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   modalMessage: string = '';
   transaccion!: Transaccion;
 
-  constructor(private clienteService: ClienteService, private transaccionService: TransaccionService) { }
+  constructor(private clienteService: ClienteService, private transaccionService: TransaccionService, private router: Router) { }
 
   ngOnInit(): void {
     this.sub = this.clienteService.getClientes().subscribe({
@@ -146,5 +147,9 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     const modalElement = document.getElementById('transactionModal');
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
+  }
+
+  navegarATransacciones() {
+    this.router.navigate(['/transaction-history'])
   }
 }

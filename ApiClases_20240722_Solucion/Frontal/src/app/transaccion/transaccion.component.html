@@ -1,1 +1,69 @@
-<p>transaccion works!</p>
+<div class="container">
+  <h2 class="text-center">Historial de transacciones</h2>
+
+  <!-- Filtros -->
+  <div class="d-flex justify-content-between align-items-center my-4">
+    <div class="d-flex flex-wrap gap-3">
+      <!-- Selector de Fecha Inicio -->
+      <div>
+        <label for="fechaInicio">Fecha mínima:</label>
+        <input type="date" id="fechaInicio" class="form-control" (change)="actualizarFechaInicio($event)">
+      </div>
+
+      <!-- Selector de Fecha Fin -->
+      <div>
+        <label for="fechaFin">Fecha máxima:</label>
+        <input type="date" id="fechaFin" class="form-control" (change)="actualizarFechaFin($event)">
+      </div>
+
+      <!-- Selector de Cantidad Mínima -->
+      <div>
+        <label for="cantidadMin">Cantidad mínima:</label>
+        <select id="cantidadMin" class="form-control" (change)="actualizarCantidadMin($event)">
+          <option value="0">Sin límite</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <button class="btn btn-sm btn-link" (click)="borrarCantidadMin()">Borrar</button>
+      </div>
+
+      <!-- Selector de Cantidad Máxima -->
+      <div>
+        <label for="cantidadMax">Cantidad máxima:</label>
+        <select id="cantidadMax" class="form-control" (change)="actualizarCantidadMax($event)">
+          <option value="Infinity">Sin límite</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="500">500</option>
+          <option value="1000">1000</option>
+        </select>
+        <button class="btn btn-sm btn-link" (click)="borrarCantidadMax()">Borrar</button>
+      </div>
+    </div>
+
+    <!-- Botón de Filtrar alineado a la derecha -->
+    <button class="btn btn-primary ms-auto" (click)="filtrarTransacciones()">Filtrar</button>
+  </div>
+
+  <!-- Tabla de transacciones -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Cantidad</th>
+        <th>Fecha</th>
+        <th>Tipo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaccion of transacciones">
+        <td>{{ obtenerIdUsuario(transaccion) }}</td>
+        <td>{{ obtenerCantidad(transaccion) }}</td>
+        <td>{{ transaccion.fecha | date: 'shortDate' }}</td>
+        <td>{{ obtenerTipoTransaccion(transaccion) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
