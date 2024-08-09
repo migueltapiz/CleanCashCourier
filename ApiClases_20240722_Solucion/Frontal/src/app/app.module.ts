@@ -11,6 +11,7 @@ import { WelcomeComponentComponent } from './welcome-component/welcome-component
 import { SendMoneyComponent } from './send-money/send-money.component';
 import { TransaccionComponent } from './transaccion/transaccion.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
