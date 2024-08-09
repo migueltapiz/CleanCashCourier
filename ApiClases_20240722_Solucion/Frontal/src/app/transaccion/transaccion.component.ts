@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TransaccionService } from './transaccion.service';
 import { Transaccion } from './transaccion';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'pm-transaccion',
@@ -39,6 +40,10 @@ export class TransaccionComponent implements OnInit {
 
   obtenerTipoTransaccion(transaccion: Transaccion): string {
     return transaccion.idEnvia === 1 ? 'Enviada' : 'Recibida';
+  }
+
+  obtenerFecha(transaccion: Transaccion): string {
+    return format(new Date(transaccion.fecha), 'dd/MM/yyyy');
   }
 
   actualizarFechaInicio(event: any): void {
