@@ -39,6 +39,8 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
+  // Se comenta el listFilter y su lógica de filtrado en tiempo real
+  /*
   private _listFilter: string = '';
   get listFilter(): string {
     return this._listFilter;
@@ -57,20 +59,27 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       this.selectedCliente = null;
     }
   }
+  */
 
+  // El método performFilter ya no es necesario porque no filtramos en tiempo real
+  /*
   performFilter(filterBy: string): ICliente[] {
     filterBy = filterBy.toLocaleLowerCase();
     return this.clientes.filter((cliente: ICliente) =>
       cliente.usuario.toLocaleLowerCase().includes(filterBy));
   }
+  */
 
+  // Se comenta la lógica de selección del cliente en la lista filtrada
+  /*
   selectCliente(cli: ICliente) {
     this.selectedCliente = cli;
     this._listFilter = cli.usuario;
     this.filteredClientes = [];
   }
+  */
 
-  recipientFilter = '';
+  recipientFilter: string = ''; // Mantiene lo que escribe el usuario
   amount: string = '';
   currency: string = 'EUR';
 
@@ -99,10 +108,13 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     input.value = value;
   }
 
+  // Se comenta la validación que desactiva el botón
+  /*
   isValidAmount(): boolean {
     const numericAmount = parseFloat(this.amount.replace(',', '.'));
     return numericAmount >= 0.5 && !!this.selectedCliente;
   }
+  */
 
   crearTransaccion() {
     this.transaccion = new Transaccion();
@@ -114,33 +126,44 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     this.transaccion.fecha = new Date(Date.now()).toJSON();
   }
 
+
   sendMoney() {
-    if (!this.selectedCliente) {
-      this.modalMessage = 'Por favor, seleccione un destinatario válido.';
-      this.showModal();
+    const selectedCliente = this.clientes.find(cliente => cliente.usuario === this.recipientFilter);
+
+    if (!selectedCliente) {
+      this.showInvalidUserModal();
       return;
     }
-
-    if (!this.isValidAmount()) {
-      this.modalMessage = 'La cantidad mínima a enviar es 0,5.';
-      this.showModal();
-      return;
-    }
-
-    this.crearTransaccion();
-
-    this.transaccionService.crearTransaccion(this.transaccion).subscribe({
-      next: (data) => {
-        console.log('Transacción creada: ' + JSON.stringify(data));
-      },
-      error: (err) => {
-        console.error('Error creando la transacción: ', err);
-      }
-    });
 
     const numericAmount = parseFloat(this.amount.replace(',', '.'));
-    this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${this.selectedCliente.usuario}.`;
+    if (!this.amount || this.amount.trim().length === 0) {
+      this.showInvalidAmountModal();
+      return;
+    } else if (numericAmount < 0.5) {
+      this.showAmountTooLowModal();
+      return;
+    }
+    this.crearTransaccion();
+    this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${selectedCliente.usuario}.`;
     this.showModal();
+  }
+
+  showInvalidUserModal() {
+      const modalElement = document.getElementById('invalidUserModal');
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+  }
+
+  showInvalidAmountModal() {
+      const modalElement = document.getElementById('invalidAmountModal');
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+  }
+
+    showAmountTooLowModal() {
+      const modalElement = document.getElementById('amountTooLowModal');
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
   }
 
   showModal() {
@@ -150,6 +173,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   }
 
   navegarATransacciones() {
-    this.router.navigate(['/transaction-history'])
+    this.router.navigate(['/transaction-history']);
   }
 }
