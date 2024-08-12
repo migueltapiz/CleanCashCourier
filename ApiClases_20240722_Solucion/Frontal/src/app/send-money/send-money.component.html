@@ -3,10 +3,13 @@
   <form (ngSubmit)="sendMoney()">
     <div class="form-group">
       <label for="recipient">Elige destinatario:</label>
-      <input type="text" id="recipient" class="form-control" [(ngModel)]="listFilter" name="recipientFilter">
+      <input type="text" id="recipient" class="form-control" [(ngModel)]="recipientFilter" name="recipientFilter">
+      <!-- Se comenta la lista desplegable -->
+      <!--
       <ul class="dropdown-list" *ngIf="listFilter && filteredClientes.length > 0">
         <li *ngFor="let cliente of filteredClientes" (click)="selectCliente(cliente)">{{ cliente.usuario }}</li>
       </ul>
+      -->
     </div>
     <div class="form-group">
       <label for="amount">Cantidad:</label>
@@ -16,10 +19,65 @@
       </div>
       <small class="amount-hint">La cantidad mínima a enviar es 0,5</small>
     </div>
-    <button type="submit" class="send-button btn btn-primary" [disabled]="!isValidAmount()">Enviar Dinero</button>
+    <!-- El botón ya no depende de la validación -->
+    <button type="submit" class="send-button btn btn-primary">Enviar Dinero</button>
   </form>
 
-  <!-- Modal -->
+  <!-- Modal para usuario inválido -->
+  <div class="modal fade" id="invalidUserModal" tabindex="-1" aria-labelledby="invalidUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="invalidUserModalLabel">Error</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Por favor, seleccione un destinatario válido.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para cantidad inválida -->
+  <div class="modal fade" id="invalidAmountModal" tabindex="-1" aria-labelledby="invalidAmountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="invalidAmountModalLabel">Error</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Por favor, ingrese una cantidad de dinero válida.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para cantidad menor a 0.5 -->
+  <div class="modal fade" id="amountTooLowModal" tabindex="-1" aria-labelledby="amountTooLowModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="amountTooLowModalLabel">Error</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          La cantidad mínima a enviar es 0,5.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para transacción exitosa -->
   <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
