@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TransaccionService } from './transaccion.service';
 import { Transaccion } from './transaccion';
+import { ICliente } from '../clientes/cliente';
+import { ClienteService } from '../clientes/cliente.service';
 import { format } from 'date-fns';
 
 @Component({
@@ -16,10 +18,26 @@ export class TransaccionComponent implements OnInit {
   cantidadMin: number | null = null;
   cantidadMax: number | null = null;
 
-  constructor(private transaccionService: TransaccionService) { }
+  constructor(private transaccionService: TransaccionService, private clienteService: ClienteService) { }
+
+
+  clientes: ICliente[] = [];
+
+  clienteId: number = 1;
+
+  errorMessage: string = '';
 
   ngOnInit(): void {
     this.obtenerTransacciones();
+    this.obtenerClientes();
+  }
+  obtenerClientes(): void {
+    this.clienteService.getClientes().subscribe({
+      next: clientes => {
+        this.clientes = clientes;
+      },
+      error: err => this.errorMessage = err
+    });
   }
 
   obtenerTransacciones(): void {
@@ -29,9 +47,18 @@ export class TransaccionComponent implements OnInit {
     );
   }
 
-  obtenerIdUsuario(transaccion: Transaccion): number {
+  obtenerIdUsuario(transaccion: Transaccion): string {
     // Si la transacción es recibida (idRecibe es 1), muestra el idEnvia, de lo contrario, muestra idRecibe
-    return transaccion.idRecibe === 1 ? transaccion.idEnvia : transaccion.idRecibe;
+    var clienteIdAux = transaccion.idRecibe === this.clienteId ? transaccion.idEnvia : transaccion.idRecibe;
+    const cliente = this.clientes.find(c => c.id === clienteIdAux);
+    if (cliente) {
+      const usuario = cliente.usuario;
+      return usuario;
+    } else {
+      return 'Unknown';
+    }
+    //return clienteIdAux;
+    //return transaccion.idRecibe === 1 ? transaccion.idEnvia : transaccion.idRecibe;
   }
 
   obtenerCantidad(transaccion: Transaccion): number {
