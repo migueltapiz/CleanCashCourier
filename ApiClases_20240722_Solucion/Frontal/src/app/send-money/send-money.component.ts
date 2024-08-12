@@ -18,10 +18,11 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   sub!: Subscription;
   filteredClientes: ICliente[] = [];
   clientes: ICliente[] = [];
-  selectedCliente: ICliente | null = null;
+  selectedCliente: ICliente | undefined = undefined;
   clienteEnvia!: ICliente;
   modalMessage: string = '';
   transaccion!: Transaccion;
+  clienteId: number = 1;
 
   constructor(private clienteService: ClienteService, private transaccionService: TransaccionService, private router: Router) { }
 
@@ -121,18 +122,24 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
     this.transaccion.cantidadEnvia = parseFloat(this.amount.replace(',', '.'));
     this.transaccion.cantidadRecibe = parseFloat(this.amount.replace(',', '.'));
-    this.transaccion.idEnvia = 1; // Ejemplo de ID del cliente que envía, esto debería configurarse adecuadamente
-    this.transaccion.idRecibe = this.selectedCliente?.id || 0;
+    this.transaccion.idEnvia = this.clienteId // Ejemplo de ID del cliente que envía, esto debería configurarse adecuadamente
+    this.transaccion.idRecibe = this.selectedCliente?.id === null ? 0 : this.selectedCliente?.id || 0; //Linea a mejorar, podria dar errores en un futuro
     this.transaccion.fecha = new Date(Date.now()).toJSON();
+    console.log(this.transaccion);
   }
 
 
   sendMoney() {
-    const selectedCliente = this.clientes.find(cliente => cliente.usuario === this.recipientFilter);
+    //var findCliente = this.clientes.find(cliente => cliente.usuario.match(this.recipientFilter));
+    //this.selectedCliente = findCliente === undefined ? null : findCliente;
+    this.selectedCliente = this.clientes.find(cliente => cliente.usuario.match(this.recipientFilter));
 
-    if (!selectedCliente) {
+    if (this.selectedCliente === undefined) {
       this.showInvalidUserModal();
       return;
+    }
+    else {
+      console.log(this.selectedCliente?.usuario);
     }
 
     const numericAmount = parseFloat(this.amount.replace(',', '.'));
@@ -144,8 +151,18 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       return;
     }
     this.crearTransaccion();
-    this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${selectedCliente.usuario}.`;
+    this.transaccionService.crearTransaccion(this.transaccion).subscribe({
+      next : (transaccion) => {
+        console.log(`Transacción creada: ` + JSON.stringify(transaccion));
+      },
+      error: (err) => {
+        console.error('Error creando la transacción: ', err);
+      }
+    });
+    const user = this.selectedCliente.usuario === undefined ? 'unknown' : this.selectedCliente.usuario;
+    this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currency} al destinatario ${user}.`;
     this.showModal();
+    
   }
 
   showInvalidUserModal() {
