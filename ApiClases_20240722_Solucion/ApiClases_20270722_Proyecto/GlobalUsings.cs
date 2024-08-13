@@ -1,7 +1,7 @@
 ﻿global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
 
-global using ApiClases_20270722_Proyecto.Models;
+global using ApiClases_20270722_Proyecto.Modelos;
 
 global using ApiClases_20270722_Proyecto.Entidades;
 

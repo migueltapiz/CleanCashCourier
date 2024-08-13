@@ -1,5 +1,5 @@
 ﻿
-namespace ApiClases_20270722_Proyecto.Models;
+namespace ApiClases_20270722_Proyecto.Modelos;
 
 public class ClienteDto: IValidatableObject{
     public int Id { get; set; }
