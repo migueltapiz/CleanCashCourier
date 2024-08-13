@@ -1,4 +1,4 @@
-﻿namespace ApiClases_20270722_Proyecto.Models;
+﻿namespace ApiClases_20270722_Proyecto.Modelos;
 
 public class TransaccionDto: IValidatableObject{
     public int Id { get; set; }
