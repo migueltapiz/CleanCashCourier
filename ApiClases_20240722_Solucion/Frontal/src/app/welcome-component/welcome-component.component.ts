@@ -13,4 +13,8 @@ export class WelcomeComponentComponent {
     this.router.navigate(['/send-money'])
   }
 
+  navegarARegistro() {
+    this.router.navigate(['/registro'])
+  }
+
 }
