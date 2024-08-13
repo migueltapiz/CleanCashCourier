@@ -25,6 +25,7 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule
     // RouterModule.forRoot([
     //   { path: 'about', component: AboutComponent, title: 'Acerca de Nosotros' },
     //   // { path: 'products/:id', component: ProductDetailComponent },
