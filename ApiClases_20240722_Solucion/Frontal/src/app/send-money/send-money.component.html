@@ -1,27 +1,45 @@
+<!--send-money.component.html-->
+<h2 class="page-title">Enviar Dinero</h2>
+
 <div class="send-money-container">
-  <h2>Enviar Dinero</h2>
   <form (ngSubmit)="sendMoney()">
     <div class="form-group">
       <label for="recipient">Elige destinatario:</label>
-      <input type="text" id="recipient" class="form-control" [(ngModel)]="recipientFilter" name="recipientFilter">
-      <!-- Se comenta la lista desplegable -->
-      <!--
-      <ul class="dropdown-list" *ngIf="listFilter && filteredClientes.length > 0">
-        <li *ngFor="let cliente of filteredClientes" (click)="selectCliente(cliente)">{{ cliente.usuario }}</li>
-      </ul>
-      -->
+      <input type="text" id="recipient" class="form-control full-width" [(ngModel)]="recipientFilter" name="recipientFilter">
     </div>
-    <div class="form-group">
-      <label for="amount">Cantidad:</label>
-      <div class="amount-input-container">
-        <input type="text" id="amount" class="form-control amount-input" [(ngModel)]="amount" name="amount" placeholder="0,5" (input)="validateAmount($event)">
-        <div class="currency-display">EUR</div>
+
+    <div class="amounts-container">
+      <div class="form-group">
+        <label for="cantidadEnviada">Cantidad Enviada:</label>
+        <div class="amount-input-container">
+          <input type="text" id="cantidadEnviada" class="form-control amount-input" [(ngModel)]="cantidadEnviada" name="cantidadEnviada" placeholder="0,5" (input)="validateAmount($event, true)">
+          <div class="currency-display">{{currencyEnviada}}</div>
+        </div>
+        <small class="amount-hint">La cantidad mínima a enviar es 0,5</small>
       </div>
-      <small class="amount-hint">La cantidad mínima a enviar es 0,5</small>
+
+      <div class="form-group">
+        <label for="cantidadRecibida">El usuario recibirá:</label>
+        <div class="amount-input-container">
+          <input type="text" id="cantidadRecibida" class="form-control amount-input" [(ngModel)]="cantidadRecibida" name="cantidadRecibida" placeholder="0,5" (input)="validateAmount($event, false)">
+          <div class="currency-display">{{currencyRecibida}}</div>
+        </div>
+      </div>
     </div>
-    <!-- El botón ya no depende de la validación -->
+
     <button type="submit" class="send-button btn btn-primary">Enviar Dinero</button>
   </form>
+
+  <!-- Cuadro de Resumen -->
+  <div class="resumen-container">
+    <h3>Resumen</h3>
+    <p><strong>Tipo de cambio:</strong> 1.00 {{currencyEnviada}} = {{factorConversion}} {{currencyRecibida}}</p>
+    <p><strong>Importe de transferencia:</strong> {{cantidadEnviada}} {{currencyEnviada}}</p>
+    <p><strong>Tarifa de transferencia:</strong> +{{tarifaTransferencia.toFixed(2)}} {{currencyEnviada}}</p>
+    <p><strong>Total de transferencia:</strong> {{totalTransferencia}} {{currencyEnviada}}</p>
+    <p><strong>El destinatario recibirá:</strong> {{cantidadRecibida}} {{currencyRecibida}}</p>
+  </div>
+
 
   <!-- Modal para usuario inválido -->
   <div class="modal fade" id="invalidUserModal" tabindex="-1" aria-labelledby="invalidUserModalLabel" aria-hidden="true">
@@ -95,3 +113,4 @@
     </div>
   </div>
 </div>
+
