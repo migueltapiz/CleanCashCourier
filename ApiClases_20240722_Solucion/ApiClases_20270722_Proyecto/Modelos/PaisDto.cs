@@ -2,7 +2,7 @@
 {
     public class PaisDto
     {
-        public int PaisId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(100)]
