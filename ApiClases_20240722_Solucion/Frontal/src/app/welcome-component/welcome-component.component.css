@@ -62,6 +62,10 @@
 }
 
 .service {
+  display: flex; /* Habilita Flexbox */
+  flex-direction: column; /* Organiza los elementos en columna */
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center; /* Centra los elementos verticalmente */
   width: 48%;
   text-align: center;
 }
@@ -93,6 +97,10 @@
 }
 
 .benefit {
+  display: flex; /* Habilita Flexbox */
+  flex-direction: column; /* Organiza los elementos en columna */
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center; /* Centra los elementos verticalmente */
   width: 48%;
   text-align: center;
   margin-bottom: 20px;
@@ -115,8 +123,13 @@
 }
 
 .testimonial {
-  width: 45%;
+  display: flex; /* Habilita Flexbox */
+  flex-direction: column; /* Organiza los elementos en columna */
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center; /* Centra los elementos verticalmente */
+  width: 48%;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .testimonial-image {
