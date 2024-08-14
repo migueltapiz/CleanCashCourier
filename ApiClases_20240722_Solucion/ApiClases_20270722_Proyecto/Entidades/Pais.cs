@@ -12,7 +12,7 @@ namespace ApiClases_20270722_Proyecto.Entidades
         [StringLength(100)] // Limita la longitud de la cadena
         public string Nombre { get; set; }
 
-        [StringLength(20)] // Limita la longitud de la cadena para la divisa
+        [StringLength(50)] // Limita la longitud de la cadena para la divisa
         public string Divisa { get; set; }
 
 
@@ -20,12 +20,6 @@ namespace ApiClases_20270722_Proyecto.Entidades
         [StringLength(3)] // Limita la longitud de la cadena para la divisa
         public string Iso3 { get; set; }
 
-        //public ICollection<Cliente> Clientes { get; set; } // Navegación a la colección de Clientes
-
-
-        //public static implicit operator List<object>(Pais? v)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public ICollection<Cliente> Clientes { get; set; } // Navegación a la colección de Clientes
     }
 }
