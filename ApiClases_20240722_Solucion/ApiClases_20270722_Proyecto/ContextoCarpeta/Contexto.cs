@@ -10,6 +10,7 @@ public class Contexto: DbContext{
         // DbSet es una propiedad de DbContext que representa una colección de entidades en la base de datos.
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Transaccion> Transacciones{ get; set; }
+        public DbSet<Pais> Paises { get; set; }
 
 
 
@@ -79,9 +80,22 @@ public class Contexto: DbContext{
                         new Transaccion { Id = 29, IdEnvia = 17, CantidadEnvia = 1900.34, IdRecibe = 18, CantidadRecibe = 2652.87, Fecha = new DateTime(2016, 12, 22, 15, 45, 0) },
                         new Transaccion { Id = 30, IdEnvia = 19, CantidadEnvia = 5100.15, IdRecibe = 20, CantidadRecibe = 6120.57, Fecha = new DateTime(2024, 10, 18, 18, 0, 0) }
             );
+            modelBuilder.Entity<Pais>().HasData(
+                new Pais { Id = 1, Nombre = "España", Divisa = "EUR", Iso3 = "ESP" },
+                new Pais { Id = 2, Nombre = "Francia", Divisa = "EUR", Iso3 = "FRA" },
+                new Pais { Id = 3, Nombre = "Italia", Divisa = "EUR", Iso3 = "ITA" },
+                new Pais { Id = 4, Nombre = "Reino Unido", Divisa = "GBP", Iso3 = "GBR" },
+                new Pais { Id = 5, Nombre = "Estados Unidos", Divisa = "USD", Iso3 = "USA" },
+                new Pais { Id = 6, Nombre = "Andorra", Divisa = "EUR", Iso3 = "AND" },
+                new Pais { Id = 7, Nombre = "Argentina", Divisa = "ARS", Iso3 = "ARG" },
+                new Pais { Id = 8, Nombre = "Sudáfrica", Divisa = "ZAR", Iso3 = "ZAF" },
+                new Pais { Id = 9, Nombre = "Alemania", Divisa = "EUR", Iso3 = "DEU" },
+                new Pais { Id = 10, Nombre = "Colombia", Divisa = "COP", Iso3 = "COL" },
+                new Pais { Id = 11, Nombre = "Portugal", Divisa = "EUR", Iso3 = "PRT" }
+        );
 
 
-        }
+    }
     }
 
 
