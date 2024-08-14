@@ -3,7 +3,7 @@ namespace ApiClases_20270722_Proyecto.Modelos;
 
 public class ClienteDto :IValidatableObject
 {
-    public int ClienteId { get; set; }
+    public int Id { get; set; }
 
     //[Required]
     //public string UserId { get; set; }
@@ -31,7 +31,7 @@ public class ClienteDto :IValidatableObject
 
     [Required]
     public int PaisId { get; set; }
-    public PaisDto Pais { get; set; }
+
     public string Usuario { get; set; }
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {

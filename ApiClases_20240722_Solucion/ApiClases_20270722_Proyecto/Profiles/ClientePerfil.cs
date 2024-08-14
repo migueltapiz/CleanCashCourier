@@ -3,8 +3,12 @@
 public class ClientePerfil:Profile {
 
     public ClientePerfil(){
-        CreateMap<Cliente, ClienteDto>().ReverseMap();
+        CreateMap<Cliente, ClienteDto>()
+                    .ForMember(dest => dest.NombrePais, opt => opt.MapFrom(src => src.Pais.Nombre))  // Mapea el nombre del país
+                    .ReverseMap();
         CreateMap<Pais, PaisDto>().ReverseMap();
+
+
     }
 
 
