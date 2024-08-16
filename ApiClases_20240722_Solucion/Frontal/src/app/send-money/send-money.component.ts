@@ -29,12 +29,12 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   recipientFilter: string = '';
   cantidadEnviada: string = '';
   cantidadRecibida: string = '';
-  currencyEnviada: string = 'EUR';
-  currencyRecibida: string = 'USD'; // Moneda por defecto para recibir
+  currencyEnviada: string = '';
+  currencyRecibida: string = ''; // Moneda por defecto para recibir
   factorConversion: number = 1.1; // Factor de conversión estático, debería obtenerse dinámicamente
   tarifaTransferencia: number = 0.00; // Tarifa de transferencia fija por ahora
   totalTransferencia: string = '0.00';
-
+  private timeout: any;
   constructor(private clienteService: ClienteService, private transaccionService: TransaccionService,private paisService: PaisService, private router: Router) { }
 
   ngOnInit(): void {
@@ -53,7 +53,23 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       error: err => this.errorMessage = err
     });
   }
-
+  prueba(): void {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      this.selectedCliente = this.clientes.find(cliente => cliente.usuario === this.recipientFilter.trim());
+      if (this.selectedCliente) {
+        this.paisService.getPaisId(this.selectedCliente.id).subscribe({
+          next: pais => {
+            this.currencyRecibida = pais.iso3;
+          },
+          error: err => this.errorMessage = err
+        });
+      }
+      clearTimeout(this.timeout);
+    }, 1000);
+  }
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
@@ -106,7 +122,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
   sendMoney() {
     // Validación de coincidencia exacta del usuario
-    this.selectedCliente = this.clientes.find(cliente => cliente.usuario === this.recipientFilter.trim());
+    
 
     if (!this.selectedCliente) {
       this.showInvalidUserModal();
@@ -167,43 +183,3 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 }
 
 
-
-// Se comenta el listFilter y su lógica de filtrado en tiempo real
-/*
-private _listFilter: string = '';
-get listFilter(): string {
-  return this._listFilter;
-}
-set listFilter(value: string) {
-  this._listFilter = value;
-  this.filteredClientes = this.performFilter(value);
-
-  // Invalidar el cliente seleccionado si el texto no coincide exactamente
-  if (this.selectedCliente && this.selectedCliente.usuario !== value) {
-    this.selectedCliente = null;
-  }
-
-  // Restablecer selectedCliente si se borra el texto o no hay coincidencias
-  if (this._listFilter === '' || this.filteredClientes.length === 0) {
-    this.selectedCliente = null;
-  }
-}
-*/
-
-// El método performFilter ya no es necesario porque no filtramos en tiempo real
-/*
-performFilter(filterBy: string): ICliente[] {
-  filterBy = filterBy.toLocaleLowerCase();
-  return this.clientes.filter((cliente: ICliente) =>
-    cliente.usuario.toLocaleLowerCase().includes(filterBy));
-}
-*/
-
-// Se comenta la lógica de selección del cliente en la lista filtrada
-/*
-selectCliente(cli: ICliente) {
-  this.selectedCliente = cli;
-  this._listFilter = cli.usuario;
-  this.filteredClientes = [];
-}
-*/
