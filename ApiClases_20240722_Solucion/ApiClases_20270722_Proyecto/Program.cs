@@ -25,8 +25,8 @@ else if(dondeSacoDatos == "BBDD") {
     //TODO : considerar cambiarlo por scope
 
    
-    builder.Services.AddTransient<ITransaccionRepositorio,TransaccionRepositorioBBDD>();
-    builder.Services.AddTransient<ITransaccionRepositorioEstadisticas,TransaccionRepositorioBBDDEstadisticas>();
+    builder.Services.AddTransient<IRepositorioGenerico<Transaccion>, TransaccionRepositorioBBDD<Transaccion>>();
+    
     builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();
     builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD<Cliente>>();
 
