@@ -7,6 +7,7 @@ import { TransaccionComponent } from './transaccion/transaccion.component';
 import { RegistroComponent } from './registro/registro.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: '', component:WelcomeComponentComponent},
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'registro', component: RegistroComponent },
   { path: 'login', component: LoginComponent },
   { path: 'send-money', component: SendMoneyComponent },
-  { path: 'transaction-history', component: TransaccionComponent }
+  { path: 'transaction-history', component: TransaccionComponent },
+  { path: 'profile', component: ProfileComponent}
 ];
 
 @NgModule({
