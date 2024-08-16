@@ -6,6 +6,7 @@ import { ClienteService } from "../clientes/cliente.service";
 import { TransaccionService } from "../transaccion/transaccion.service";
 import { ITransaccion, Transaccion } from "../transaccion/transaccion";
 import { Router } from '@angular/router';
+import { PaisService } from '../servicios/pais.service';
 
 declare var bootstrap: any;
 
@@ -20,10 +21,10 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   filteredClientes: ICliente[] = [];
   clientes: ICliente[] = [];
   selectedCliente: ICliente | undefined = undefined;
-  clienteEnvia!: ICliente;
+  clienteEnvia: ICliente = new ICliente();
   modalMessage: string = '';
   transaccion!: Transaccion;
-  clienteId: number = 1;
+  
 
   recipientFilter: string = '';
   cantidadEnviada: string = '';
@@ -34,9 +35,16 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   tarifaTransferencia: number = 0.00; // Tarifa de transferencia fija por ahora
   totalTransferencia: string = '0.00';
 
-  constructor(private clienteService: ClienteService, private transaccionService: TransaccionService, private router: Router) { }
+  constructor(private clienteService: ClienteService, private transaccionService: TransaccionService,private paisService: PaisService, private router: Router) { }
 
   ngOnInit(): void {
+    this.clienteEnvia.id = 1;
+    this.paisService.getPaisId(this.clienteEnvia.id).subscribe({
+      next: pais => {
+        this.currencyEnviada = pais.iso3;
+      },
+      error: err => this.errorMessage = err
+    });
     this.sub = this.clienteService.getClientes().subscribe({
       next: clientes => {
         this.clientes = clientes;
@@ -90,7 +98,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
     this.transaccion.cantidadEnvia = parseFloat(this.cantidadEnviada.replace(',', '.'));
     this.transaccion.cantidadRecibe = parseFloat(this.cantidadRecibida.replace(',', '.'));
-    this.transaccion.idEnvia = this.clienteId;
+    this.transaccion.idEnvia = this.clienteEnvia.id;
     this.transaccion.idRecibe = this.selectedCliente?.id === null ? 0 : this.selectedCliente?.id || 0;
     this.transaccion.fecha = new Date(Date.now()).toJSON();
     console.log(this.transaccion);

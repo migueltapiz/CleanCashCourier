@@ -11,6 +11,7 @@ import { TransaccionComponent } from './transaccion/transaccion.component';
 import { RegistroComponent } from './registro/registro.component';
 import { LoginComponent } from './login/login.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +19,7 @@ import { LoginComponent } from './login/login.component';
     SendMoneyComponent,
     TransaccionComponent,
     RegistroComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
