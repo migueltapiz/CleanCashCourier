@@ -18,10 +18,9 @@ public class ClienteRepositorioBBDD : IClienteRepositorio {
         _contexto.Clientes.Remove(cliente);
     }
     public Cliente ObtenerClienteId(int id) {
-        return _contexto.Clientes.FirstOrDefault(c => c.Id == id);
+        return _contexto.Clientes.Include(c => c.Pais).FirstOrDefault(c => c.Id == id);
     }
     public async Task<List<Cliente>> ObtenerClientes() {
-        var contenido = await _contexto.Clientes.Include(c => c.Pais).ToListAsync();
         return await _contexto.Clientes.Include(c => c.Pais).ToListAsync();
 
     }
