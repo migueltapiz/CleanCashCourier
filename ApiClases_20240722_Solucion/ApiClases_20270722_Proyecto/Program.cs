@@ -1,6 +1,7 @@
 using ApiClases_20270722_Proyecto.ContextoCarpeta;
 using ApiClases_20270722_Proyecto.Repositorios;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 //Agregar servicio MVC
@@ -33,6 +34,50 @@ else if(dondeSacoDatos == "BBDD") {
 builder.Services.AddDbContext<Contexto>(options =>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+
+// Configurar Identity
+builder.Services.AddIdentity<AplicacionClientes, IdentityRole>()
+    .AddEntityFrameworkStores<Contexto>()
+    .AddDefaultTokenProviders();
+// Ejemplo del libro:
+//builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+//{
+//    options.SignIn.RequireConfirmedAccount = true;
+//    options.Password.RequireLowercase = true;         //At least one lowercase letter
+//    options.Password.RequireUppercase = true;         //At least one uppercase lette
+//    options.Password.RequireDigit = true;             //At least one digit character
+//    options.Password.RequireNonAlphanumeric = true;   //At least one non-alphanumeric character
+//    options.Password.RequiredLength = 8;              //Minimum length of 8 characters
+//})
+//.AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+// Configurar JWT
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+
 
 //Añadir Autommaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

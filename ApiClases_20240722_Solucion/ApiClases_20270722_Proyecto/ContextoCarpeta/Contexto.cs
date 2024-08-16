@@ -1,7 +1,7 @@
 ﻿
 namespace ApiClases_20270722_Proyecto.ContextoCarpeta;
 
-public class Contexto: DbContext{
+public class Contexto: IdentityDbContext<AplicacionClientes> { //DbContext{
     
         public Contexto(DbContextOptions<Contexto> options) : base(options) {
         }
