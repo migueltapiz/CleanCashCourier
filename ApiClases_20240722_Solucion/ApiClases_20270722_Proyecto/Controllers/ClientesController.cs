@@ -5,9 +5,9 @@ namespace ApiClases_20270722_Proyecto.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class ClientesController : ControllerBase{
-    public readonly IClienteRepositorio repositorio;
+    public readonly IRepositorioGenerico<Cliente> repositorio;
     private readonly IMapper _mapper;
-    public ClientesController(IClienteRepositorio repositorio,IMapper mapper){
+    public ClientesController(IRepositorioGenerico<Cliente> repositorio,IMapper mapper){
         this.repositorio = repositorio;
         _mapper = mapper ??
                throw new ArgumentNullException(nameof(mapper));
@@ -19,14 +19,14 @@ public class ClientesController : ControllerBase{
         //var clientes = await repositorio.ObtenerClientes();
         //var clientesDto = _mapper.Map<IEnumerable<ClienteDto>>(clientes);
 
-        return Ok(_mapper.Map<IEnumerable<ClienteDto>>(await repositorio.ObtenerClientes()));
+        return Ok(_mapper.Map<IEnumerable<ClienteDto>>(await repositorio.Obtener()));
         //return Ok(clientesDto);
     }
 
 
     [HttpGet("{id}", Name = "getCliente")]
     public ActionResult<ClienteDto> Get(int id) {
-        var cliente = repositorio.ObtenerClienteId(id);
+        var cliente = repositorio.ObtenerPorId(id);
         var finalClienteDto = _mapper.Map<ClienteDto>(cliente);
         return finalClienteDto == null ? NotFound() : Ok(finalClienteDto);
     }
