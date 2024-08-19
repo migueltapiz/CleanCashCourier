@@ -1,0 +1,54 @@
+<div class="perfil-container" *ngIf="cliente">
+  <h2>Perfil del Usuario</h2>
+
+  <!-- Nombre -->
+  <div class="perfil-field">
+    <label for="nombre">Nombre:</label>
+    <span>{{ cliente.nombre }}</span>
+  </div>
+
+  <!-- Apellidos -->
+  <div class="perfil-field">
+    <label for="apellidos">Apellidos:</label>
+    <span>{{ cliente.apellidos }}</span>
+  </div>
+
+  <!-- Correo -->
+  <div class="perfil-field">
+    <label for="correo">Correo:</label>
+    <span>{{ cliente.correo }}</span>
+  </div>
+
+  <!-- Usuario (No Editable) -->
+  <div class="perfil-field">
+    <label for="usuario">Usuario:</label>
+    <span>{{ cliente.usuario }}</span>
+  </div>
+
+  <!-- País (Editable) -->
+  <div class="perfil-field editable">
+    <label for="pais">País:</label>
+    <select id="pais" [(ngModel)]="cliente.pais" (ngModelChange)="onFieldChange()" [disabled]="!isEditing.pais">
+      <option *ngFor="let pais of paises" [value]="pais">{{ pais }}</option>
+    </select>
+    <span *ngIf="!isEditing.pais">{{ cliente.pais }}</span>
+    <button (click)="enableEdit('pais')" *ngIf="!isEditing.pais">Editar</button>
+    <button (click)="disableEdit('pais')" *ngIf="isEditing.pais">Guardar</button>
+  </div>
+
+  <!-- Ocupación (Editable) -->
+  <div class="perfil-field editable">
+    <label for="trabajo">Ocupación:</label>
+    <select id="trabajo" [(ngModel)]="cliente.trabajo" (ngModelChange)="onFieldChange()" [disabled]="!isEditing.trabajo">
+      <option *ngFor="let trabajo of trabajos" [value]="trabajo">{{ trabajo }}</option>
+    </select>
+    <span *ngIf="!isEditing.trabajo">{{ cliente.trabajo }}</span>
+    <button (click)="enableEdit('trabajo')" *ngIf="!isEditing.trabajo">Editar</button>
+    <button (click)="disableEdit('trabajo')" *ngIf="isEditing.trabajo">Guardar</button>
+  </div>
+
+  <!-- Botón Guardar Cambios -->
+  <div class="perfil-field">
+    <button class="btn-save" [disabled]="!isAnyFieldEdited" (click)="saveChanges()">Guardar Cambios</button>
+  </div>
+</div>

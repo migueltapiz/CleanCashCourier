@@ -18,6 +18,20 @@ export class ClienteService {
       catchError(this.handleError)
     );
   }
+
+  getClienteById(id: number): Observable<ICliente> {
+    return this.http.get<ICliente>(`${this.clientesUrl}/${id}`).pipe(
+      tap(data => console.log('Cliente:', data)),
+      catchError(this.handleError)
+    );
+  }
+
+  updateCliente(id: number, cliente: ICliente): Observable<ICliente> {
+    return this.http.put<ICliente>(`${this.clientesUrl}/${id}`, cliente).pipe(
+      tap(data => console.log('Cliente actualizado:', data)),
+      catchError(this.handleError)
+    );
+  }
   private handleError(err: HttpErrorResponse){
     // in a real world app, we may send the server to some remote logging infrastructure
     // instead of just logging it to the console

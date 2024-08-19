@@ -9,12 +9,14 @@ import { AboutComponent } from './about/about.component';
 import { RouterModule } from '@angular/router';
 import { WelcomeComponentComponent } from './welcome-component/welcome-component.component';
 import { SendMoneyComponent } from './send-money/send-money.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AboutComponent,
-    SendMoneyComponent
+    SendMoneyComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

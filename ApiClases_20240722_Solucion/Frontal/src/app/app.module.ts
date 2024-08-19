@@ -10,6 +10,7 @@ import { SendMoneyComponent } from './send-money/send-money.component';
 import { TransaccionComponent } from './transaccion/transaccion.component';
 import { RegistroComponent } from './registro/registro.component';
 import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { LoginComponent } from './login/login.component';
     SendMoneyComponent,
     TransaccionComponent,
     RegistroComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
