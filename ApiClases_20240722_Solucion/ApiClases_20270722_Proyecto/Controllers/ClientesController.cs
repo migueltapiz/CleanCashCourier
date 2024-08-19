@@ -15,7 +15,13 @@ public class ClientesController : ControllerBase
     }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ClienteDto>>> Get() {
+
+
+        //var clientes = await repositorio.ObtenerClientes();
+        //var clientesDto = _mapper.Map<IEnumerable<ClienteDto>>(clientes);
+
         return Ok(_mapper.Map<IEnumerable<ClienteDto>>(await repositorio.ObtenerClientes()));
+        //return Ok(clientesDto);
     }
 
 
@@ -48,5 +54,4 @@ public class ClientesController : ControllerBase
         return await repositorio.GuardarCambios() ? Ok("Cliente borrado correctamente") : BadRequest();
     }
 }
-
 
