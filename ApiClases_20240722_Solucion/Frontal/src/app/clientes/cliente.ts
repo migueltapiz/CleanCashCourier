@@ -8,3 +8,4 @@ export interface ICliente {
   trabajo?: string;  // Asegúrate de incluir todas las propiedades necesarias
   correo?: string;   // Agrega la propiedad correo aquí
 }
+asd
