@@ -8,7 +8,7 @@ public class ClientesController : ControllerBase
 {
     public readonly IClienteRepositorio repositorio;
     private readonly IMapper _mapper;
-    public ClientesController(IClienteRepositorio repositorio, IMapper mapper) {
+    public ClientesController(IClienteRepositorio2 repositorio, IMapper mapper) {
         this.repositorio = repositorio;
         _mapper = mapper ??
                throw new ArgumentNullException(nameof(mapper));
