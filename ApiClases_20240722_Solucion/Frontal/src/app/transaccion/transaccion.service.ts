@@ -51,6 +51,7 @@ export class TransaccionService {
     );
   }
 
+  //TODO: Filtraciones en base al nuevo objeto filtrado
   getTransaccionesFiltradas(filtros: any): Observable<Transaccion[]> {
     let urlConFiltros = `${this.url}/1/Transacciones`;
 

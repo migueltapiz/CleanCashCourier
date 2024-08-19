@@ -30,25 +30,41 @@ public class ClientesController : ControllerBase
         return finalClienteDto == null ? NotFound() : Ok(finalClienteDto);
     }
 
+    //TODO: Cuando se implemente el CLienteDtoBase, cambiaremos el Dto con el que trabajamos
     [HttpPost]
-    public async Task<ActionResult<ClienteDto>> PostAsync(ClienteDto cliente) {
+    public async Task<ActionResult<ClienteDto>> PostAsync(ClienteDto cliente)
+    {
         var finalClienteNuevo = _mapper.Map<ClienteDto, Cliente>(cliente);
         repositorio.Agregar(finalClienteNuevo);
 
-        return await repositorio.GuardarCambios() ? Ok("Cliente añadido correctamente") : BadRequest();
-
+        if (await repositorio.GuardarCambios())
+        {
+            // Suponiendo que el Id del cliente nuevo es finalClienteNuevo.Id
+            return CreatedAtAction(nameof(PostAsync), new { id = finalClienteNuevo.Id }, "Cliente añadido correctamente");
+        }
+        else
+        {
+            return BadRequest();
+        }
     }
+
 
     [HttpPut]
-    public async Task<ActionResult<ClienteDto>> PutAsync(int id, ClienteDto cliente) {
+    public async Task<ActionResult<ClienteDto>> PutAsync(int id, ClienteDto cliente)
+    {
         var finalClienteActualizado = _mapper.Map<Cliente>(cliente);
         repositorio.Actualizar(id, finalClienteActualizado);
-        return await repositorio.GuardarCambios() ? Ok("Cliente actualizado correctamente") : BadRequest();
+
+        // Devuelve un NoContent si la actualización fue exitosa
+        return await repositorio.GuardarCambios() ? NoContent() : BadRequest();
     }
+
 
     [HttpDelete]
     public async Task<ActionResult<ClienteDto>> DeleteAsync(int id) {
         repositorio.Borrar(id);
-        return await repositorio.GuardarCambios() ? Ok("Cliente borrado correctamente") : BadRequest();
+
+        // Devuelve un NoContent si la eliminación fue exitosa
+        return await repositorio.GuardarCambios() ? NoContent() : BadRequest();
     }
 }

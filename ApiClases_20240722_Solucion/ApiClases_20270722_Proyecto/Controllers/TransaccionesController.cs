@@ -24,9 +24,19 @@ public class TransaccionesController : ControllerBase{
     }
 
     [HttpGet("{id_transaccion}",  Name = "getTransaccion") ]
-    public ActionResult<TransaccionDto> Get([FromRoute] int id_cliente, [FromRoute] int id_transaccion){
-        var transaccion = repositorio.ObtenerTransaccionId(id_cliente,id_transaccion);
+    public ActionResult<TransaccionDto> Get([FromRoute] int id_cliente, [FromRoute] int id_transaccion)
+    {
+        var transaccion = repositorio.ObtenerTransaccionId(id_cliente, id_transaccion);
+
+        // Si la transacción es nula, devolvemos un 404 Not Found
+        if (transaccion == null)
+        {
+            return NotFound();
+        }
+
         var finalTransaccionDto = _mapper.Map<TransaccionDto>(transaccion);
+
+        // Si el mapeo falla y finalTransaccionDto es null (aunque esto no debería suceder si transaccion no es null)
         return finalTransaccionDto == null ? NotFound() : Ok(finalTransaccionDto);
     }
 
@@ -44,13 +54,15 @@ public class TransaccionesController : ControllerBase{
     public async Task<ActionResult<TransaccionDto>> PutAsync(int id, TransaccionDto transaccion) {
         var finalTransaccionActualizado = _mapper.Map<Transaccion>(transaccion);
         repositorio.Actualizar(id, finalTransaccionActualizado);
-        return await repositorio.GuardarCambios() ? Ok("Transacción actualizada correctamente") : BadRequest();
+        // Devuelve un NoContent si la actualización fue exitosa
+        return await repositorio.GuardarCambios() ? NoContent() : BadRequest();
     }
 
     [HttpDelete]
     public async Task<ActionResult<TransaccionDto>> DeleteAsync(int id) {
         repositorio.Borrar(id);
-        return await repositorio.GuardarCambios() ? Ok("Transacción borrada correctamente") : BadRequest();
+        // Devuelve un NoContent si la eliminación fue exitosa
+        return await repositorio.GuardarCambios() ? NoContent() : BadRequest();
     }
 
     
