@@ -1,4 +1,5 @@
 ﻿global using Microsoft.AspNetCore.Http;
+
 global using Microsoft.AspNetCore.Mvc;
 
 global using ApiClases_20270722_Proyecto.Modelos;
@@ -12,13 +13,25 @@ global using System.ComponentModel.DataAnnotations;
 
 
 global using CsvHelper;
+
 global using CsvHelper.Configuration;
 
 global using ApiClases_20270722_Proyecto.Validators;
 
 global using Microsoft.EntityFrameworkCore;
 
-
 global using ApiClases_20270722_Proyecto.Utilidades;
 
 global using AutoMapper;
+
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+global using Microsoft.IdentityModel.Tokens;
+
+global using System.Text;
+
+global using Microsoft.AspNetCore.Identity;
+
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+global using ApiClases_20270722_Proyecto.JWTServiciosToken;
