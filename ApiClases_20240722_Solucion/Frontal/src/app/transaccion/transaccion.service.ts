@@ -22,7 +22,7 @@ export class TransaccionService {
 
   crearTransaccion(transaccion: Transaccion): Observable<Transaccion> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin':'*'});
-    const urlConId = `${this.url}/${transaccion.idEnvia}/Transacciones`
+    const urlConId = `${this.url}/${transaccion.idEnvia}/Transacciones`;
     return this.http.post<Transaccion>(urlConId, transaccion, { headers })
       .pipe(
         tap(data => console.log('Transaccion creada: ', JSON.stringify(data))),
@@ -44,15 +44,15 @@ export class TransaccionService {
     console.error(errorMessage);
     return throwError(() => errorMessage);
   }
-  getTransacciones(): Observable<Transaccion[]> {
-    return this.http.get<Transaccion[]>(`${this.url}/1/Transacciones`).pipe(
+  getTransacciones(id_cliente:number): Observable<Transaccion[]> {
+    return this.http.get<Transaccion[]>(`${this.url}/${id_cliente}/Transacciones`).pipe(
       tap(data => console.log('Transacciones obtenidas: ', JSON.stringify(data))),
       catchError(this.handleError)
     );
   }
 
-  getTransaccionesFiltradas(filtros: any): Observable<Transaccion[]> {
-    let urlConFiltros = `${this.url}/1/Transacciones`;
+  getTransaccionesFiltradas(filtros: any,id_cliente:number): Observable<Transaccion[]> {
+    let urlConFiltros = `${this.url}/${id_cliente}/Transacciones`;
 
     const parametros = [];
 

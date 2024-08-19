@@ -23,13 +23,14 @@ export class TransaccionComponent implements OnInit {
 
   clientes: ICliente[] = [];
 
-  clienteId: number = 1;
+  clienteId: number = 6;
 
   errorMessage: string = '';
 
   ngOnInit(): void {
     this.obtenerTransacciones();
     this.obtenerClientes();
+    this.filtrarTransacciones();
   }
   obtenerClientes(): void {
     this.clienteService.getClientes().subscribe({
@@ -41,7 +42,7 @@ export class TransaccionComponent implements OnInit {
   }
 
   obtenerTransacciones(): void {
-    this.transaccionService.getTransacciones().subscribe(
+    this.transaccionService.getTransacciones(this.clienteId).subscribe(
       (data: Transaccion[]) => this.transacciones = data,
       error => console.error(error)
     );
@@ -66,7 +67,7 @@ export class TransaccionComponent implements OnInit {
   }
 
   obtenerTipoTransaccion(transaccion: Transaccion): string {
-    return transaccion.idEnvia === 1 ? 'Enviada' : 'Recibida';
+    return transaccion.idEnvia === this.clienteId ? 'Enviada' : 'Recibida';
   }
 
   obtenerFecha(transaccion: Transaccion): string {
@@ -114,7 +115,7 @@ export class TransaccionComponent implements OnInit {
       fechaFin: this.fechaFin,
       cantidadMin: this.cantidadMin,
       cantidadMax: this.cantidadMax
-    }).subscribe(
+    },this.clienteId).subscribe(
       (data: Transaccion[]) => this.transacciones = data,
       error => console.error(error)
     );
