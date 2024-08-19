@@ -4,7 +4,8 @@ namespace ApiClases_20270722_Proyecto.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ClientesController : ControllerBase{
+public class ClientesController : ControllerBase
+{
     public readonly IClienteRepositorio repositorio;
     private readonly IMapper _mapper;
     public ClientesController(IClienteRepositorio repositorio, IMapper mapper) {
@@ -47,3 +48,5 @@ public class ClientesController : ControllerBase{
         return await repositorio.GuardarCambios() ? Ok("Cliente borrado correctamente") : BadRequest();
     }
 }
+
+
