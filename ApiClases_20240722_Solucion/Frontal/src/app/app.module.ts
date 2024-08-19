@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {  FormBuilder, FormGroup,FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -10,7 +10,7 @@ import { SendMoneyComponent } from './send-money/send-money.component';
 import { TransaccionComponent } from './transaccion/transaccion.component';
 import { RegistroComponent } from './registro/registro.component';
 import { LoginComponent } from './login/login.component';
-
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +20,7 @@ import { LoginComponent } from './login/login.component';
     TransaccionComponent,
     RegistroComponent,
     LoginComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -41,4 +42,3 @@ import { LoginComponent } from './login/login.component';
 
 
 export class AppModule { }
-
