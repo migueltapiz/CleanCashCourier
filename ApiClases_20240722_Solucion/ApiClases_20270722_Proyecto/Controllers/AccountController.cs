@@ -2,7 +2,7 @@
 namespace ApiClases_20270722_Proyecto.Controllers;
   
 
-public class AccountController : Controller
+/* public class AccountController : Controller
 {
     private readonly UserManager<AplicacionClientes> _userManager;
     private readonly SignInManager<AplicacionClientes> _signInManager;
@@ -65,4 +65,4 @@ public class AccountController : Controller
     }
 
 
-}
+} */
