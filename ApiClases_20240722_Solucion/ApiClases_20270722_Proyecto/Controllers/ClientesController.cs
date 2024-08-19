@@ -7,13 +7,13 @@ namespace ApiClases_20270722_Proyecto.Controllers;
 public class ClientesController : ControllerBase{
     public readonly IClienteRepositorio repositorio;
     private readonly IMapper _mapper;
-    public ClientesController(IClienteRepositorio repositorio, IMapper mapper) {
+    public ClientesController(IClienteRepositorio repositorio,IMapper mapper){
         this.repositorio = repositorio;
         _mapper = mapper ??
                throw new ArgumentNullException(nameof(mapper));
     }
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ClienteDto>>> Get() {
+    public async Task<ActionResult<IEnumerable<ClienteDto>>> Get(){
 
 
         //var clientes = await repositorio.ObtenerClientes();
@@ -33,10 +33,10 @@ public class ClientesController : ControllerBase{
 
     [HttpPost]
     public async Task<ActionResult<ClienteDto>> PostAsync(ClienteDto cliente) {
-        var finalClienteNuevo = _mapper.Map<ClienteDto, Cliente>(cliente);
+        var finalClienteNuevo =_mapper.Map<ClienteDto,Cliente>(cliente);
         repositorio.Agregar(finalClienteNuevo);
 
-        return await repositorio.GuardarCambios() ? Ok("Cliente añadido correctamente") : BadRequest();
+        return await repositorio.GuardarCambios()? Ok("Cliente añadido correctamente"): BadRequest();
 
     }
 
