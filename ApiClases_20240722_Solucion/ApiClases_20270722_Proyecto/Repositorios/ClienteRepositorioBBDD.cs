@@ -1,6 +1,7 @@
 ﻿namespace ApiClases_20270722_Proyecto.Repositorios;
 
-public class ClienteRepositorioBBDD : IClienteRepositorio {
+public class ClienteRepositorioBBDD : IClienteRepositorio
+{
     private readonly Contexto _contexto;
 
     public ClienteRepositorioBBDD(Contexto contexto) {
@@ -31,6 +32,6 @@ public class ClienteRepositorioBBDD : IClienteRepositorio {
 
     }
 
-  
-        
+
+
 }

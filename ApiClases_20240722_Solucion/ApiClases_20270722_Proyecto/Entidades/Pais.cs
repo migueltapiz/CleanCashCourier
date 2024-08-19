@@ -20,6 +20,6 @@ namespace ApiClases_20270722_Proyecto.Entidades
         [StringLength(3)] // Limita la longitud de la cadena para la divisa
         public string Iso3 { get; set; }
 
-        public ICollection<Cliente> Clientes { get; set; } // Navegación a la colección de Clientes
+       // public ICollection<Cliente> Clientes { get; set; } // Navegación a la colección de Clientes
     }
 }

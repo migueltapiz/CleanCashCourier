@@ -11,9 +11,9 @@ namespace ApiClases_20270722_Proyecto.Controllers;
 [ApiController]
 public class TransaccionesController : ControllerBase{
 
-    public readonly ITransaccionRepositorio repositorio;
+    public readonly IRepositorioGenerico<Transaccion> repositorio;
     private readonly IMapper _mapper;
-    public TransaccionesController(ITransaccionRepositorio repositorio, IMapper mapper) {
+    public TransaccionesController(IRepositorioGenerico<Transaccion> repositorio, IMapper mapper) {
         this.repositorio = repositorio;
         _mapper = mapper ??
                throw new ArgumentNullException(nameof(mapper));

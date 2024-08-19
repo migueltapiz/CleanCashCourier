@@ -2,10 +2,10 @@
 
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
-public class TransaccionRepositorioMemoria:ITransaccionRepositorio{
+public class TransaccionRepositorioMemoria<T>:IRepositorioGenerico<T> where T:Transaccion{
 
     public List<TransaccionDto> Transacciones { get; set; }
-    public static TransaccionRepositorioMemoria Instancia { get; } = new TransaccionRepositorioMemoria();
+    public static TransaccionRepositorioMemoria<T> Instancia { get; } = new TransaccionRepositorioMemoria<T>();
 
     public TransaccionRepositorioMemoria(){
         //Agregar paises a la lista
@@ -26,4 +26,10 @@ public class TransaccionRepositorioMemoria:ITransaccionRepositorio{
     public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id) => throw new NotImplementedException();
     public Task<List<Transaccion>> ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
     public Transaccion ObtenerTransaccionId(int id_cliente, int id_transaccion) => throw new NotImplementedException();
+    public Task<List<T>> Obtener() => throw new NotImplementedException();
+    public T ObtenerPorId(int id) => throw new NotImplementedException();
+    public void Agregar(T dato) => throw new NotImplementedException();
+    public void Actualizar(int id, T dato) => throw new NotImplementedException();
+    Task<List<T>> IRepositorioGenerico<T>.ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
+    T IRepositorioGenerico<T>.ObtenerTransaccionId(int id_cliente, int id_transaccion) => throw new NotImplementedException();
 }
