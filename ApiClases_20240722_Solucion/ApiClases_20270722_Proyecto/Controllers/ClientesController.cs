@@ -48,3 +48,7 @@ public class ClientesController : ControllerBase
         return await repositorio.GuardarCambios() ? Ok("Cliente borrado correctamente") : BadRequest();
     }
 }
+
+
+
+export class AppModule { }
