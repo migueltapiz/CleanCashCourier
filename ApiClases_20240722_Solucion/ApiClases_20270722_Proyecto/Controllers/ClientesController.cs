@@ -49,6 +49,3 @@ public class ClientesController : ControllerBase
     }
 }
 
-
-
-export class AppModule { }
