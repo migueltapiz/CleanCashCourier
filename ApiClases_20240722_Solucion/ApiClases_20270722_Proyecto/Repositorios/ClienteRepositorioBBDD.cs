@@ -30,6 +30,9 @@ public class ClienteRepositorioBBDD<T> : IRepositorioGenerico<T> where T : Clien
     public async Task<List<T>> Obtener() => await _contexto.Set<T>().Include(c => c.Pais).ToListAsync();
 
     public T ObtenerPorId(int id) => _contexto.Set<T>().FirstOrDefault(c => c.Id == id);
+
+    public T ObtenerPorNombre(string nombre) => _contexto.Set<T>().FirstOrDefault(c => c.Usuario == nombre);
+
     public Task<List<T>> ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
     public T ObtenerTransaccionId(int id_cliente, int id_transaccion) => throw new NotImplementedException();
 }

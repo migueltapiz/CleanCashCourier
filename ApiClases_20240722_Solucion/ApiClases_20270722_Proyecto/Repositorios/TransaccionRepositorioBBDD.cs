@@ -36,6 +36,8 @@ public class TransaccionRepositorioBBDD<T> : IRepositorioGenerico<T> where T : T
     public Task<List<T>> Obtener() => throw new NotImplementedException();
     public T ObtenerPorId(int id) => throw new NotImplementedException();
 
+    public T ObtenerPorNombre(string nombre) => throw new NotImplementedException();
+
     public Task<List<T>> ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) {
 
         var consulta = _contexto.Set<T>().Where(transaccion => transaccion.IdEnvia == id_cliente || transaccion.IdRecibe == id_cliente);
