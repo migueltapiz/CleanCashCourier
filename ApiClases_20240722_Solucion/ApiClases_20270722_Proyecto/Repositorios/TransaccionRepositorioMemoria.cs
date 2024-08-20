@@ -32,4 +32,9 @@ public class TransaccionRepositorioMemoria<T>:IRepositorioGenerico<T> where T:Tr
     public void Actualizar(int id, T dato) => throw new NotImplementedException();
     Task<List<T>> IRepositorioGenerico<T>.ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
     T IRepositorioGenerico<T>.ObtenerTransaccionId(int id_cliente, int id_transaccion) => throw new NotImplementedException();
+
+    public T ObtenerPorNombre(string nombre)
+    {
+        throw new NotImplementedException();
+    }
 }

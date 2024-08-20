@@ -1,7 +1,9 @@
 ﻿
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 namespace ApiClases_20270722_Proyecto.ContextoCarpeta;
 
-public class Contexto: DbContext{
+public class Contexto: IdentityDbContext<UsuarioAplicacion>{
     
         public Contexto(DbContextOptions<Contexto> options) : base(options) {
         }
@@ -24,6 +26,7 @@ public class Contexto: DbContext{
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        base.OnModelCreating(modelBuilder); // para el identity
         modelBuilder.Entity<Pais>().HasData(
                 new Pais { Id = 1, Nombre = "Afganistán", Divisa = "Afgani", Iso3 = "AFN" },
                 new Pais { Id = 2, Nombre = "Albania", Divisa = "Lek", Iso3 = "ALL" },

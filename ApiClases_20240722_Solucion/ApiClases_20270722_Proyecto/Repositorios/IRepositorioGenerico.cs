@@ -6,6 +6,7 @@ public interface IRepositorioGenerico<T>
 {
     Task<List<T>> Obtener();
     T ObtenerPorId(int id);
+    T ObtenerPorNombre(string nombre);
 
     void Agregar(T dato);
 
