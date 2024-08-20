@@ -37,13 +37,10 @@ builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD
 builder.Services.AddDbContext<Contexto>(options =>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddIdentity<UsuarioAplicacion, IdentityRole>()
-    .AddEntityFrameworkStores<Contexto>()
-    .AddDefaultTokenProviders();
 
 
 // Configurar Identity
-builder.Services.AddIdentity<AplicacionClientes, IdentityRole>()
+builder.Services.AddIdentity<UsuarioAplicacion, IdentityRole>()
     .AddEntityFrameworkStores<Contexto>()
     .AddDefaultTokenProviders();
 // Ejemplo del libro:

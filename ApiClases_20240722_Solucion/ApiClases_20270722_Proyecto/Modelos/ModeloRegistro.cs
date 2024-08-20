@@ -11,7 +11,8 @@
         public string Contrasena { get; set; }
         [Required]
         //public string ConfirmarContrasena { get; set; }
-        public string NombrePais { get; set; }
+        //public string NombrePais { get; set; }
+        public int PaisId { get; set; }
         public string? Empleo { get; set; }
         public DateTime FechaNacimiento { get; set; }
         

@@ -11,7 +11,7 @@ using System.Security.Claims;
             _configuration = configuration;
         }
 
-    public string GenerateJwtToken(AplicacionClientes user)
+    public string GenerateJwtToken(UsuarioAplicacion user)
     {
         var claims = new[]
         {

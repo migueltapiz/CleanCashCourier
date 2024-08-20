@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../servicios/user.service';
 import { Usuario } from '../interfaces/usuario.interface';
+import { RegistroCliente } from '../interfaces/registroCliente';
 
 @Component({
   selector: 'app-registro',
@@ -16,6 +17,7 @@ export class RegistroComponent implements OnInit {
   constructor(private fb: FormBuilder, private miServicio: UserService) { }
 
   ngOnInit(): void {
+    alert("llegoaqui");
     this.registroForm = this.fb.group({
       Nombre: ['', [Validators.required, Validators.minLength(3)]],
       Apellido: ['', [Validators.required, Validators.minLength(3)]],
@@ -49,6 +51,7 @@ export class RegistroComponent implements OnInit {
   }
 
   onSubmit(): void {
+    alert("llega aqui");
     if (this.registroForm.invalid) {
       this.showValidationErrors();
       return;
@@ -59,7 +62,7 @@ export class RegistroComponent implements OnInit {
       return;
     }
 
-    const fechaNacTimestamp = new Date(this.registroForm.value.FechaNac).getTime();
+    const fechaNac = new Date(this.registroForm.value.FechaNac);
 
     const usuario: Usuario = {
       Email: this.registroForm.value.Correo,
@@ -70,10 +73,23 @@ export class RegistroComponent implements OnInit {
       Rol: this.registroForm.value.Rol,
       PaisNombre: this.registroForm.value.PaisNombre,
       Empleo: this.registroForm.value.Empleo,
-      FechaNacimiento: fechaNacTimestamp
+      FechaNacimiento: fechaNac
     };
+    const clienteRegistro: RegistroCliente = {
+      Nombre: this.registroForm.value.Nombre,
+      Apellido: this.registroForm.value.Apellido,
+      Email: this.registroForm.value.Correo,
+      Contrasena: this.registroForm.value.Contraseña,
+      //TODO: BUSCAR EN LA API DE PAISES EL NOMBRE ASOCIADO AL PAIS
+      PaisId: 78,
+      Empleo: this.registroForm.value.Empleo,
+      FechaNacimiento: fechaNac
 
-    this.miServicio.registrarUsuario(usuario).subscribe(
+    }
+    console.log(usuario)
+    console.log(clienteRegistro)
+
+    this.miServicio.registrarUsuario(clienteRegistro).subscribe(
       response => {
         console.log('Usuario registrado exitosamente', response);
       },

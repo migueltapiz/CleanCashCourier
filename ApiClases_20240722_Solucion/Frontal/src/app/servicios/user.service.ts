@@ -14,7 +14,7 @@ export class UserService {
   private readonly url_estadistica = environment.apiUrl;
 
   //URL AMIN
-  private readonly URL = "https://localhost:7107/api/";
+  private readonly URL = "https://localhost:7138/api/";
 
   constructor(private http: HttpClient) { }
 

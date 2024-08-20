@@ -12,23 +12,28 @@ public class AccountController : Controller
     private readonly IMapper _mapper;
     private readonly UserManager<UsuarioAplicacion> _userManager;
     private readonly IRepositorioGenerico<Pais> _paisRepositorio;
+    private readonly IServicioToken _servicioToken;
     public AccountController(
         IRepositorioGenerico<Cliente> clienteRepositorio,
         IRepositorioGenerico<Pais> paisRepositorio,
         IMapper mapper,
-        UserManager<UsuarioAplicacion> userManager)
+        UserManager<UsuarioAplicacion> userManager,
+        IServicioToken servicioToken)
     {
         _paisRepositorio = paisRepositorio;
         _clienteRepositorio = clienteRepositorio;
         _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
         _userManager = userManager;
+        _servicioToken = servicioToken;
     }
 
+    //Account/register
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] ModeloRegistro modelo)
     {
-
+        Console.Write("MODELO INCOMING");
+        Console.Write(modelo);
 
         var usuario = new UsuarioAplicacion
         {
@@ -38,21 +43,15 @@ public class AccountController : Controller
             Email = modelo.Email,
             FechaNacimiento = modelo.FechaNacimiento,
             Empleo = modelo.Empleo,
-            NombrePais = modelo.NombrePais
+            NombrePais = _paisRepositorio.ObtenerPorId(modelo.PaisId).Nombre,
         };
 
         var result = await _userManager.CreateAsync(usuario, modelo.Contrasena);
         if (!result.Succeeded)
         {
+            Console.Write("FALLA AL CREAR CON USER MANAGER");
             return BadRequest(result.Errors);
         }
-
-        Console.Write(modelo.Nombre);
-        Console.Write(modelo.Apellido);
-        Console.Write(modelo.FechaNacimiento);
-        Console.Write(modelo.Empleo);
-        Console.Write(_paisRepositorio.ObtenerPorNombre(modelo.NombrePais).Id);
-        Console.Write(modelo.Email.Split('@')[0]);
 
         _clienteRepositorio.Agregar(new Cliente
         {
@@ -60,7 +59,7 @@ public class AccountController : Controller
             Apellido = modelo.Apellido,
             FechaNacimiento = modelo.FechaNacimiento,
             Empleo = modelo.Empleo,
-            PaisId = _paisRepositorio.ObtenerPorNombre(modelo.NombrePais).Id,
+            PaisId = modelo.PaisId,
             Email = modelo.Email,
             Usuario = modelo.Email.Split('@')[0],
         });
@@ -72,8 +71,9 @@ public class AccountController : Controller
         }
 
         // Generar el token y devolverlo
-        //var token = _tokenService.GenerateJwtToken(user);
-        //return Ok(new { Token = token });
-        return Ok("Cliente registrado correctamente");
+        var token = _servicioToken.GenerateJwtToken(usuario);
+        Console.Write(token);
+        return Ok(new { Token = token });
+        //return Ok("Cliente registrado correctamente");
     }
 }
