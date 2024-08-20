@@ -35,3 +35,9 @@ global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 global using ApiClases_20270722_Proyecto.JWTServiciosToken;
+
+global using MediatR;
+
+global using Microsoft.AspNetCore.SignalR;
+
+global using System.Threading.Tasks;

@@ -1,5 +1,6 @@
 using ApiClases_20270722_Proyecto.ContextoCarpeta;
 using ApiClases_20270722_Proyecto.Repositorios;
+using ApiClases_20270722_Proyecto.SignalRServicio;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
@@ -37,13 +38,10 @@ builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD
 builder.Services.AddDbContext<Contexto>(options =>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddIdentity<UsuarioAplicacion, IdentityRole>()
-    .AddEntityFrameworkStores<Contexto>()
-    .AddDefaultTokenProviders();
 
 
 // Configurar Identity
-builder.Services.AddIdentity<AplicacionClientes, IdentityRole>()
+builder.Services.AddIdentity<UsuarioAplicacion, IdentityRole>()
     .AddEntityFrameworkStores<Contexto>()
     .AddDefaultTokenProviders();
 // Ejemplo del libro:
@@ -57,6 +55,16 @@ builder.Services.AddIdentity<AplicacionClientes, IdentityRole>()
 //    options.Password.RequiredLength = 8;              //Minimum length of 8 characters
 //})
 //.AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+
+
+// Configurar MediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+// Configurar SignalR
+builder.Services.AddSignalR();
+
 
 
 // Configurar JWT
@@ -105,7 +113,7 @@ builder.Services.AddCors(options =>
     .AllowAnyMethod()
 
     .AllowAnyHeader();
-
+            
         });
 
     });
@@ -114,11 +122,16 @@ builder.Services.AddCors(options =>
 
 //Agregar servicios a la aplicación
 var app = builder.Build();
+
+app.MapHub<SignalRHubNotificacion>("/notificationHub");
+
 await CreateRoles(app);
 
 
 
 app.UseCors("AllowAllOrigins");
+
+
 //Comprobar si el entorno es de desarrollo
 
 if (app.Environment.IsDevelopment())
