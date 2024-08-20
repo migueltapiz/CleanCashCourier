@@ -21,6 +21,7 @@ public class Cliente
     [Required]
     public DateTime FechaNacimiento { get; set; }
 
+    [StringLength(50)]
     public string Empleo { get; set; }
 
     [Required]
@@ -32,8 +33,10 @@ public class Cliente
     //public Usuario? Usuario { get; set; }  // Navegación a la entidad Usuario
 
     [Required]
+    [StringLength(256)]
 
     public string Email { get; set; }
 
+    [StringLength(256)]
     public string? Usuario { get; set; }
 }
