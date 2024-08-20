@@ -44,12 +44,26 @@ public class TransaccionesController : ControllerBase{
 
     [EnableCors("AllowAllOrigins")]
     [HttpPost]
-    public async Task<ActionResult<TransaccionDto>> Post(TransaccionDto transaccion) {
+    public async Task<ActionResult<TransaccionDto>> Post(TransaccionDto transaccion)
+    {
         var finalTransaccionNuevo = _mapper.Map<TransaccionDto, Transaccion>(transaccion);
         repositorio.Agregar(finalTransaccionNuevo);
 
-        return await repositorio.GuardarCambios() ? Ok() : BadRequest();
+        if (await repositorio.GuardarCambios())
+        {
+            // Suponiendo que el Id de la nueva transacción está disponible en finalTransaccionNuevo.Id
+            return CreatedAtAction(
+                nameof(Get),
+                new { id_cliente = finalTransaccionNuevo.IdEnvia, id_transaccion = finalTransaccionNuevo.Id },
+                _mapper.Map<TransaccionDto>(finalTransaccionNuevo)
+            );
+        }
+        else
+        {
+            return BadRequest();
+        }
     }
+
     [HttpPut]
     public async Task<ActionResult<TransaccionDto>> PutAsync(int id, TransaccionDto transaccion) {
         var finalTransaccionActualizado = _mapper.Map<Transaccion>(transaccion);

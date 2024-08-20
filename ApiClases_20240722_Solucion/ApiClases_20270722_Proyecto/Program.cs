@@ -22,9 +22,6 @@ else if(dondeSacoDatos == "csv")
     //builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioCsv>();
 }
 else if(dondeSacoDatos == "BBDD") { 
-    //TODO : considerar cambiarlo por scope
-
-   
     builder.Services.AddScoped<IRepositorioGenerico<Transaccion>, TransaccionRepositorioBBDD<Transaccion>>();
     
     builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();
