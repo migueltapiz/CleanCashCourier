@@ -6,11 +6,6 @@ public class ClientePerfil:Profile {
         CreateMap<Cliente, ClienteDto>()
                     .ForMember(dest => dest.NombrePais, opt => opt.MapFrom(src => src.Pais.Nombre))  // Mapea el nombre del país
                     .ReverseMap();
-        CreateMap<Pais, PaisDto>().ReverseMap();
-
-
     }
-
-
 
 }
