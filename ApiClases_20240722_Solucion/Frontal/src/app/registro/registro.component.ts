@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../servicios/user.service';
 import { Usuario } from '../interfaces/usuario.interface';
+import { RegistroCliente } from '../interfaces/registroCliente';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-registro',
@@ -13,7 +15,7 @@ export class RegistroComponent implements OnInit {
   registroForm!: FormGroup;
   errorMessage: string | null = null; // Mensaje de error general
 
-  constructor(private fb: FormBuilder, private miServicio: UserService) { }
+  constructor(private fb: FormBuilder, private miServicio: UserService, private router : Router) { }
 
   ngOnInit(): void {
     this.registroForm = this.fb.group({
@@ -59,7 +61,7 @@ export class RegistroComponent implements OnInit {
       return;
     }
 
-    const fechaNacTimestamp = new Date(this.registroForm.value.FechaNac).getTime();
+    const fechaNac = new Date(this.registroForm.value.FechaNac);
 
     const usuario: Usuario = {
       Email: this.registroForm.value.Correo,
@@ -70,12 +72,26 @@ export class RegistroComponent implements OnInit {
       Rol: this.registroForm.value.Rol,
       PaisNombre: this.registroForm.value.PaisNombre,
       Empleo: this.registroForm.value.Empleo,
-      FechaNacimiento: fechaNacTimestamp
+      FechaNacimiento: fechaNac
     };
+    const clienteRegistro: RegistroCliente = {
+      Nombre: this.registroForm.value.Nombre,
+      Apellido: this.registroForm.value.Apellido,
+      Email: this.registroForm.value.Correo,
+      Contrasena: this.registroForm.value.Contraseña,
+      //TODO: BUSCAR EN LA API DE PAISES EL NOMBRE ASOCIADO AL PAIS
+      PaisId: 78,
+      Empleo: this.registroForm.value.Empleo,
+      FechaNacimiento: fechaNac
+    }
+    console.log(usuario)
+    console.log(clienteRegistro)
 
-    this.miServicio.registrarUsuario(usuario).subscribe(
-      response => {
-        console.log('Usuario registrado exitosamente', response);
+    this.miServicio.registrarUsuario(clienteRegistro).subscribe(
+      next => {
+        console.log('Usuario registrado exitosamente', next);
+        this.router.navigate(['/login']);
+
       },
       error => {
         if (error.status === 400) {
@@ -88,7 +104,8 @@ export class RegistroComponent implements OnInit {
           console.error(`Error ${error.status}: ${error.message}`);
           alert('Error al registrar usuario: ' + error.message);
         }
-      }
+      },
+      () => { console.log("proceso completado"); alert('Proceso completado'); }
     );
   }
 

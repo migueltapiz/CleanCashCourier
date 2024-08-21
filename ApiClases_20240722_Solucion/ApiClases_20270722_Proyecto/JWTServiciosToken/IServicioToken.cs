@@ -1,7 +1,5 @@
-﻿namespace ApiClases_20270722_Proyecto.JWTServiciosToken
+﻿namespace ApiClases_20270722_Proyecto.JWTServiciosToken;
+public interface IServicioToken
 {
-    public interface IServicioToken
-    {
-        string GenerateJwtToken(AplicacionClientes cliente);
-    }
+    string GenerateJwtToken(UsuarioAplicacion cliente);
 }

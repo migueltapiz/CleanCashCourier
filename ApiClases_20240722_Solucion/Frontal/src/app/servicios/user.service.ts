@@ -14,7 +14,7 @@ export class UserService {
   private readonly url_estadistica = environment.apiUrl;
 
   //URL AMIN
-  private readonly URL = "https://localhost:7107/api/";
+  private readonly URL = "https://localhost:7138/api/";
 
   constructor(private http: HttpClient) { }
 
@@ -28,8 +28,8 @@ export class UserService {
   }
 
   registrarUsuario(usuario: any): Observable<any> {
-    console.log(usuario); // Asegúrate de que los campos estén presentes y correctos DEBUG
     return this.http.post<any>(`${this.URL}Account/register`, usuario);
+    //return /*this.http.post<any>(`${this.URL}Account/register`, usuario)*/;
   }
 
   obtenerPaisIdPorNombre(nombre: string): Observable<{ id: number }> {

@@ -9,6 +9,5 @@ export interface Usuario {
     Rol: string;
     PaisNombre: number;
     Empleo: string;
-    FechaNacimiento: number; // Asegúrate de que FechaNac sea de tipo Date
+    FechaNacimiento: Date; // Asegúrate de que FechaNac sea de tipo Date
   }
-  
