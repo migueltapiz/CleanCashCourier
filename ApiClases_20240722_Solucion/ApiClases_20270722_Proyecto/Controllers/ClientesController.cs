@@ -14,40 +14,40 @@ public class ClientesController : ControllerBase
                throw new ArgumentNullException(nameof(mapper));
     }
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ClienteDto>>> Get() {
-
-
-       
-
-        return Ok(_mapper.Map<IEnumerable<ClienteDto>>(await repositorio.Obtener()));
+    public async Task<ActionResult<IEnumerable<ClienteBaseDto>>> Get() {
+        return Ok(_mapper.Map<IEnumerable<ClienteBaseDto>>(await repositorio.Obtener()));
     }
 
 
+    //TODO: ClienteGetDto
     [HttpGet("{id}", Name = "getCliente")]
-    public ActionResult<ClienteDto> Get(int id) {
+    public ActionResult<ClienteGetDto> Get(int id) {
         var cliente = repositorio.ObtenerPorId(id);
-        var finalClienteDto = _mapper.Map<ClienteDto>(cliente);
+        var finalClienteDto = _mapper.Map<ClienteGetDto>(cliente);
         return finalClienteDto == null ? NotFound() : Ok(finalClienteDto);
     }
 
+    //TODO: ClientePostDto
     [HttpPost]
-    public async Task<ActionResult<ClienteDto>> PostAsync(ClienteDto cliente) {
-        var finalClienteNuevo = _mapper.Map<ClienteDto, Cliente>(cliente);
+    public async Task<ActionResult<ClientePostDto>> PostAsync(ClientePostDto cliente) {
+        var finalClienteNuevo = _mapper.Map<ClienteBaseDto, Cliente>(cliente);
         repositorio.Agregar(finalClienteNuevo);
 
         return await repositorio.GuardarCambios() ? Ok("Cliente añadido correctamente") : BadRequest();
 
     }
 
+    //TODO: ClientePutDto
     [HttpPut]
-    public async Task<ActionResult<ClienteDto>> PutAsync(int id, ClienteDto cliente) {
+    public async Task<ActionResult<ClientePutDto>> PutAsync(int id, ClientePutDto cliente) {
         var finalClienteActualizado = _mapper.Map<Cliente>(cliente);
         repositorio.Actualizar(id, finalClienteActualizado);
         return await repositorio.GuardarCambios() ? Ok("Cliente actualizado correctamente") : BadRequest();
     }
 
+    //TODO: ClienteDeleteDto
     [HttpDelete]
-    public async Task<ActionResult<ClienteDto>> DeleteAsync(int id) {
+    public async Task<ActionResult<ClienteDeleteDto>> DeleteAsync(int id) {
         repositorio.Borrar(id);
         return await repositorio.GuardarCambios() ? Ok("Cliente borrado correctamente") : BadRequest();
     }

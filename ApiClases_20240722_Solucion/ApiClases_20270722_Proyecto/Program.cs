@@ -43,9 +43,9 @@ builder.Services.AddIdentity<UsuarioAplicacion, IdentityRole>()
 
 
 // Configurar Identity
-builder.Services.AddIdentity<AplicacionClientes, IdentityRole>()
-    .AddEntityFrameworkStores<Contexto>()
-    .AddDefaultTokenProviders();
+//builder.Services.AddIdentity<AplicacionClientes, IdentityRole>()
+//    .AddEntityFrameworkStores<Contexto>()
+//    .AddDefaultTokenProviders();
 // Ejemplo del libro:
 //builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 //{

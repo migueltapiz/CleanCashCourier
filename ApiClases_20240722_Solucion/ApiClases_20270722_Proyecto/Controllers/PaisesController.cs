@@ -26,7 +26,7 @@ public class PaisesController : ControllerBase{
         //return Ok(clientesDto);
     }
     [HttpGet("{id}", Name = "getPais")]
-    public ActionResult<ClienteDto> Get(int id) {
+    public ActionResult<ClienteBaseDto> Get(int id) {
         var pais = repositorio.ObtenerPorId(id);
         var finaloaisDto = _mapper.Map<Pais>(pais);
         return finaloaisDto == null ? NotFound() : Ok(finaloaisDto);

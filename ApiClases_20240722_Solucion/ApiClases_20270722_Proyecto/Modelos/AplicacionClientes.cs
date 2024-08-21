@@ -1,6 +1,7 @@
 ﻿
 namespace ApiClases_20270722_Proyecto.Modelos;
 
+//TODO: Código que sobra
 public class AplicacionClientes : IdentityUser
 {
     // Propiedades adicionales
