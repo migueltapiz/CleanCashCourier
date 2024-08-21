@@ -1,15 +1,15 @@
 ﻿namespace ApiClases_20270722_Proyecto.JWTServiciosToken;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-    public class ServicioToken : IServicioToken
+public class ServicioToken : IServicioToken
+{
+
+    private readonly IConfiguration _configuration;
+
+    public ServicioToken(IConfiguration configuration)
     {
-
-        private readonly IConfiguration _configuration;
-
-        public ServicioToken(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        _configuration = configuration;
+    }
 
     public string GenerateJwtToken(UsuarioAplicacion user)
     {

@@ -11,10 +11,12 @@ namespace ApiClases_20270722_Proyecto.Controllers;
 public class AuthTestController : ControllerBase
 {
     private readonly IConfiguration _configuration;
+    private readonly IServicioToken _servicioToken;
 
-    public AuthTestController(IConfiguration configuration)
+    public AuthTestController(IServicioToken serviciotoken, IConfiguration configuration)
     {
         _configuration = configuration;
+        _servicioToken = serviciotoken;
     }
 
     [HttpGet("generate-token")]
