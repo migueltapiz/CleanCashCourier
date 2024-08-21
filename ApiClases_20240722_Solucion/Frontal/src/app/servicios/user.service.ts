@@ -28,11 +28,7 @@ export class UserService {
   }
 
   registrarUsuario(usuario: any): Observable<any> {
-    console.log(usuario); // Asegúrate de que los campos estén presentes y correctos DEBUG
-
-    var resultado = this.http.post<any>(`${this.URL}Account/register`, usuario);
-    console.log(resultado);
-    return resultado;
+    return this.http.post<any>(`${this.URL}Account/register`, usuario);
     //return /*this.http.post<any>(`${this.URL}Account/register`, usuario)*/;
   }
 
