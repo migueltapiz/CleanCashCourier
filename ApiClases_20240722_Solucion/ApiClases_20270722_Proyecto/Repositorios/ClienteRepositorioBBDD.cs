@@ -1,5 +1,4 @@
-﻿using ApiClases_20270722_Proyecto.ContextoCarpeta;
-
+﻿
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
 public class ClienteRepositorioBBDD<T> : IRepositorioGenerico<T> where T : Cliente
@@ -26,16 +25,12 @@ public class ClienteRepositorioBBDD<T> : IRepositorioGenerico<T> where T : Clien
         return await _contexto.SaveChangesAsync() > 0;
     }
 
-    // public async Task<List<T>> Obtener() => await _contexto.Set<T>().Include(c => c.Pais).ToListAsync();
-    public Task<List<T>> Obtener()
-    {
-        throw new NotImplementedException("Método no implementado");
-    }
+    Task<List<T>> IRepositorioGenerico<T>.Obtener() => throw new NotImplementedException(); // No hay que obtener todos los usuarios de golpe y sin filtros
 
     public T ObtenerPorId(int id) => _contexto.Set<T>().FirstOrDefault(c => c.Id == id);
 
-    public Task<List<T>> ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
-   
+    public Task<List<T>> ObtenerTodosFiltrado(FiltroTransacciones filtro) => throw new NotImplementedException();
+
     public T ObtenerTransaccionId(int id_cliente, int id_transaccion) => throw new NotImplementedException();
 
 }

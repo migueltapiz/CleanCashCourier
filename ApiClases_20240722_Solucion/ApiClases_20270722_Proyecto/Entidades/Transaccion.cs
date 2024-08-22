@@ -1,5 +1,4 @@
-﻿//using System.ComponentModel.DataAnnotations.Schema;
-
+﻿
 namespace ApiClases_20270722_Proyecto.Entidades;
 
 public class Transaccion

@@ -21,8 +21,20 @@ public class TransaccionesController : ControllerBase{
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TransaccionDto>>> GetAsync([FromRoute]int id_cliente,[FromQuery] DateTime? fechaInicio, [FromQuery] DateTime? fechaFin, [FromQuery] double? cantidadEnviadaMin, [FromQuery] double? cantidadEnviadaMax, [FromQuery] double? cantidadRecibidaMin, [FromQuery] double? cantidadRecibidaMax) {
-        return Ok(_mapper.Map<IEnumerable<TransaccionDto>>(await repositorio.ObtenerTodosFiltrado(id_cliente,fechaInicio,fechaFin,cantidadEnviadaMin, cantidadEnviadaMax, cantidadRecibidaMin, cantidadRecibidaMax)));
+    public async Task<ActionResult<IEnumerable<TransaccionDto>>> GetAsync([FromRoute] int id_cliente,[FromQuery] DateTime? fechaInicio,[FromQuery] DateTime? fechaFin,[FromQuery] double? cantidadEnviadaMin,[FromQuery] double? cantidadEnviadaMax,[FromQuery] double? cantidadRecibidaMin,[FromQuery] double? cantidadRecibidaMax)
+    {
+        var filtro = new FiltroTransacciones
+        {
+            IdCliente = id_cliente,
+            FechaInicio = fechaInicio,
+            FechaFin = fechaFin,
+            CantidadEnviadaMin = cantidadEnviadaMin,
+            CantidadEnviadaMax = cantidadEnviadaMax,
+            CantidadRecibidaMin = cantidadRecibidaMin,
+            CantidadRecibidaMax = cantidadRecibidaMax
+        };
+
+        return Ok(_mapper.Map<IEnumerable<TransaccionDto>>(await repositorio.ObtenerTodosFiltrado(filtro)));
     }
 
 
@@ -54,7 +66,6 @@ public class TransaccionesController : ControllerBase{
 
         if (await repositorio.GuardarCambios())
         {
-            // Suponiendo que el Id de la nueva transacción está disponible en finalTransaccionNuevo.Id
             return CreatedAtAction(
                 nameof(Get),
                 new { id_cliente = finalTransaccionNuevo.IdEnvia, id_transaccion = finalTransaccionNuevo.Id },
@@ -66,6 +77,7 @@ public class TransaccionesController : ControllerBase{
             return BadRequest();
         }
     }
+
 
     [HttpPut]
     public async Task<ActionResult<TransaccionDto>> PutAsync(int id, TransaccionDto transaccion) {

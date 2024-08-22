@@ -1,5 +1,4 @@
 ﻿
-
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
 public interface IRepositorioGenerico<T>
@@ -13,6 +12,6 @@ public interface IRepositorioGenerico<T>
 
     void Borrar(int id);
     public Task<bool> GuardarCambios();
-    Task<List<T>> ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax);
+    Task<List<T>> ObtenerTodosFiltrado(FiltroTransacciones filtro);
     T ObtenerTransaccionId(int id_cliente, int id_transaccion);
 }

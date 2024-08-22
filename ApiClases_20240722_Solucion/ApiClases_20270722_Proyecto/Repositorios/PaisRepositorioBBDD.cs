@@ -1,5 +1,4 @@
-﻿using ApiClases_20270722_Proyecto.ContextoCarpeta;
-
+﻿
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
 public class PaisRepositorioBBDD<T>: IRepositorioGenerico<T> where T:Pais {
@@ -21,11 +20,10 @@ public class PaisRepositorioBBDD<T>: IRepositorioGenerico<T> where T:Pais {
 
     public async Task<List<T>> Obtener() => await _contexto.Set<T>().ToListAsync();
 
-    
-   
+       
     public T ObtenerPorId(int id) => (T)_contexto.Paises.FirstOrDefault(c => c.Id == id);
     public Task<object> ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
     public object ObtenerTransaccionId(int id_cliente, int id_transaccion) => throw new NotImplementedException();
-    Task<List<T>> IRepositorioGenerico<T>.ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
+    public Task<List<T>> ObtenerTodosFiltrado(FiltroTransacciones filtro) => throw new NotImplementedException();
     T IRepositorioGenerico<T>.ObtenerTransaccionId(int id_cliente, int id_transaccion) => throw new NotImplementedException();
 }
