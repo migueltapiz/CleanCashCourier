@@ -3,8 +3,6 @@ namespace ApiClases_20270722_Proyecto.Modelos;
 
 public class ClienteBaseDto :IValidatableObject
 {
-    public int Id { get; set; }
-
     [Required]
     [StringLength(25)]
     public string Nombre { get; set; }
@@ -23,8 +21,6 @@ public class ClienteBaseDto :IValidatableObject
     [Required]
 
     public string Email { get; set; }
-
-
 
     [Required]
     public int PaisId { get; set; }

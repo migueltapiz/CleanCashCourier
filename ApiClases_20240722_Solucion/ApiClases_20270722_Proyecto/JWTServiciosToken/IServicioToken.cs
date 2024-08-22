@@ -2,6 +2,6 @@
 {
     public interface IServicioToken
     {
-        string GenerateJwtToken(AplicacionClientes cliente);
+        string GenerateJwtToken(UsuarioAplicacion cliente);
     }
 }

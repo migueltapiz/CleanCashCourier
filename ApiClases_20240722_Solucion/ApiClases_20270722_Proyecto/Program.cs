@@ -83,7 +83,8 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-
+// Registro del servicio de generación de tokens
+builder.Services.AddScoped<IServicioToken, ServicioToken>();
 
 //Añadir Autommaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -128,6 +129,9 @@ if (app.Environment.IsDevelopment())
 }
 //Redirección a https
 app.UseHttpsRedirection();
+
+// Middleware de autenticación
+app.UseAuthentication();
 
 //Middleweare de autorización 
 app.UseAuthorization();

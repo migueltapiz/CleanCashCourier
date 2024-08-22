@@ -1,54 +1,150 @@
 ﻿using ApiClases_20270722_Proyecto.Repositorios;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-namespace ApiClases_20270722_Proyecto.Controllers;
+using System.Threading.Tasks;
+using static ApiClases_20270722_Proyecto.Modelos.ModeloInicioSesion;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ClientesController : ControllerBase
+namespace ApiClases_20270722_Proyecto.Controllers
 {
-    public readonly IRepositorioGenerico<Cliente> repositorio;
-    private readonly IMapper _mapper;
-    public ClientesController(IRepositorioGenerico<Cliente> repositorio, IMapper mapper) {
-        this.repositorio = repositorio;
-        _mapper = mapper ??
-               throw new ArgumentNullException(nameof(mapper));
-    }
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<ClienteBaseDto>>> Get() {
-        return Ok(_mapper.Map<IEnumerable<ClienteBaseDto>>(await repositorio.Obtener()));
-    }
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ClientesController : ControllerBase
+    {
+        private readonly IRepositorioGenerico<Cliente> _clienteRepositorio;
+        private readonly IRepositorioGenerico<Pais> _paisRepositorio;
+        private readonly IServicioToken _servicioToken;
+        private readonly IMapper _mapper;
+        private readonly UserManager<UsuarioAplicacion> _userManager;
+        private readonly SignInManager<UsuarioAplicacion> _signInManager;
 
+        public ClientesController(
+            IRepositorioGenerico<Cliente> clienteRepositorio,
+            IRepositorioGenerico<Pais> paisRepositorio,
+            IServicioToken servicioToken,
+            IMapper mapper,
+            UserManager<UsuarioAplicacion> userManager,
+            SignInManager<UsuarioAplicacion> signInManager)
+        {
+            _clienteRepositorio = clienteRepositorio;
+            _paisRepositorio = paisRepositorio;
+            _servicioToken = servicioToken;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
 
-    //TODO: ClienteGetDto
-    [HttpGet("{id}", Name = "getCliente")]
-    public ActionResult<ClienteGetDto> Get(int id) {
-        var cliente = repositorio.ObtenerPorId(id);
-        var finalClienteDto = _mapper.Map<ClienteGetDto>(cliente);
-        return finalClienteDto == null ? NotFound() : Ok(finalClienteDto);
-    }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ClienteBaseDto>>> Get()
+        {
+            var clientes = await _clienteRepositorio.Obtener();
+            var clientesDto = _mapper.Map<IEnumerable<ClienteBaseDto>>(clientes);
+            return Ok(clientesDto);
+        }
 
-    //TODO: ClientePostDto
-    [HttpPost]
-    public async Task<ActionResult<ClientePostDto>> PostAsync(ClientePostDto cliente) {
-        var finalClienteNuevo = _mapper.Map<ClienteBaseDto, Cliente>(cliente);
-        repositorio.Agregar(finalClienteNuevo);
+        [HttpGet("{id}", Name = "getCliente")]
+        public async Task<ActionResult<ClienteGetDto>> Get(int id)
+        {
+            var cliente =  _clienteRepositorio.ObtenerPorId(id);
+            if (cliente == null) return NotFound();
 
-        return await repositorio.GuardarCambios() ? Ok("Cliente añadido correctamente") : BadRequest();
+            var finalClienteDto = _mapper.Map<ClienteGetDto>(cliente);
+            return Ok(finalClienteDto);
+        }
 
-    }
+        [HttpGet("login")]
+        public async Task<IActionResult> Login([FromQuery] ModeloInicioSesion modelo)
+        {
+            var result = await _signInManager.PasswordSignInAsync(
+                modelo.Usuario,
+                modelo.Contrasena,
+                modelo.Recuerdame,
+                lockoutOnFailure: false);
 
-    //TODO: ClientePutDto
-    [HttpPut]
-    public async Task<ActionResult<ClientePutDto>> PutAsync(int id, ClientePutDto cliente) {
-        var finalClienteActualizado = _mapper.Map<Cliente>(cliente);
-        repositorio.Actualizar(id, finalClienteActualizado);
-        return await repositorio.GuardarCambios() ? Ok("Cliente actualizado correctamente") : BadRequest();
-    }
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByNameAsync(modelo.Usuario);
+                var token = _servicioToken.GenerateJwtToken(user);
+                return Ok(new { Token = token });
+            }
 
-    //TODO: ClienteDeleteDto
-    [HttpDelete]
-    public async Task<ActionResult<ClienteDeleteDto>> DeleteAsync(int id) {
-        repositorio.Borrar(id);
-        return await repositorio.GuardarCambios() ? Ok("Cliente borrado correctamente") : BadRequest();
+            return Unauthorized();
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] ModeloRegistro modelo)
+        {
+            var usuario = new UsuarioAplicacion
+            {
+                Nombre = modelo.Nombre,
+                Apellido = modelo.Apellido,
+                UserName = modelo.Email.Split('@')[0],
+                Email = modelo.Email,
+                FechaNacimiento = modelo.FechaNacimiento,
+                Empleo = modelo.Empleo,
+                NombrePais = modelo.NombrePais,
+            };
+
+            var result = await _userManager.CreateAsync(usuario, modelo.Contrasena);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            var cliente = _mapper.Map<Cliente>(modelo);
+            cliente.Email = modelo.Email;  // Mapeo adicional de email
+            cliente.Usuario = modelo.Email.Split('@')[0];
+
+            _clienteRepositorio.Agregar(cliente);
+            var addClienteResult = await _clienteRepositorio.GuardarCambios();
+
+            if (!addClienteResult)
+            {
+                return BadRequest("Error al guardar en la tabla Clientes");
+            }
+
+            var addRoleResult = await _userManager.AddToRoleAsync(usuario, "Cliente");
+            if (!addRoleResult.Succeeded)
+            {
+                return BadRequest(new { Message = "Fallo al añadir el nuevo rol." });
+            }
+
+            var token = _servicioToken.GenerateJwtToken(usuario);
+            return Ok(new { Token = token });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> PutAsync(int id, ClientePutDto clienteDto)
+        {
+            var clienteExistente = _clienteRepositorio.ObtenerPorId(id);
+            if (clienteExistente == null) return NotFound();
+
+            var clienteActualizado = _mapper.Map(clienteDto, clienteExistente);
+            _clienteRepositorio.Actualizar(id, clienteActualizado);
+
+            if (await _clienteRepositorio.GuardarCambios())
+            {
+                return NoContent();
+            }
+
+            return BadRequest("Error al actualizar el cliente");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var clienteExistente = _clienteRepositorio.ObtenerPorId(id);
+            if (clienteExistente == null) return NotFound();
+
+            _clienteRepositorio.Borrar(id);
+
+            if (await _clienteRepositorio.GuardarCambios())
+            {
+                return NoContent();
+            }
+
+            return BadRequest("Error al borrar el cliente");
+        }
     }
 }

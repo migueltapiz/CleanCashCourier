@@ -7,5 +7,21 @@ public class ClientePerfil:Profile {
                     .ForMember(dest => dest.NombrePais, opt => opt.MapFrom(src => src.Pais.Nombre))  // Mapea el nombre del país
                     .ReverseMap();
         CreateMap<Pais, PaisDto>().ReverseMap();
+
+        // Mapeo de Cliente a ClienteGetDto y viceversa
+        CreateMap<Cliente, ClienteGetDto>()
+            .IncludeBase<Cliente, ClienteBaseDto>(); 
+
+        // Mapeo de ClientePostDto a Cliente
+        CreateMap<ClientePostDto, Cliente>()
+            .IncludeBase<ClienteBaseDto, Cliente>();
+
+        // Mapeo de ClientePutDto a Cliente
+        CreateMap<ClientePutDto, Cliente>()
+            .IncludeBase<ClienteBaseDto, Cliente>();
+
+        // Mapeo de ClienteDeleteDto a Cliente
+        CreateMap<ClienteDeleteDto, Cliente>()
+            .IncludeBase<ClienteBaseDto, Cliente>();
     }
 }

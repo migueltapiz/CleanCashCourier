@@ -2,8 +2,6 @@
 {
     public class ModeloInicioSesion
     {
-        public class LoginViewModel
-        {
             [Required]
             public string Usuario { get; set; }
 
@@ -13,6 +11,5 @@
 
             [Display(Name = "Remember me?")]
             public bool Recuerdame { get; set; }
-        }
     }
 }
