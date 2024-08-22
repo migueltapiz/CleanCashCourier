@@ -17,7 +17,9 @@ declare var bootstrap: any;
 })
 export class SendMoneyComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
-  sub!: Subscription;
+  subcliente!: Subscription;
+  subPais!: Subscription;
+  subTransaccion!: Subscription;
   filteredClientes: ICliente[] = [];
   clientes: ICliente[] = [];
   selectedCliente: ICliente | undefined = undefined;
@@ -39,13 +41,13 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.clienteEnvia.id = 1;
-    this.paisService.getPaisId(this.clienteEnvia.id).subscribe({
+    this.subPais = this.paisService.getPaisId(this.clienteEnvia.id).subscribe({
       next: pais => {
         this.currencyEnviada = pais.iso3;
       },
       error: err => this.errorMessage = err
     });
-    this.sub = this.clienteService.getClientes().subscribe({
+    this.subcliente = this.clienteService.getClientes().subscribe({
       next: clientes => {
         this.clientes = clientes;
         this.filteredClientes = [];
@@ -60,12 +62,22 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     this.timeout = setTimeout(() => {
       this.selectedCliente = this.clientes.find(cliente => cliente.usuario === this.recipientFilter.trim());
       if (this.selectedCliente) {
-        this.paisService.getPaisId(this.selectedCliente.id).subscribe({
+        this.subTransaccion = this.paisService.getPaisId(this.selectedCliente.id).subscribe({
           next: pais => {
             this.currencyRecibida = pais.iso3;
+            console.log(this.currencyRecibida);
+            this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
+              next: factor => {
+                console.log("AHDFKAHSDJLFASDHFALSDJF");
+                this.factorConversion = factor;
+              },
+              error: err => this.errorMessage = err
+            });
           },
           error: err => this.errorMessage = err
         });
+       
+        
       } else {
         this.currencyRecibida = '';
       }
@@ -73,7 +85,9 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     }, 1000);
   }
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.subcliente.unsubscribe();
+    this.subPais.unsubscribe();
+    this.subTransaccion.unsubscribe();
   }
 
   validateAmount(event: Event, isEnviada: boolean) {
