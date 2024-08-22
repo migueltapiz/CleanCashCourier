@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ClienteService } from "../clientes/cliente.service";
 import { ICliente } from "../clientes/cliente";
 import { DatosService } from "../datos/datos.service";
+import { IPais, PaisService } from '../servicios/pais.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'pm-profile-component',
@@ -9,6 +11,8 @@ import { DatosService } from "../datos/datos.service";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  errorMessage: string = '';
+
   cliente: ICliente | undefined;
   isEditing = {
     usuario: false,
@@ -19,16 +23,27 @@ export class ProfileComponent implements OnInit {
   isAnyFieldEdited = false;
   paises: string[] = [];
   trabajos: string[] = [];
+  subPaises!: Subscription;
+  subClientes!: Subscription;
 
-  constructor(private clienteService: ClienteService, private datosService: DatosService) { }
+  constructor(private clienteService: ClienteService,private paisService:PaisService, private datosService: DatosService) { }
 
   ngOnInit(): void {
-    this.clienteService.getClienteById(1).subscribe({
+    this.subClientes = this.clienteService.getClienteById(1).subscribe({
       next: (data) => this.cliente = data,
       error: (err) => console.error(err)
     });
 
-    this.paises = this.datosService.getPaises();
+    this.subPaises = this.paisService.getNombresPaises().subscribe({
+      next: paises => {
+        this.paises = paises;
+       
+      },
+      error: err => this.errorMessage = err
+        
+    });
+
+    //this.paises = this.datosService.getPaises();
     this.trabajos = this.datosService.getTrabajos();
   }
 

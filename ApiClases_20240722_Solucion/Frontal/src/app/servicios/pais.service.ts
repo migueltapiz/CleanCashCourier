@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, tap, throwError } from 'rxjs';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,13 @@ export class PaisService {
   getPaisId(id:number): Observable<IPais> {
     return this.http.get<IPais>(`${this.url}/${id}`).pipe(
       tap(data => data),
+      catchError(this.handleError)
+    );
+  }
+
+  getNombresPaises(): Observable<string[]> {
+    return this.http.get<IPais[]>(this.url).pipe(
+      map(response => response.map(pais => pais.nombre)),
       catchError(this.handleError)
     );
   }
