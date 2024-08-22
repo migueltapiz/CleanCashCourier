@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ApiClases_20270722_Proyecto.Migrations
 {
     /// <inheritdoc />
-    public partial class migracinNueva1 : Migration
+    public partial class PruebaNueva22 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,7 +38,10 @@ namespace ApiClases_20270722_Proyecto.Migrations
                     CantidadEnvia = table.Column<double>(type: "float", nullable: false),
                     IdRecibe = table.Column<int>(type: "int", nullable: false),
                     CantidadRecibe = table.Column<double>(type: "float", nullable: false),
-                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MonedaOrigen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MonedaDestino = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CosteTransaccion = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,10 +57,10 @@ namespace ApiClases_20270722_Proyecto.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     Apellido = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Empleo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Empleo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PaisId = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Usuario = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Usuario = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -251,39 +254,39 @@ namespace ApiClases_20270722_Proyecto.Migrations
 
             migrationBuilder.InsertData(
                 table: "Transacciones",
-                columns: new[] { "Id", "CantidadEnvia", "CantidadRecibe", "Fecha", "IdEnvia", "IdRecibe", "MonedaOrigen", "MonedaDestino", "CosteTransaccion" },
+                columns: new[] { "Id", "CantidadEnvia", "CantidadRecibe", "CosteTransaccion", "Fecha", "IdEnvia", "IdRecibe", "MonedaDestino", "MonedaOrigen" },
                 values: new object[,]
                 {
-                    { 1, 1000.5, 1130.57, new DateTime(2015, 3, 15, 9, 30, 0, 0, DateTimeKind.Unspecified), 6, 7, "USD", "EUR", 50.025 },
-                    { 2, 2000.75, 2560.96, new DateTime(2018, 6, 10, 14, 45, 0, 0, DateTimeKind.Unspecified), 8, 9, "USD", "EUR", 100.0375 },
-                    { 3, 1500.25, 1740.29, new DateTime(2020, 8, 21, 16, 0, 0, 0, DateTimeKind.Unspecified), 10, 11, "USD", "EUR", 75.0125 },
-                    { 4, 2500.33, 3500.46, new DateTime(2011, 11, 30, 11, 15, 0, 0, DateTimeKind.Unspecified), 12, 13, "USD", "EUR", 125.0165 },
-                    { 5, 3000.67, 4260.95, new DateTime(2017, 2, 7, 8, 30, 0, 0, DateTimeKind.Unspecified), 14, 15, "USD", "EUR", 150.0335 },
-                    { 6, 4000.99, 2920.73, new DateTime(2021, 12, 25, 19, 45, 0, 0, DateTimeKind.Unspecified), 16, 17, "USD", "EUR", 200.0495 },
-                    { 7, 500.45, 790.58, new DateTime(2012, 4, 18, 7, 0, 0, 0, DateTimeKind.Unspecified), 18, 19, "USD", "EUR", 25.0225 },
-                    { 8, 600.35, 888.48, new DateTime(2019, 7, 13, 13, 30, 0, 0, DateTimeKind.Unspecified), 20, 6, "USD", "EUR", 30.0175 },
-                    { 9, 700.12, 1085.55, new DateTime(2014, 5, 9, 10, 15, 0, 0, DateTimeKind.Unspecified), 7, 8, "USD", "EUR", 35.006 },
-                    { 10, 800.75, 1240.92, new DateTime(2016, 9, 14, 15, 0, 0, 0, DateTimeKind.Unspecified), 9, 10, "USD", "EUR", 40.0375 },
-                    { 11, 900.63, 1350.36, new DateTime(2022, 3, 12, 12, 30, 0, 0, DateTimeKind.Unspecified), 11, 12, "USD", "EUR", 45.0315 },
-                    { 12, 100.9, 140.73, new DateTime(2023, 1, 1, 6, 45, 0, 0, DateTimeKind.Unspecified), 13, 14, "USD", "EUR", 5.045 },
-                    { 13, 200.33, 246.4, new DateTime(2024, 6, 17, 17, 30, 0, 0, DateTimeKind.Unspecified), 15, 16, "USD", "EUR", 10.0165 },
-                    { 14, 300.5, 402.67, new DateTime(2013, 2, 25, 9, 0, 0, 0, DateTimeKind.Unspecified), 17, 18, "USD", "EUR", 15.025 },
-                    { 15, 400.8, 548.34, new DateTime(2020, 8, 11, 14, 15, 0, 0, DateTimeKind.Unspecified), 19, 20, "USD", "EUR", 20.04 },
-                    { 16, 5000.95, 7250.44, new DateTime(2010, 12, 31, 11, 30, 0, 0, DateTimeKind.Unspecified), 6, 7, "USD", "EUR", 250.0475 },
-                    { 17, 3500.45, 4270.87, new DateTime(2017, 11, 5, 16, 45, 0, 0, DateTimeKind.Unspecified), 8, 9, "USD", "EUR", 175.0225 },
-                    { 18, 6000.25, 7680.35, new DateTime(2015, 3, 24, 18, 0, 0, 0, DateTimeKind.Unspecified), 10, 11, "USD", "EUR", 300.0125 },
-                    { 19, 4200.67, 4980.12, new DateTime(2019, 5, 22, 7, 30, 0, 0, DateTimeKind.Unspecified), 12, 13, "USD", "EUR", 210.0335 },
-                    { 20, 4800.85, 6960.4, new DateTime(2011, 10, 10, 20, 15, 0, 0, DateTimeKind.Unspecified), 14, 15, "USD", "EUR", 240.0425 },
-                    { 21, 5500.25, 8030.5, new DateTime(2021, 7, 18, 10, 0, 0, 0, DateTimeKind.Unspecified), 16, 17, "USD", "EUR", 275.0125 },
-                    { 22, 3100.34, 4327.15, new DateTime(2018, 4, 2, 15, 45, 0, 0, DateTimeKind.Unspecified), 18, 19, "USD", "EUR", 155.017 },
-                    { 23, 2900.75, 3357.86, new DateTime(2014, 11, 19, 9, 15, 0, 0, DateTimeKind.Unspecified), 20, 6, "USD", "EUR", 145.0375 },
-                    { 24, 1700.44, 2400.63, new DateTime(2023, 8, 30, 12, 0, 0, 0, DateTimeKind.Unspecified), 7, 8, "USD", "EUR", 85.022 },
-                    { 25, 650.92, 995.71, new DateTime(2012, 6, 5, 8, 30, 0, 0, DateTimeKind.Unspecified), 9, 10, "USD", "EUR", 32.546 },
-                    { 26, 4500.55, 6120.88, new DateTime(2020, 1, 27, 14, 0, 0, 0, DateTimeKind.Unspecified), 11, 12, "USD", "EUR", 225.0275 },
-                    { 27, 3800.68, 4346.78, new DateTime(2022, 4, 8, 11, 15, 0, 0, DateTimeKind.Unspecified), 13, 14, "USD", "EUR", 190.034 },
-                    { 28, 2700.45, 3159.52, new DateTime(2013, 9, 15, 13, 0, 0, 0, DateTimeKind.Unspecified), 15, 16, "USD", "EUR", 135.0225 },
-                    { 29, 1900.34, 2652.87, new DateTime(2016, 12, 22, 15, 45, 0, 0, DateTimeKind.Unspecified), 17, 18, "USD", "EUR", 95.017 },
-                    { 30, 5100.15, 6120.57, new DateTime(2024, 10, 18, 18, 0, 0, 0, DateTimeKind.Unspecified), 19, 20, "USD", "EUR", 255.0075 }
+                    { 1, 1000.5, 1130.5699999999999, 10.5, new DateTime(2015, 3, 15, 9, 30, 0, 0, DateTimeKind.Unspecified), 6, 7, "EUR", "USD" },
+                    { 2, 2000.75, 2560.96, 20.75, new DateTime(2018, 6, 10, 14, 45, 0, 0, DateTimeKind.Unspecified), 8, 9, "GBP", "USD" },
+                    { 3, 1500.25, 1740.29, 15.25, new DateTime(2020, 8, 21, 16, 0, 0, 0, DateTimeKind.Unspecified), 10, 11, "JPY", "USD" },
+                    { 4, 2500.3299999999999, 3500.46, 25.329999999999998, new DateTime(2011, 11, 30, 11, 15, 0, 0, DateTimeKind.Unspecified), 12, 13, "CAD", "USD" },
+                    { 5, 3000.6700000000001, 4260.9499999999998, 30.670000000000002, new DateTime(2017, 2, 7, 8, 30, 0, 0, DateTimeKind.Unspecified), 14, 15, "AUD", "USD" },
+                    { 6, 4000.9899999999998, 2920.73, 40.990000000000002, new DateTime(2021, 12, 25, 19, 45, 0, 0, DateTimeKind.Unspecified), 16, 17, "CHF", "USD" },
+                    { 7, 500.44999999999999, 790.58000000000004, 5.4500000000000002, new DateTime(2012, 4, 18, 7, 0, 0, 0, DateTimeKind.Unspecified), 18, 19, "CNY", "USD" },
+                    { 8, 600.35000000000002, 888.48000000000002, 6.3499999999999996, new DateTime(2019, 7, 13, 13, 30, 0, 0, DateTimeKind.Unspecified), 20, 6, "INR", "USD" },
+                    { 9, 700.12, 1085.55, 7.1200000000000001, new DateTime(2014, 5, 9, 10, 15, 0, 0, DateTimeKind.Unspecified), 7, 8, "BRL", "USD" },
+                    { 10, 800.75, 1240.9200000000001, 8.75, new DateTime(2016, 9, 14, 15, 0, 0, 0, DateTimeKind.Unspecified), 9, 10, "MXN", "USD" },
+                    { 11, 900.63, 1350.3599999999999, 9.6300000000000008, new DateTime(2022, 3, 12, 12, 30, 0, 0, DateTimeKind.Unspecified), 11, 12, "ZAR", "USD" },
+                    { 12, 100.90000000000001, 140.72999999999999, 1.8999999999999999, new DateTime(2023, 1, 1, 6, 45, 0, 0, DateTimeKind.Unspecified), 13, 14, "RUB", "USD" },
+                    { 13, 200.33000000000001, 246.40000000000001, 2.3300000000000001, new DateTime(2024, 6, 17, 17, 30, 0, 0, DateTimeKind.Unspecified), 15, 16, "KRW", "USD" },
+                    { 14, 300.5, 402.67000000000002, 3.5, new DateTime(2013, 2, 25, 9, 0, 0, 0, DateTimeKind.Unspecified), 17, 18, "SGD", "USD" },
+                    { 15, 400.80000000000001, 548.34000000000003, 4.7999999999999998, new DateTime(2020, 8, 11, 14, 15, 0, 0, DateTimeKind.Unspecified), 19, 20, "HKD", "USD" },
+                    { 16, 5000.9499999999998, 7250.4399999999996, 50.950000000000003, new DateTime(2010, 12, 31, 11, 30, 0, 0, DateTimeKind.Unspecified), 6, 7, "NZD", "USD" },
+                    { 17, 3500.4499999999998, 4270.8699999999999, 35.450000000000003, new DateTime(2017, 11, 5, 16, 45, 0, 0, DateTimeKind.Unspecified), 8, 9, "SEK", "USD" },
+                    { 18, 6000.25, 7680.3500000000004, 60.25, new DateTime(2015, 3, 24, 18, 0, 0, 0, DateTimeKind.Unspecified), 10, 11, "NOK", "USD" },
+                    { 19, 4200.6700000000001, 4980.1199999999999, 42.670000000000002, new DateTime(2019, 5, 22, 7, 30, 0, 0, DateTimeKind.Unspecified), 12, 13, "DKK", "USD" },
+                    { 20, 4800.8500000000004, 6960.3999999999996, 48.850000000000001, new DateTime(2011, 10, 10, 20, 15, 0, 0, DateTimeKind.Unspecified), 14, 15, "PLN", "USD" },
+                    { 21, 5500.25, 8030.5, 55.25, new DateTime(2021, 7, 18, 10, 0, 0, 0, DateTimeKind.Unspecified), 16, 17, "HUF", "USD" },
+                    { 22, 3100.3400000000001, 4327.1499999999996, 31.34, new DateTime(2018, 4, 2, 15, 45, 0, 0, DateTimeKind.Unspecified), 18, 19, "CZK", "USD" },
+                    { 23, 2900.75, 3357.8600000000001, 29.75, new DateTime(2014, 11, 19, 9, 15, 0, 0, DateTimeKind.Unspecified), 20, 6, "TRY", "USD" },
+                    { 24, 1700.4400000000001, 2400.6300000000001, 17.440000000000001, new DateTime(2023, 8, 30, 12, 0, 0, 0, DateTimeKind.Unspecified), 7, 8, "ILS", "USD" },
+                    { 25, 650.91999999999996, 995.71000000000004, 6.9199999999999999, new DateTime(2012, 6, 5, 8, 30, 0, 0, DateTimeKind.Unspecified), 9, 10, "MYR", "USD" },
+                    { 26, 4500.5500000000002, 6120.8800000000001, 45.549999999999997, new DateTime(2020, 1, 27, 14, 0, 0, 0, DateTimeKind.Unspecified), 11, 12, "THB", "USD" },
+                    { 27, 3800.6799999999998, 4346.7799999999997, 38.68, new DateTime(2022, 4, 8, 11, 15, 0, 0, DateTimeKind.Unspecified), 13, 14, "IDR", "USD" },
+                    { 28, 2700.4499999999998, 3159.52, 27.449999999999999, new DateTime(2013, 9, 15, 13, 0, 0, 0, DateTimeKind.Unspecified), 15, 16, "PHP", "USD" },
+                    { 29, 1900.3399999999999, 2652.8699999999999, 19.34, new DateTime(2016, 12, 22, 15, 45, 0, 0, DateTimeKind.Unspecified), 17, 18, "VND", "USD" },
+                    { 30, 5100.1499999999996, 6120.5699999999997, 51.149999999999999, new DateTime(2024, 10, 18, 18, 0, 0, 0, DateTimeKind.Unspecified), 19, 20, "EGP", "USD" }
                 });
 
             migrationBuilder.InsertData(

@@ -1,8 +1,9 @@
 ﻿namespace ApiClases_20270722_Proyecto.Modelos;
 
-public class TransaccionBaseDto: IValidatableObject
+public class TransaccionDto: IValidatableObject
 { // TransaccionesBaseDto. Quitar ID pero guardarlo. Generar distintos Dto que hereden de este.
-    //public int Id { get; set; }
+    [Key]
+    public int Id { get; set; }
 
     [Required]
     public int IdEnvia { get; set; }

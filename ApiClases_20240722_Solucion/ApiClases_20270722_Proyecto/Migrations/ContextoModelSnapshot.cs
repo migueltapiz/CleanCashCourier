@@ -17,7 +17,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -37,11 +37,13 @@ namespace ApiClases_20270722_Proyecto.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Empleo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("datetime2");
@@ -55,7 +57,8 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Usuario")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -1534,6 +1537,9 @@ namespace ApiClases_20270722_Proyecto.Migrations
                     b.Property<double>("CantidadRecibe")
                         .HasColumnType("float");
 
+                    b.Property<double>("CosteTransaccion")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
@@ -1542,6 +1548,14 @@ namespace ApiClases_20270722_Proyecto.Migrations
 
                     b.Property<int>("IdRecibe")
                         .HasColumnType("int");
+
+                    b.Property<string>("MonedaDestino")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MonedaOrigen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1553,287 +1567,372 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Id = 1,
                             CantidadEnvia = 1000.5,
                             CantidadRecibe = 1130.5699999999999,
+                            CosteTransaccion = 10.5,
                             Fecha = new DateTime(2015, 3, 15, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 6,
-                            IdRecibe = 7
+                            IdRecibe = 7,
+                            MonedaDestino = "EUR",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 2,
                             CantidadEnvia = 2000.75,
                             CantidadRecibe = 2560.96,
+                            CosteTransaccion = 20.75,
                             Fecha = new DateTime(2018, 6, 10, 14, 45, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 8,
-                            IdRecibe = 9
+                            IdRecibe = 9,
+                            MonedaDestino = "GBP",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 3,
                             CantidadEnvia = 1500.25,
                             CantidadRecibe = 1740.29,
+                            CosteTransaccion = 15.25,
                             Fecha = new DateTime(2020, 8, 21, 16, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 10,
-                            IdRecibe = 11
+                            IdRecibe = 11,
+                            MonedaDestino = "JPY",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 4,
                             CantidadEnvia = 2500.3299999999999,
                             CantidadRecibe = 3500.46,
+                            CosteTransaccion = 25.329999999999998,
                             Fecha = new DateTime(2011, 11, 30, 11, 15, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 12,
-                            IdRecibe = 13
+                            IdRecibe = 13,
+                            MonedaDestino = "CAD",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 5,
                             CantidadEnvia = 3000.6700000000001,
                             CantidadRecibe = 4260.9499999999998,
+                            CosteTransaccion = 30.670000000000002,
                             Fecha = new DateTime(2017, 2, 7, 8, 30, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 14,
-                            IdRecibe = 15
+                            IdRecibe = 15,
+                            MonedaDestino = "AUD",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 6,
                             CantidadEnvia = 4000.9899999999998,
                             CantidadRecibe = 2920.73,
+                            CosteTransaccion = 40.990000000000002,
                             Fecha = new DateTime(2021, 12, 25, 19, 45, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 16,
-                            IdRecibe = 17
+                            IdRecibe = 17,
+                            MonedaDestino = "CHF",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 7,
                             CantidadEnvia = 500.44999999999999,
                             CantidadRecibe = 790.58000000000004,
+                            CosteTransaccion = 5.4500000000000002,
                             Fecha = new DateTime(2012, 4, 18, 7, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 18,
-                            IdRecibe = 19
+                            IdRecibe = 19,
+                            MonedaDestino = "CNY",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 8,
                             CantidadEnvia = 600.35000000000002,
                             CantidadRecibe = 888.48000000000002,
+                            CosteTransaccion = 6.3499999999999996,
                             Fecha = new DateTime(2019, 7, 13, 13, 30, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 20,
-                            IdRecibe = 6
+                            IdRecibe = 6,
+                            MonedaDestino = "INR",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 9,
                             CantidadEnvia = 700.12,
                             CantidadRecibe = 1085.55,
+                            CosteTransaccion = 7.1200000000000001,
                             Fecha = new DateTime(2014, 5, 9, 10, 15, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 7,
-                            IdRecibe = 8
+                            IdRecibe = 8,
+                            MonedaDestino = "BRL",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 10,
                             CantidadEnvia = 800.75,
                             CantidadRecibe = 1240.9200000000001,
+                            CosteTransaccion = 8.75,
                             Fecha = new DateTime(2016, 9, 14, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 9,
-                            IdRecibe = 10
+                            IdRecibe = 10,
+                            MonedaDestino = "MXN",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 11,
                             CantidadEnvia = 900.63,
                             CantidadRecibe = 1350.3599999999999,
+                            CosteTransaccion = 9.6300000000000008,
                             Fecha = new DateTime(2022, 3, 12, 12, 30, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 11,
-                            IdRecibe = 12
+                            IdRecibe = 12,
+                            MonedaDestino = "ZAR",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 12,
                             CantidadEnvia = 100.90000000000001,
                             CantidadRecibe = 140.72999999999999,
+                            CosteTransaccion = 1.8999999999999999,
                             Fecha = new DateTime(2023, 1, 1, 6, 45, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 13,
-                            IdRecibe = 14
+                            IdRecibe = 14,
+                            MonedaDestino = "RUB",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 13,
                             CantidadEnvia = 200.33000000000001,
                             CantidadRecibe = 246.40000000000001,
+                            CosteTransaccion = 2.3300000000000001,
                             Fecha = new DateTime(2024, 6, 17, 17, 30, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 15,
-                            IdRecibe = 16
+                            IdRecibe = 16,
+                            MonedaDestino = "KRW",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 14,
                             CantidadEnvia = 300.5,
                             CantidadRecibe = 402.67000000000002,
+                            CosteTransaccion = 3.5,
                             Fecha = new DateTime(2013, 2, 25, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 17,
-                            IdRecibe = 18
+                            IdRecibe = 18,
+                            MonedaDestino = "SGD",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 15,
                             CantidadEnvia = 400.80000000000001,
                             CantidadRecibe = 548.34000000000003,
+                            CosteTransaccion = 4.7999999999999998,
                             Fecha = new DateTime(2020, 8, 11, 14, 15, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 19,
-                            IdRecibe = 20
+                            IdRecibe = 20,
+                            MonedaDestino = "HKD",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 16,
                             CantidadEnvia = 5000.9499999999998,
                             CantidadRecibe = 7250.4399999999996,
+                            CosteTransaccion = 50.950000000000003,
                             Fecha = new DateTime(2010, 12, 31, 11, 30, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 6,
-                            IdRecibe = 7
+                            IdRecibe = 7,
+                            MonedaDestino = "NZD",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 17,
                             CantidadEnvia = 3500.4499999999998,
                             CantidadRecibe = 4270.8699999999999,
+                            CosteTransaccion = 35.450000000000003,
                             Fecha = new DateTime(2017, 11, 5, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 8,
-                            IdRecibe = 9
+                            IdRecibe = 9,
+                            MonedaDestino = "SEK",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 18,
                             CantidadEnvia = 6000.25,
                             CantidadRecibe = 7680.3500000000004,
+                            CosteTransaccion = 60.25,
                             Fecha = new DateTime(2015, 3, 24, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 10,
-                            IdRecibe = 11
+                            IdRecibe = 11,
+                            MonedaDestino = "NOK",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 19,
                             CantidadEnvia = 4200.6700000000001,
                             CantidadRecibe = 4980.1199999999999,
+                            CosteTransaccion = 42.670000000000002,
                             Fecha = new DateTime(2019, 5, 22, 7, 30, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 12,
-                            IdRecibe = 13
+                            IdRecibe = 13,
+                            MonedaDestino = "DKK",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 20,
                             CantidadEnvia = 4800.8500000000004,
                             CantidadRecibe = 6960.3999999999996,
+                            CosteTransaccion = 48.850000000000001,
                             Fecha = new DateTime(2011, 10, 10, 20, 15, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 14,
-                            IdRecibe = 15
+                            IdRecibe = 15,
+                            MonedaDestino = "PLN",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 21,
                             CantidadEnvia = 5500.25,
                             CantidadRecibe = 8030.5,
+                            CosteTransaccion = 55.25,
                             Fecha = new DateTime(2021, 7, 18, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 16,
-                            IdRecibe = 17
+                            IdRecibe = 17,
+                            MonedaDestino = "HUF",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 22,
                             CantidadEnvia = 3100.3400000000001,
                             CantidadRecibe = 4327.1499999999996,
+                            CosteTransaccion = 31.34,
                             Fecha = new DateTime(2018, 4, 2, 15, 45, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 18,
-                            IdRecibe = 19
+                            IdRecibe = 19,
+                            MonedaDestino = "CZK",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 23,
                             CantidadEnvia = 2900.75,
                             CantidadRecibe = 3357.8600000000001,
+                            CosteTransaccion = 29.75,
                             Fecha = new DateTime(2014, 11, 19, 9, 15, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 20,
-                            IdRecibe = 6
+                            IdRecibe = 6,
+                            MonedaDestino = "TRY",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 24,
                             CantidadEnvia = 1700.4400000000001,
                             CantidadRecibe = 2400.6300000000001,
+                            CosteTransaccion = 17.440000000000001,
                             Fecha = new DateTime(2023, 8, 30, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 7,
-                            IdRecibe = 8
+                            IdRecibe = 8,
+                            MonedaDestino = "ILS",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 25,
                             CantidadEnvia = 650.91999999999996,
                             CantidadRecibe = 995.71000000000004,
+                            CosteTransaccion = 6.9199999999999999,
                             Fecha = new DateTime(2012, 6, 5, 8, 30, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 9,
-                            IdRecibe = 10
+                            IdRecibe = 10,
+                            MonedaDestino = "MYR",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 26,
                             CantidadEnvia = 4500.5500000000002,
                             CantidadRecibe = 6120.8800000000001,
+                            CosteTransaccion = 45.549999999999997,
                             Fecha = new DateTime(2020, 1, 27, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 11,
-                            IdRecibe = 12
+                            IdRecibe = 12,
+                            MonedaDestino = "THB",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 27,
                             CantidadEnvia = 3800.6799999999998,
                             CantidadRecibe = 4346.7799999999997,
+                            CosteTransaccion = 38.68,
                             Fecha = new DateTime(2022, 4, 8, 11, 15, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 13,
-                            IdRecibe = 14
+                            IdRecibe = 14,
+                            MonedaDestino = "IDR",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 28,
                             CantidadEnvia = 2700.4499999999998,
                             CantidadRecibe = 3159.52,
+                            CosteTransaccion = 27.449999999999999,
                             Fecha = new DateTime(2013, 9, 15, 13, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 15,
-                            IdRecibe = 16
+                            IdRecibe = 16,
+                            MonedaDestino = "PHP",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 29,
                             CantidadEnvia = 1900.3399999999999,
                             CantidadRecibe = 2652.8699999999999,
+                            CosteTransaccion = 19.34,
                             Fecha = new DateTime(2016, 12, 22, 15, 45, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 17,
-                            IdRecibe = 18
+                            IdRecibe = 18,
+                            MonedaDestino = "VND",
+                            MonedaOrigen = "USD"
                         },
                         new
                         {
                             Id = 30,
                             CantidadEnvia = 5100.1499999999996,
                             CantidadRecibe = 6120.5699999999997,
+                            CosteTransaccion = 51.149999999999999,
                             Fecha = new DateTime(2024, 10, 18, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             IdEnvia = 19,
-                            IdRecibe = 20
+                            IdRecibe = 20,
+                            MonedaDestino = "EGP",
+                            MonedaOrigen = "USD"
                         });
                 });
 
             modelBuilder.Entity("ApiClases_20270722_Proyecto.Entidades.Cliente", b =>
                 {
                     b.HasOne("ApiClases_20270722_Proyecto.Entidades.Pais", "Pais")
-                        .WithMany("Clientes")
+                        .WithMany()
                         .HasForeignKey("PaisId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Pais");
-                });
-
-            modelBuilder.Entity("ApiClases_20270722_Proyecto.Entidades.Pais", b =>
-                {
-                    b.Navigation("Clientes");
                 });
 #pragma warning restore 612, 618
         }
