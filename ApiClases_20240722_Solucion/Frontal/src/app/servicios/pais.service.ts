@@ -17,6 +17,9 @@ export class PaisService {
       catchError(this.handleError)
     );
   }
+  getPaises(): Observable<IPais[]> {
+    return this.http.get<IPais[]>(this.url);
+  }
 
 
   private handleError(err: HttpErrorResponse) {
@@ -40,6 +43,7 @@ export class PaisService {
 export interface IPais {
 
   constructor(): void;
+  id: number;
   nombre: string;
   divisa: string;
   iso3: string;

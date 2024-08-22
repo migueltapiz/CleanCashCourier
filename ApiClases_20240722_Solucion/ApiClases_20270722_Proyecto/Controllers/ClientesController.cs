@@ -15,7 +15,7 @@ public class ClientesController : ControllerBase
     private readonly UserManager<UsuarioAplicacion> _userManager;
     private readonly SignInManager<UsuarioAplicacion> _signInManager;
     public ClientesController(
-        IRepositorioGenerico<Cliente> clienteRepositorio, 
+        IRepositorioGenerico<Cliente> clienteRepositorio,
         IRepositorioGenerico<Pais> paisRepositorio,
         IServicioToken servicioToken,
         IMapper mapper,
@@ -31,13 +31,15 @@ public class ClientesController : ControllerBase
         _signInManager = signInManager;
     }
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ClienteDto>>> Get() {
+    public async Task<ActionResult<IEnumerable<ClienteDto>>> Get()
+    {
         return Ok(_mapper.Map<IEnumerable<ClienteDto>>(await _clienteRepositorio.Obtener()));
     }
 
 
     [HttpGet("{id}", Name = "getCliente")]
-    public ActionResult<ClienteDto> Get(int id) {
+    public ActionResult<ClienteDto> Get(int id)
+    {
         var cliente = _clienteRepositorio.ObtenerPorId(id);
         var finalClienteDto = _mapper.Map<ClienteDto>(cliente);
         return finalClienteDto == null ? NotFound() : Ok(finalClienteDto);
@@ -74,6 +76,8 @@ public class ClientesController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] ModeloRegistro modelo)
     {
+        System.Diagnostics.Debug.WriteLine("MODELO QUE LLEGA");
+        System.Diagnostics.Debug.WriteLine(modelo);
         var usuario = new UsuarioAplicacion
         {
             Nombre = modelo.Nombre,
@@ -107,26 +111,29 @@ public class ClientesController : ControllerBase
         System.Diagnostics.Debug.WriteLine(addClienteResult);
 
         var addResult = await _userManager.AddToRoleAsync(usuario, "Cliente");
-        if (!addResult.Succeeded){
+        if (!addResult.Succeeded)
+        {
             return BadRequest(new { Message = "Fallo al añadir el nuevo rol." });
         }
         return Ok();
         //Generar el token y devolverlo
         var token = _servicioToken.GenerateJwtToken(usuario);
-        return Ok(new { Token = token});
+        return Ok(new { Token = token });
         //return await _clienteRepositorio.GuardarCambios() ? Ok(new { Token = token }) : BadRequest(new {Message = "Error al guardar en la tabla Clientes"});
 
     }
 
     [HttpPut]
-    public async Task<ActionResult<ClienteDto>> PutAsync(int id, ClienteDto cliente) {
+    public async Task<ActionResult<ClienteDto>> PutAsync(int id, ClienteDto cliente)
+    {
         var finalClienteActualizado = _mapper.Map<Cliente>(cliente);
         _clienteRepositorio.Actualizar(id, finalClienteActualizado);
         return await _clienteRepositorio.GuardarCambios() ? Ok("Cliente actualizado correctamente") : BadRequest();
     }
 
     [HttpDelete]
-    public async Task<ActionResult<ClienteDto>> DeleteAsync(int id) {
+    public async Task<ActionResult<ClienteDto>> DeleteAsync(int id)
+    {
         _clienteRepositorio.Borrar(id);
         return await _clienteRepositorio.GuardarCambios() ? Ok("Cliente borrado correctamente") : BadRequest();
     }
