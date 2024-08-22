@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable } from '@angular/core';
-import { Observable, catchError, tap, throwError } from "rxjs";
+import { Observable, catchError, map, tap, throwError } from "rxjs";
 import { ITransaccion, Transaccion } from "./transaccion";
 
 @Injectable({
@@ -9,7 +9,7 @@ import { ITransaccion, Transaccion } from "./transaccion";
 export class TransaccionService {
   // private clientesUrl = 'api/clientes/clientes.json';
   private url = 'https://localhost:7138/api/Clientes';
-
+  private urlConversor = 'https://api.getgeoapi.com/v2/currency/convert?api_key=fa412676602886da01c7aab7dc3ffc8645840ace&from='
   constructor(private http: HttpClient) { }
 
   /*getClientes(): Observable<ICliente[]> {
@@ -26,6 +26,14 @@ export class TransaccionService {
     return this.http.post<Transaccion>(urlConId, transaccion, { headers })
       .pipe(
         tap(data => console.log('Transaccion creada: ', JSON.stringify(data))),
+        catchError(this.handleError)
+      );
+  }
+  hacerConversion(divisaOrigen: string, divisaDestino: string): Observable<number> {
+    const urlConId = `${this.urlConversor}${divisaOrigen}&to=${divisaDestino}`;
+    return this.http.get<any>(urlConId) // Cambia el tipo a 'any' para manejar la respuesta completa
+      .pipe(
+        map(response => response.rates[divisaDestino].rate), // Extrae el ratio
         catchError(this.handleError)
       );
   }
