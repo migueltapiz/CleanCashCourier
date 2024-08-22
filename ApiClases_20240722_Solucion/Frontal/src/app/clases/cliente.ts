@@ -1,4 +1,4 @@
-export class Cliente {
+/* export class Cliente {
   id!: number;
   nombre!: string;
   apellido!: string;
@@ -6,4 +6,4 @@ export class Cliente {
   empleo?: string;
   paisId!: number;
   email: any;
-}
+} */

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+/* import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Cliente } from '../clases/cliente'; // Asegúrate de tener una clase Cliente
@@ -18,4 +18,4 @@ export class ClienteService {
   }
 
   // Otros métodos relacionados con clientes
-}
+} */
