@@ -25,7 +25,7 @@ public class ClienteRepositorioBBDD<T> : IRepositorioGenerico<T> where T : Clien
         return await _contexto.SaveChangesAsync() > 0;
     }
 
-    Task<List<T>> IRepositorioGenerico<T>.Obtener() => throw new NotImplementedException(); // No hay que obtener todos los usuarios de golpe y sin filtros
+    public async Task<List<T>> Obtener() => await _contexto.Set<T>().Include(c => c.Pais).ToListAsync();
 
     public T ObtenerPorId(int id) => _contexto.Set<T>().FirstOrDefault(c => c.Id == id);
 

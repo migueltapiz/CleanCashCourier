@@ -14,10 +14,11 @@ public class ClientesController : ControllerBase
                throw new ArgumentNullException(nameof(mapper));
     }
 
-    /* [HttpGet] // SE ELIMINA POR EL TODO EN EL QUE SE INDICA QUE EN LA BASE DE DATOS NO PODEMOS HACER EL GET DE TODOS LOS CLIENTES
+
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<ClienteDto>>> Get() {
             return Ok(_mapper.Map<IEnumerable<ClienteDto>>(await repositorio.Obtener()));
-    } */
+    }
 
 
     [HttpGet("{id}", Name = "getCliente")]
