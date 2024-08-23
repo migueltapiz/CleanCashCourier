@@ -1,4 +1,5 @@
 ﻿using ApiClases_20270722_Proyecto.ContextoCarpeta;
+using System.Data;
 
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
@@ -10,6 +11,30 @@ public class PaisRepositorioBBDD<T>: IRepositorioGenerico<T> where T:Pais {
         _contexto = contexto;
     }
 
+    public async Task<List<string>> ObtenerPaisesDesdeProcedimiento()
+    {
+        var paises = new List<string>();
+
+        using (var connection = _contexto.Database.GetDbConnection())
+        {
+            await connection.OpenAsync();
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "dbo.procedure1";  // Nombre del procedimiento almacenado
+                command.CommandType = CommandType.StoredProcedure;
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        paises.Add(reader.GetString(0));  // Asumiendo que el nombre del país está en la primera columna
+                    }
+                }
+            }
+        }
+
+        return paises;
+    }
     public void Actualizar(int id, T dato) => throw new NotImplementedException();
     public void Agregar(T dato) => throw new NotImplementedException();
     public void Borrar(int id) => throw new NotImplementedException();
