@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../servicios/user.service';
 import { Usuario } from '../interfaces/usuario.interface';
 import { RegistroCliente } from '../interfaces/registroCliente';
 import { Route, Router } from '@angular/router';
+import { IPais, PaisService } from '../servicios/pais.service';
 
 @Component({
   selector: 'app-registro',
@@ -11,13 +12,28 @@ import { Route, Router } from '@angular/router';
   styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent implements OnInit {
+  @ViewChild('dropdownMenu') dropdownMenu!: ElementRef;
+  @ViewChildren('paisItem') paisItems!: QueryList<ElementRef>;
 
   registroForm!: FormGroup;
   errorMessage: string | null = null; // Mensaje de error general
+  paises: IPais[] = [];
+  paisesFiltrado: IPais[] = [];
+  paisSeleccionado: number = -1;
+  isDropdownVisible = false;
 
-  constructor(private fb: FormBuilder, private miServicio: UserService, private router : Router) { }
 
+
+  constructor(private fb: FormBuilder, private userService: UserService, private paisService: PaisService, private router: Router) { }
+  showDropdown() {
+    this.isDropdownVisible = true;
+  }
+
+  hideDropdown() {
+    this.isDropdownVisible = false;
+  }
   ngOnInit(): void {
+    this.paisSeleccionado = 1;
     this.registroForm = this.fb.group({
       Nombre: ['', [Validators.required, Validators.minLength(3)]],
       Apellido: ['', [Validators.required, Validators.minLength(3)]],
@@ -30,6 +46,13 @@ export class RegistroComponent implements OnInit {
       FechaNac: ['', Validators.required]
     }, {
       validator: this.passwordMatchValidator('Contraseña', 'Contraseña2')
+    });
+    this.paisService.getPaises().subscribe({
+      next: paises => {
+        this.paises = paises;
+        this.paisesFiltrado = paises;
+      },
+      error: err => this.errorMessage = err
     });
   }
 
@@ -62,7 +85,7 @@ export class RegistroComponent implements OnInit {
     }
 
     const fechaNac = new Date(this.registroForm.value.FechaNac);
-
+    this.paisSeleccionado = this.paises.find(pais => pais.id === this.paisSeleccionado) == undefined ? -1 : this.paisSeleccionado;
     const usuario: Usuario = {
       Email: this.registroForm.value.Correo,
       Password: this.registroForm.value.Contraseña,
@@ -79,15 +102,14 @@ export class RegistroComponent implements OnInit {
       Apellido: this.registroForm.value.Apellido,
       Email: this.registroForm.value.Correo,
       Contrasena: this.registroForm.value.Contraseña,
-      //TODO: BUSCAR EN LA API DE PAISES EL NOMBRE ASOCIADO AL PAIS
-      PaisId: 78,
+      PaisId: this.paisSeleccionado,
       Empleo: this.registroForm.value.Empleo,
       FechaNacimiento: fechaNac
     }
     console.log(usuario)
     console.log(clienteRegistro)
 
-    this.miServicio.registrarUsuario(clienteRegistro).subscribe(
+    this.userService.registrarUsuario(clienteRegistro).subscribe(
       next => {
         console.log('Usuario registrado exitosamente', next);
         this.router.navigate(['/login']);
@@ -140,5 +162,39 @@ export class RegistroComponent implements OnInit {
     }
 
     alert(errorMessage);
+  }
+
+  selectPais(paisNombre: string) {
+    console.log(paisNombre);
+    //this.registroForm.value.PaisNombre = paisNombre;
+    this.registroForm.patchValue({ PaisNombre: paisNombre })
+    //this.listPaisesFilter = paisNombre;
+
+    var resultado = this.paises.find(pais => pais.nombre === paisNombre)?.id;
+    if (resultado != undefined) {
+      this.paisSeleccionado = resultado;
+      this.hideDropdown();
+    }
+  }
+
+
+
+
+  filterPaises(event: Event) {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    this.paisesFiltrado = this.paises.filter(pais =>
+      pais.nombre.toLowerCase().startsWith(query)
+    );
+
+    // Si hay un elemento coincidente, desplazar la vista hacia él
+    if (this.paisesFiltrado.length > 0) {
+      setTimeout(() => {
+        const firstMatch = this.paisItems.first;
+        if (firstMatch) {
+          firstMatch.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 0);
+    }
+
   }
 }

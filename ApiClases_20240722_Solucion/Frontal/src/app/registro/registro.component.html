@@ -59,10 +59,24 @@
       </div>
 
       <!-- Campos adicionales -->
-      <div>
+      <div class="relative w-full max-w-sm">
         <label for="pais" class="text-gray-800 text-sm mb-2 block">Pais</label>
-        <input id="pais" name="pais" type="text" formControlName="PaisNombre" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Introduce tu pais" />
+        <input id="pais" name="pais" type="text" formControlName="PaisNombre" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Introduce tu pais" (focus)="showDropdown()" (input)="filterPaises($event)" />
+        <ul *ngIf="isDropdownVisible" id="dropdownMenu"
+            class='absolute block shadow-lg bg-white py-2 px-2 z-[1000] min-w-full w-max rounded max-h-96 overflow-auto'>
+
+
+          <li *ngFor="let pais of paisesFiltrado; let i = index" [attr.data-index]="i"
+              class='py-2.5 px-4 hover:bg-blue-50 rounded text-black text-sm cursor-pointer' (click)="selectPais(pais.nombre)">
+            <div class="flex items-center" #paisItem>
+              <!--<img [src]="'https://flagcdn.com/16x12/' + pais.iso3 + '.png'" class="w-6 mr-3" />-->
+              {{ pais.nombre }}
+            </div>
+          </li>
+        </ul>
       </div>
+
+
       <div>
         <label for="empleo" class="text-gray-800 text-sm mb-2 block">Empleo</label>
         <input id="empleo" name="empleo" type="text" formControlName="Empleo" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Introduce tu ocupacion" />
@@ -75,6 +89,9 @@
         </div>
       </div>
     </div>
+
+
+
 
     <input type="hidden" formControlName="Rol" value="Client">
 

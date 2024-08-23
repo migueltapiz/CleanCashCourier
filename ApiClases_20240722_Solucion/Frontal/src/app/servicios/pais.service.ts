@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, tap, throwError } from 'rxjs';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +11,14 @@ export class PaisService {
   private url = 'https://localhost:7138/api/Paises';
   constructor(private http: HttpClient) { }
 
-  getPaisId(id:number): Observable<IPais> {
+  getPaisId(id: number): Observable<IPais> {
     return this.http.get<IPais>(`${this.url}/${id}`).pipe(
       tap(data => data),
       catchError(this.handleError)
     );
   }
-
-  getNombresPaises(): Observable<string[]> {
-    return this.http.get<IPais[]>(this.url).pipe(
-      map(response => response.map(pais => pais.nombre)),
-      catchError(this.handleError)
-    );
+  getPaises(): Observable<IPais[]> {
+    return this.http.get<IPais[]>(this.url);
   }
 
 
@@ -47,6 +43,7 @@ export class PaisService {
 export interface IPais {
 
   constructor(): void;
+  id: number;
   nombre: string;
   divisa: string;
   iso3: string;

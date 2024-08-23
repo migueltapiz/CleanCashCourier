@@ -4,11 +4,11 @@ export class ICliente {
   }
   id!: number;
   nombre!: string;
-  apellidos!: string;
+  apellido!: string;
   usuario!: string;
   pais!: string;
   fechaNacimiento!: Date;
   trabajo?: string;  // Asegúrate de incluir todas las propiedades necesarias
-  correo?: string;   // Agrega la propiedad correo aquí
+  email?: string;   // Agrega la propiedad correo aquí
 }
 

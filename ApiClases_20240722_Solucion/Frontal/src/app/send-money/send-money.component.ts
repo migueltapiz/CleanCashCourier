@@ -79,6 +79,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
         
       } else {
         this.currencyRecibida = '';
+        this.factorConversion = 0;
       }
       clearTimeout(this.timeout);
     }, 1000);

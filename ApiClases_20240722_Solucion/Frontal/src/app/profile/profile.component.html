@@ -1,54 +1,70 @@
-<div class="perfil-container" *ngIf="cliente">
-  <h2>Perfil del Usuario</h2>
-
-  <!-- Nombre -->
-  <div class="perfil-field">
-    <label for="nombre">Nombre:</label>
-    <span>{{ cliente.nombre }}</span>
+<div class="max-w-4xl mx-auto font-[sans-serif] p-6">
+  <div class="text-center mb-16">
+    
+    <h1 class="text-gray-800 text-base font-semibold mt-6">Perfil del usuario</h1>
   </div>
 
-  <!-- Apellidos -->
-  <div class="perfil-field">
-    <label for="apellidos">Apellidos:</label>
-    <span>{{ cliente.apellidos }}</span>
-  </div>
+  <form [formGroup]="perfilForm" (ngSubmit)="onSubmit()">
+    <!-- Mostrar alerta de error general si existe -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
 
-  <!-- Correo -->
-  <div class="perfil-field">
-    <label for="correo">Correo:</label>
-    <span>{{ cliente.correo }}</span>
-  </div>
+    <div class="grid sm:grid-cols-2 gap-8">
+      <div>
+        <label for="nombre" class="text-gray-800 text-sm mb-2 block">Nombre: {{cliente.nombre}}</label>
+      </div>
+      <div>
+        <label for="Apellido" class="text-gray-800 text-sm mb-2 block">Apellido: {{cliente.apellido}}</label>
 
-  <!-- Usuario (No Editable) -->
-  <div class="perfil-field">
-    <label for="usuario">Usuario:</label>
-    <span>{{ cliente.usuario }}</span>
-  </div>
+      </div>
+      <div>
+        <label for="Email" class="text-gray-800 text-sm mb-2 block">Correo: {{cliente.email}}</label>
 
-  <!-- País (Editable) -->
-  <div class="perfil-field editable">
-    <label for="pais">País:</label>
-    <select id="pais" [(ngModel)]="cliente.pais" (ngModelChange)="onFieldChange()" [disabled]="!isEditing.pais">
-      <option *ngFor="let pais of paises" [value]="pais">{{ pais }}</option>
-    </select>
-    <span *ngIf="!isEditing.pais">{{ cliente.pais }}</span>
-    <button (click)="enableEdit('pais')" *ngIf="!isEditing.pais">Editar</button>
-    <button (click)="disableEdit('pais')" *ngIf="isEditing.pais">Guardar</button>
-  </div>
+      </div>
+      <div>
+        <label for="fecha" class="text-gray-800 text-sm mb-2 block">
+          Fecha de nacimiento: {{cliente.fechaNacimiento | date:'dd/MM/yyyy'}}
+        </label>
+        
+      </div>
 
-  <!-- Ocupación (Editable) -->
-  <div class="perfil-field editable">
-    <label for="trabajo">Ocupación:</label>
-    <select id="trabajo" [(ngModel)]="cliente.trabajo" (ngModelChange)="onFieldChange()" [disabled]="!isEditing.trabajo">
-      <option *ngFor="let trabajo of trabajos" [value]="trabajo">{{ trabajo }}</option>
-    </select>
-    <span *ngIf="!isEditing.trabajo">{{ cliente.trabajo }}</span>
-    <button (click)="enableEdit('trabajo')" *ngIf="!isEditing.trabajo">Editar</button>
-    <button (click)="disableEdit('trabajo')" *ngIf="isEditing.trabajo">Guardar</button>
-  </div>
+      <!-- Campos adicionales -->
+      <div class="relative w-full max-w-sm">
+        <label for="pais" class="text-gray-800 text-sm mb-2 block">Pais</label>
+        <input id="pais" name="pais" type="text" formControlName="PaisNombre" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Introduce tu pais" (focus)="showDropdownPais()" (input)="filterPaises($event)" />
+        <ul *ngIf="isDropdownPaisesVisible" id="dropdownMenuPais"
+            class='absolute block shadow-lg bg-white py-2 px-2 z-[1000] min-w-full w-max rounded max-h-96 overflow-auto'>
+          <li *ngFor="let pais of paisesFiltrado; let i = index" [attr.data-index]="i"
+              class='py-2.5 px-4 hover:bg-blue-50 rounded text-black text-sm cursor-pointer' (click)="selectPais(pais.nombre)">
+            <div class="flex items-center" #paisItem>
+              <!--<img [src]="'https://flagcdn.com/16x12/' + pais.iso3 + '.png'" class="w-6 mr-3" />-->
+              {{ pais.nombre }}
+            </div>
+          </li>
+        </ul>
+      </div>
 
-  <!-- Botón Guardar Cambios -->
-  <div class="perfil-field">
-    <button class="btn-save" [disabled]="!isAnyFieldEdited" (click)="saveChanges()">Guardar Cambios</button>
-  </div>
+
+      <div class="relative w-full max-w-sm">
+        <label for="empleo" class="text-gray-800 text-sm mb-2 block">Empleo</label>
+        <input id="empleo" name="empleo" type="text" formControlName="Empleo" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Introduce tu ocupacion" (focus)="showDropdownEmpleo()" (input)="filterEmpleos($event)" />
+        <ul *ngIf="isDropdownEmpleosVisible" id="dropdownMenuEmpleo"
+            class='absolute block shadow-lg bg-white py-2 px-2 z-[1000] min-w-full w-max rounded max-h-96 overflow-auto'>
+          <li *ngFor="let empleo of empleosFiltrados; let i = index" [attr.data-index]="i"
+              class='py-2.5 px-4 hover:bg-blue-50 rounded text-black text-sm cursor-pointer' (click)="selectEmpleo(empleo)">
+            <div class="flex items-center" #empleoItem>
+              {{ empleo }}
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="!mt-12">
+      <button type="submit" class="py-3.5 px-7 text-sm font-semibold tracking-wider rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+        Modificar Datos
+      </button>
+    </div>
+  </form>
 </div>
