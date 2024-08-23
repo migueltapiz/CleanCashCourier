@@ -24,12 +24,11 @@ export class UserService {
 
   autenticarUsuario(email: string, password: string, remember: boolean): Observable<any> {
     remember = false;
-    return this.http.post<any>(`${this.URL}Account/login`, { email, password, remember });
+    return this.http.post<any>(`${this.URL}Clientes/login`, { email, password, remember });
   }
 
   registrarUsuario(usuario: any): Observable<any> {
-    return this.http.post<any>(`${this.URL}Account/register`, usuario);
-    //return /*this.http.post<any>(`${this.URL}Account/register`, usuario)*/;
+    return this.http.post<any>(`${this.URL}Clientes/register`, usuario);
   }
 
   obtenerPaisIdPorNombre(nombre: string): Observable<{ id: number }> {
