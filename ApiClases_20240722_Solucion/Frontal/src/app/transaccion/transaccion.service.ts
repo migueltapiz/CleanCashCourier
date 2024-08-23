@@ -59,8 +59,10 @@ export class TransaccionService {
     );
   }
 
+
   getTransaccionesFiltradas(filtros: any,id_cliente:number): Observable<Transaccion[]> {
     let urlConFiltros = `${this.url}/${id_cliente}/Transacciones`;
+
 
     const parametros = [];
 

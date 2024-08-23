@@ -1,5 +1,4 @@
 ﻿
-
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
 public class TransaccionRepositorioBBDD<T> : IRepositorioGenerico<T> where T : Transaccion
@@ -26,7 +25,6 @@ public class TransaccionRepositorioBBDD<T> : IRepositorioGenerico<T> where T : T
         _contexto.Transacciones.Remove(transaccion);
     }
 
-
     public async Task<bool> GuardarCambios() {
 
         return await _contexto.SaveChangesAsync() > 0;
@@ -38,37 +36,57 @@ public class TransaccionRepositorioBBDD<T> : IRepositorioGenerico<T> where T : T
 
     public T ObtenerPorNombre(string nombre) => throw new NotImplementedException();
 
-    public Task<List<T>> ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) {
+    public async Task<List<T>> ObtenerTodosFiltrado(FiltroTransacciones filtro) {
+
 
         var consulta = _contexto.Set<T>().Where(transaccion => transaccion.IdEnvia == id_cliente || transaccion.IdRecibe == id_cliente);
 
-        if(fechaInicio != null)
+        if (filtro.IdCliente > 0)
         {
-            consulta = consulta.Where(transaccion => fechaInicio <= transaccion.Fecha);
-        }
-        if(fechaFin != null)
-        {
-            consulta = consulta.Where(transaccion => transaccion.Fecha <= fechaFin);
-        }
-        if(cantidadEnviadaMin != null)
-        {
-            consulta = consulta.Where(transaccion => cantidadEnviadaMin <= transaccion.CantidadEnvia);
-        }
-        if(cantidadEnviadaMax != null)
-        {
-            consulta = consulta.Where(transaccion => cantidadEnviadaMax >= transaccion.CantidadEnvia);
-        }
-        if(cantidadRecibidaMin != null)
-        {
-            consulta = consulta.Where(transaccion => cantidadRecibidaMin <= transaccion.CantidadRecibe);
-        }
-        if(cantidadRecibidaMax != null)
-        {
-            consulta = consulta.Where(transaccion => cantidadRecibidaMax >= transaccion.CantidadRecibe);
+            consulta = consulta.Where(transaccion =>
+                (transaccion as Transaccion).IdEnvia == filtro.IdCliente ||
+                (transaccion as Transaccion).IdRecibe == filtro.IdCliente);
         }
 
-        return consulta.ToListAsync();
+        if (filtro.FechaInicio.HasValue)
+        {
+            consulta = consulta.Where(transaccion =>
+                (transaccion as Transaccion).Fecha >= filtro.FechaInicio.Value);
+        }
+
+        if (filtro.FechaFin.HasValue)
+        {
+            consulta = consulta.Where(transaccion =>
+                (transaccion as Transaccion).Fecha <= filtro.FechaFin.Value);
+        }
+
+        if (filtro.CantidadEnviadaMin.HasValue)
+        {
+            consulta = consulta.Where(transaccion =>
+                (transaccion as Transaccion).CantidadEnvia >= filtro.CantidadEnviadaMin.Value);
+        }
+
+        if (filtro.CantidadEnviadaMax.HasValue)
+        {
+            consulta = consulta.Where(transaccion =>
+                (transaccion as Transaccion).CantidadEnvia <= filtro.CantidadEnviadaMax.Value);
+        }
+
+        if (filtro.CantidadRecibidaMin.HasValue)
+        {
+            consulta = consulta.Where(transaccion =>
+                (transaccion as Transaccion).CantidadRecibe >= filtro.CantidadRecibidaMin.Value);
+        }
+
+        if (filtro.CantidadRecibidaMax.HasValue)
+        {
+            consulta = consulta.Where(transaccion =>
+                (transaccion as Transaccion).CantidadRecibe <= filtro.CantidadRecibidaMax.Value);
+        }
+
+        return await consulta.ToListAsync();
     }
+
 
     public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id) {
         IQueryable<Transaccion> consulta = _contexto.Transacciones.Where(t => t.IdEnvia == user_id || t.IdRecibe == user_id);

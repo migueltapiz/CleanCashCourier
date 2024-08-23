@@ -15,20 +15,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-//var dondeSacoDatos = "BBDD";
-//if(dondeSacoDatos == "memoria")
-//{
-//    //builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioMemoria>();
-//}
-//else if(dondeSacoDatos == "csv")
-//{
 
-//    //builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioCsv>();
-//}
-//else if(dondeSacoDatos == "BBDD") { 
-//    //TODO : considerar cambiarlo por scope
 
-//}
+var dondeSacoDatos = "BBDD";
+if(dondeSacoDatos == "memoria")
+{
+    //builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioMemoria>();
+}
+else if(dondeSacoDatos == "csv")
+{
+
+    //builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioCsv>();
+}
+else if(dondeSacoDatos == "BBDD") { 
 
 builder.Services.AddScoped<IRepositorioGenerico<Transaccion>, TransaccionRepositorioBBDD<Transaccion>>();
 builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();

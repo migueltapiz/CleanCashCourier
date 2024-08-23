@@ -30,10 +30,12 @@ public class ClientesController : ControllerBase
         _userManager = userManager;
         _signInManager = signInManager;
     }
+
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ClienteDto>>> Get() {
-        return Ok(_mapper.Map<IEnumerable<ClienteDto>>(await _clienteRepositorio.Obtener()));
-    }
+       return Ok(_mapper.Map<IEnumerable<ClienteDto>>(await _clienteRepositorio.Obtener()));
+   }
 
 
     [HttpGet("{id}", Name = "getCliente")]
@@ -42,6 +44,7 @@ public class ClientesController : ControllerBase
         var finalClienteDto = _mapper.Map<ClienteDto>(cliente);
         return finalClienteDto == null ? NotFound() : Ok(finalClienteDto);
     }
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] ModeloInicioSesion modelo)
     {
@@ -63,17 +66,7 @@ public class ClientesController : ControllerBase
 
         return Unauthorized();
     }
-
-
-    //[HttpPost]
-    //public async Task<ActionResult<ClienteDto>> PostAsync(ClienteDto cliente) {
-    //    var finalClienteNuevo = _mapper.Map<ClienteDto, Cliente>(cliente);
-    //    repositorio.Agregar(finalClienteNuevo);
-
-    //    return await repositorio.GuardarCambios() ? Ok("Cliente añadido correctamente") : BadRequest();
-
-    //}
-
+//TODO: Cuando se implemente el CLienteDtoBase, cambiaremos el Dto con el que trabajamos
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] ModeloRegistro modelo)
     {
@@ -113,19 +106,23 @@ public class ClientesController : ControllerBase
             return BadRequest(new { Message = "Fallo al añadir el nuevo rol." });
         }
         return Ok();
-
     }
+
 
     [HttpPut]
-    public async Task<ActionResult<ClienteDto>> PutAsync(int id, ClienteDto cliente) {
+    public async Task<ActionResult<ClienteDto>> PutAsync(int id, ClienteDto cliente)
+    {
         var finalClienteActualizado = _mapper.Map<Cliente>(cliente);
         _clienteRepositorio.Actualizar(id, finalClienteActualizado);
-        return await _clienteRepositorio.GuardarCambios() ? Ok("Cliente actualizado correctamente") : BadRequest();
+
+        return await repositorio.GuardarCambios() ? NoContent() : BadRequest();
     }
+
 
     [HttpDelete]
     public async Task<ActionResult<ClienteDto>> DeleteAsync(int id) {
         _clienteRepositorio.Borrar(id);
-        return await _clienteRepositorio.GuardarCambios() ? Ok("Cliente borrado correctamente") : BadRequest();
+        return await _clienteRepositorio.GuardarCambios() ? NoContent() : BadRequest();
+    }
     }
 }

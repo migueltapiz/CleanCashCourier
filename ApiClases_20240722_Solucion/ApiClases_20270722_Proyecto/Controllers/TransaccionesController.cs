@@ -18,15 +18,40 @@ public class TransaccionesController : ControllerBase{
         _mapper = mapper ??
                throw new ArgumentNullException(nameof(mapper));
     }
+
+
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TransaccionDto>>> GetAsync([FromRoute]int id_cliente,[FromQuery] DateTime? fechaInicio, [FromQuery] DateTime? fechaFin, [FromQuery] double? cantidadEnviadaMin, [FromQuery] double? cantidadEnviadaMax, [FromQuery] double? cantidadRecibidaMin, [FromQuery] double? cantidadRecibidaMax) {
-        return Ok(_mapper.Map<IEnumerable<TransaccionDto>>(await repositorio.ObtenerTodosFiltrado(id_cliente,fechaInicio,fechaFin,cantidadEnviadaMin, cantidadEnviadaMax, cantidadRecibidaMin, cantidadRecibidaMax)));
+    public async Task<ActionResult<IEnumerable<TransaccionDto>>> GetAsync([FromRoute] int id_cliente,[FromQuery] DateTime? fechaInicio,[FromQuery] DateTime? fechaFin,[FromQuery] double? cantidadEnviadaMin,[FromQuery] double? cantidadEnviadaMax,[FromQuery] double? cantidadRecibidaMin,[FromQuery] double? cantidadRecibidaMax)
+    {
+        var filtro = new FiltroTransacciones
+        {
+            IdCliente = id_cliente,
+            FechaInicio = fechaInicio,
+            FechaFin = fechaFin,
+            CantidadEnviadaMin = cantidadEnviadaMin,
+            CantidadEnviadaMax = cantidadEnviadaMax,
+            CantidadRecibidaMin = cantidadRecibidaMin,
+            CantidadRecibidaMax = cantidadRecibidaMax
+        };
+
+        return Ok(_mapper.Map<IEnumerable<TransaccionDto>>(await repositorio.ObtenerTodosFiltrado(filtro)));
     }
 
+
     [HttpGet("{id_transaccion}",  Name = "getTransaccion") ]
-    public ActionResult<TransaccionDto> Get([FromRoute] int id_cliente, [FromRoute] int id_transaccion){
-        var transaccion = repositorio.ObtenerTransaccionId(id_cliente,id_transaccion);
+    public ActionResult<TransaccionDto> Get([FromRoute] int id_cliente, [FromRoute] int id_transaccion)
+    {
+        var transaccion = repositorio.ObtenerTransaccionId(id_cliente, id_transaccion);
+
+        // Si la transacción es nula, devolvemos un 404 Not Found
+        if (transaccion == null)
+        {
+            return NotFound();
+        }
+
         var finalTransaccionDto = _mapper.Map<TransaccionDto>(transaccion);
+
+        // Si el mapeo falla y finalTransaccionDto es null (aunque esto no debería suceder si transaccion no es null)
         return finalTransaccionDto == null ? NotFound() : Ok(finalTransaccionDto);
     }
 
@@ -34,23 +59,39 @@ public class TransaccionesController : ControllerBase{
 
     [EnableCors("AllowAllOrigins")]
     [HttpPost]
-    public async Task<ActionResult<TransaccionDto>> Post(TransaccionDto transaccion) {
+    public async Task<ActionResult<TransaccionDto>> Post(TransaccionDto transaccion)
+    {
         var finalTransaccionNuevo = _mapper.Map<TransaccionDto, Transaccion>(transaccion);
         repositorio.Agregar(finalTransaccionNuevo);
 
-        return await repositorio.GuardarCambios() ? Ok() : BadRequest();
+        if (await repositorio.GuardarCambios())
+        {
+            return CreatedAtAction(
+                nameof(Get),
+                new { id_cliente = finalTransaccionNuevo.IdEnvia, id_transaccion = finalTransaccionNuevo.Id },
+                _mapper.Map<TransaccionDto>(finalTransaccionNuevo)
+            );
+        }
+        else
+        {
+            return BadRequest();
+        }
     }
+
+
     [HttpPut]
     public async Task<ActionResult<TransaccionDto>> PutAsync(int id, TransaccionDto transaccion) {
         var finalTransaccionActualizado = _mapper.Map<Transaccion>(transaccion);
         repositorio.Actualizar(id, finalTransaccionActualizado);
-        return await repositorio.GuardarCambios() ? Ok("Transacción actualizada correctamente") : BadRequest();
+        // Devuelve un NoContent si la actualización fue exitosa
+        return await repositorio.GuardarCambios() ? NoContent() : BadRequest();
     }
 
     [HttpDelete]
     public async Task<ActionResult<TransaccionDto>> DeleteAsync(int id) {
         repositorio.Borrar(id);
-        return await repositorio.GuardarCambios() ? Ok("Transacción borrada correctamente") : BadRequest();
+        // Devuelve un NoContent si la eliminación fue exitosa
+        return await repositorio.GuardarCambios() ? NoContent() : BadRequest();
     }
 
     

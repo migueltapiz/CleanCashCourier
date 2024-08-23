@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace ApiClases_20270722_Proyecto.Repositorios;
 
 public class TransaccionRepositorioMemoria<T>:IRepositorioGenerico<T> where T:Transaccion{
@@ -30,7 +29,7 @@ public class TransaccionRepositorioMemoria<T>:IRepositorioGenerico<T> where T:Tr
     public T ObtenerPorId(int id) => throw new NotImplementedException();
     public void Agregar(T dato) => throw new NotImplementedException();
     public void Actualizar(int id, T dato) => throw new NotImplementedException();
-    Task<List<T>> IRepositorioGenerico<T>.ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
+    public Task<List<T>> ObtenerTodosFiltrado(FiltroTransacciones filtro) => throw new NotImplementedException(); 
     T IRepositorioGenerico<T>.ObtenerTransaccionId(int id_cliente, int id_transaccion) => throw new NotImplementedException();
 
     public T ObtenerPorNombre(string nombre)

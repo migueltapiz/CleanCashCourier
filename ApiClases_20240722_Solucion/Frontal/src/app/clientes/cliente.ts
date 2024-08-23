@@ -11,4 +11,3 @@ export class ICliente {
   trabajo?: string;  // Asegúrate de incluir todas las propiedades necesarias
   email?: string;   // Agrega la propiedad correo aquí
 }
-
