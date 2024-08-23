@@ -39,7 +39,7 @@ public class TransaccionRepositorioBBDD<T> : IRepositorioGenerico<T> where T : T
     public async Task<List<T>> ObtenerTodosFiltrado(FiltroTransacciones filtro) {
 
 
-        var consulta = _contexto.Set<T>().Where(transaccion => transaccion.IdEnvia == id_cliente || transaccion.IdRecibe == id_cliente);
+        var consulta = _contexto.Set<T>().Where(transaccion => transaccion.IdEnvia == filtro.IdCliente || transaccion.IdRecibe == filtro.IdCliente);
 
         if (filtro.IdCliente > 0)
         {
@@ -87,6 +87,7 @@ public class TransaccionRepositorioBBDD<T> : IRepositorioGenerico<T> where T : T
         return await consulta.ToListAsync();
     }
 
+   
 
     public Task<List<Transaccion>> ObtenerTransaccionesPorCliente(int user_id) {
         IQueryable<Transaccion> consulta = _contexto.Transacciones.Where(t => t.IdEnvia == user_id || t.IdRecibe == user_id);

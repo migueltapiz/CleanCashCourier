@@ -1,7 +1,7 @@
 ﻿using ApiClases_20270722_Proyecto.Repositorios;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
-using static ApiClases_20270722_Proyecto.Modelos.ModeloInicioSesion;
+using ApiClases_20270722_Proyecto.Modelos;
 namespace ApiClases_20270722_Proyecto.Controllers;
 
 [Route("api/[controller]")]
@@ -60,8 +60,12 @@ public class ClientesController : ControllerBase
         if (result.Succeeded)
         {
             var user = await _userManager.FindByNameAsync(modelo.Usuario);
-            var token = _servicioToken.GenerateJwtToken(user);
-            return Ok(new { Token = token });
+            if (user != null) {
+                var token = _servicioToken.GenerateJwtToken(user);
+                return Ok(new { Token = token });
+
+            }
+            return BadRequest();
         }
 
         return Unauthorized();
@@ -115,7 +119,7 @@ public class ClientesController : ControllerBase
         var finalClienteActualizado = _mapper.Map<Cliente>(cliente);
         _clienteRepositorio.Actualizar(id, finalClienteActualizado);
 
-        return await repositorio.GuardarCambios() ? NoContent() : BadRequest();
+        return await _clienteRepositorio.GuardarCambios() ? NoContent() : BadRequest();
     }
 
 
@@ -123,6 +127,5 @@ public class ClientesController : ControllerBase
     public async Task<ActionResult<ClienteDto>> DeleteAsync(int id) {
         _clienteRepositorio.Borrar(id);
         return await _clienteRepositorio.GuardarCambios() ? NoContent() : BadRequest();
-    }
     }
 }
