@@ -11,7 +11,7 @@ export class PaisService {
   private url = 'https://localhost:7138/api/Paises';
   constructor(private http: HttpClient) { }
 
-  getPaisId(id:number): Observable<IPais> {
+  getPaisId(id: number): Observable<IPais> {
     return this.http.get<IPais>(`${this.url}/${id}`).pipe(
       tap(data => data),
       catchError(this.handleError)

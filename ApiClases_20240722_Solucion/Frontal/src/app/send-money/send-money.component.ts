@@ -68,7 +68,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
             console.log(this.currencyRecibida);
             this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
               next: factor => {
-                console.log("AHDFKAHSDJLFASDHFALSDJF");
                 this.factorConversion = factor;
               },
               error: err => this.errorMessage = err
@@ -80,6 +79,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
         
       } else {
         this.currencyRecibida = '';
+        this.factorConversion = 0;
       }
       clearTimeout(this.timeout);
     }, 1000);
