@@ -1,4 +1,5 @@
-﻿using ApiClases_20270722_Proyecto.Repositorios;
+﻿using ApiClases_20270722_Proyecto.Entidades;
+using ApiClases_20270722_Proyecto.Repositorios;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -120,8 +121,10 @@ namespace ApiClases_20270722_Proyecto.Controllers
             var clienteExistente = _clienteRepositorio.ObtenerPorId(id);
             if (clienteExistente == null) return NotFound();
 
-            var clienteActualizado = _mapper.Map(clienteDto, clienteExistente);
-            _clienteRepositorio.Actualizar(id, clienteActualizado);
+            clienteExistente.PaisId = clienteDto.PaisId;
+            clienteExistente.Empleo = clienteDto.Empleo;
+
+            _clienteRepositorio.Actualizar(id, clienteExistente);
 
             if (await _clienteRepositorio.GuardarCambios())
             {

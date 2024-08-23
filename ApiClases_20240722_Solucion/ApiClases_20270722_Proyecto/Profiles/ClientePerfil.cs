@@ -12,10 +12,6 @@ public class ClientePerfil:Profile {
         CreateMap<Cliente, ClienteGetDto>()
             .IncludeBase<Cliente, ClienteBaseDto>(); 
 
-        // Mapeo de ClientePostDto a Cliente
-        CreateMap<ClientePostDto, Cliente>()
-            .IncludeBase<ClienteBaseDto, Cliente>();
-
         // Mapeo de ClientePutDto a Cliente
         CreateMap<ClientePutDto, Cliente>()
             .IncludeBase<ClienteBaseDto, Cliente>();
@@ -23,5 +19,9 @@ public class ClientePerfil:Profile {
         // Mapeo de ClienteDeleteDto a Cliente
         CreateMap<ClienteDeleteDto, Cliente>()
             .IncludeBase<ClienteBaseDto, Cliente>();
+
+        CreateMap<Cliente, ModeloRegistro>()
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+            .ReverseMap();
     }
 }
