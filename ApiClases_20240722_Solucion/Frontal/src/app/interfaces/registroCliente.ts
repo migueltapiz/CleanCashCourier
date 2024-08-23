@@ -9,3 +9,8 @@ export interface RegistroCliente {
   Empleo: string;
   FechaNacimiento: Date;
 }
+export interface InicioSesionCliente {
+  Usuario: string;
+  Contrasena: string;
+  Recuerdame: boolean;
+}

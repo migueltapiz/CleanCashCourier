@@ -42,9 +42,12 @@ public class ClientesController : ControllerBase
         var finalClienteDto = _mapper.Map<ClienteDto>(cliente);
         return finalClienteDto == null ? NotFound() : Ok(finalClienteDto);
     }
-    [HttpGet("login")]
-    public async Task<IActionResult> Login([FromQuery] ModeloInicioSesion modelo)
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] ModeloInicioSesion modelo)
     {
+
+        System.Diagnostics.Debug.Write("--------------------MODELO INICIO SESION--------------------");
+        System.Diagnostics.Debug.Write(modelo);
         var result = await _signInManager.PasswordSignInAsync(
             modelo.Usuario,
             modelo.Contrasena,
@@ -82,7 +85,8 @@ public class ClientesController : ControllerBase
             Email = modelo.Email,
             FechaNacimiento = modelo.FechaNacimiento,
             Empleo = modelo.Empleo,
-            NombrePais = _paisRepositorio.ObtenerPorId(modelo.PaisId).Nombre,
+            //NombrePais = _paisRepositorio.ObtenerPorId(modelo.PaisId).Nombre,
+            PaisId = modelo.PaisId
         };
         var result = await _userManager.CreateAsync(usuario, modelo.Contrasena);
         if (!result.Succeeded)
@@ -100,21 +104,15 @@ public class ClientesController : ControllerBase
             Email = modelo.Email,
             Usuario = modelo.Email.Split('@')[0],
         });
-        var addClienteResult = await _clienteRepositorio.GuardarCambios();
-
-        //if(!addClienteResult.)
-        System.Diagnostics.Debug.WriteLine("RESULTADO DE ADD_CLIENTE");
-        System.Diagnostics.Debug.WriteLine(addClienteResult);
+        await _clienteRepositorio.GuardarCambios();
+        //var addClienteResult = await _clienteRepositorio.GuardarCambios();
+        //System.Diagnostics.Debug.WriteLine(addClienteResult);
 
         var addResult = await _userManager.AddToRoleAsync(usuario, "Cliente");
         if (!addResult.Succeeded){
             return BadRequest(new { Message = "Fallo al añadir el nuevo rol." });
         }
         return Ok();
-        //Generar el token y devolverlo
-        var token = _servicioToken.GenerateJwtToken(usuario);
-        return Ok(new { Token = token});
-        //return await _clienteRepositorio.GuardarCambios() ? Ok(new { Token = token }) : BadRequest(new {Message = "Error al guardar en la tabla Clientes"});
 
     }
 
