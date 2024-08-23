@@ -8,7 +8,7 @@ namespace ApiClases_20270722_Proyecto.Modelos
         public  string Apellido{ get; set; }
         public  DateTime FechaNacimiento{ get; set; }
         public  string Empleo{ get; set; }
-        public  string NombrePais{ get; set; }
+        public  int PaisId{ get; set; }
         //Usuario
         //Email
         //Contraseña*** estan con el identity user

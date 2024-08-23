@@ -85,7 +85,13 @@ export class RegistroComponent implements OnInit {
     }
 
     const fechaNac = new Date(this.registroForm.value.FechaNac);
+
+    var resultado = this.paises.find(pais => pais.nombre === this.registroForm.value.PaisNombre)?.id;
+    if (resultado != undefined) {
+      this.paisSeleccionado = resultado;
+    }
     this.paisSeleccionado = this.paises.find(pais => pais.id === this.paisSeleccionado) == undefined ? -1 : this.paisSeleccionado;
+
     const usuario: Usuario = {
       Email: this.registroForm.value.Correo,
       Password: this.registroForm.value.Contraseña,
@@ -104,6 +110,7 @@ export class RegistroComponent implements OnInit {
       Contrasena: this.registroForm.value.Contraseña,
       PaisId: this.paisSeleccionado,
       Empleo: this.registroForm.value.Empleo,
+
       FechaNacimiento: fechaNac
     }
     console.log(usuario)

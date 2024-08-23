@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Usuario } from '../clases/usuario';
 import { environment } from '../../environments/environment';
+import { InicioSesionCliente } from '../interfaces/registroCliente';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +20,19 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(`${this.URL}Account/users`);
+    return this.http.get<Usuario[]>(`${this.URL}Clientes/users`);
   }
 
-  autenticarUsuario(email: string, password: string, remember: boolean): Observable<any> {
-    remember = false;
-    return this.http.post<any>(`${this.URL}Clientes/login`, { email, password, remember });
+  autenticarUsuario(usuario: string, contrasena: string, recuerdame: boolean): Observable<any> {
+    recuerdame = false;
+
+    const clienteInicioSesion: InicioSesionCliente = {
+      Usuario: usuario,
+      Contrasena: contrasena,
+      Recuerdame : recuerdame
+    }
+    console.log(clienteInicioSesion);
+    return this.http.post<any>(`${this.URL}Clientes/login`, clienteInicioSesion);
   }
 
   registrarUsuario(usuario: any): Observable<any> {
