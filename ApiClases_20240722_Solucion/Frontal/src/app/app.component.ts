@@ -6,18 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title: string = 'PruebaNode';
-  // constructor(private router: Router) {}
-
-  // navigateToHome() {
-  //   this.router.navigate(['/']);
-  // }
-
-  // navigateToAbout() {
-  //   this.router.navigate(['/about']);
-  // }
-
-  // navigateToSendMoney() {
-  //   this.router.navigate(['/send-money']);
-  // }
+  title: string = 'Envío de dinero';
+  
 }

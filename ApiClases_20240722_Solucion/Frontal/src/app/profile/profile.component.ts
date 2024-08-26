@@ -5,7 +5,7 @@ import { DatosService } from "../datos/datos.service";
 import { IPais, PaisService } from '../servicios/pais.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { CabeceraComponent } from '../cabecera/cabecera.component'
 @Component({
   selector: 'pm-profile-component',
   templateUrl: './profile.component.html',

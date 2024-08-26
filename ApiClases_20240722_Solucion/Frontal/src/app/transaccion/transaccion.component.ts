@@ -4,6 +4,7 @@ import { Transaccion } from './transaccion';
 import { ICliente } from '../clientes/cliente';
 import { ClienteService } from '../clientes/cliente.service';
 import { format } from 'date-fns';
+import {CabeceraComponent } from '../cabecera/cabecera.component'
 
 @Component({
   selector: 'pm-transaccion',

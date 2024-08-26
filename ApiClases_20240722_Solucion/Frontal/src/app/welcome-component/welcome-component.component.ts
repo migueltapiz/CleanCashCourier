@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CabeceraComponent } from '../cabecera/cabecera.component'
 
 @Component({
-  selector: 'pm-welcome-component',
+  selector: 'welcome-component',
   templateUrl: './welcome-component.component.html',
   styleUrl: './welcome-component.component.css'
 })

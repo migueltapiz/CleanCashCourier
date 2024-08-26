@@ -7,7 +7,7 @@ import { TransaccionService } from "../transaccion/transaccion.service";
 import { ITransaccion, Transaccion } from "../transaccion/transaccion";
 import { Router } from '@angular/router';
 import { PaisService } from '../servicios/pais.service';
-
+import { CabeceraComponent } from '../cabecera/cabecera.component'
 declare var bootstrap: any;
 
 @Component({
@@ -87,7 +87,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subcliente.unsubscribe();
     this.subPais.unsubscribe();
-    this.subTransaccion.unsubscribe();
+    this.subTransaccion?.unsubscribe();
   }
 
   validateAmount(event: Event, isEnviada: boolean) {

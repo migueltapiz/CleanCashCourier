@@ -19,9 +19,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(`${this.URL}Clientes/users`);
-  }
+  
 
   autenticarUsuario(usuario: string, contrasena: string, recuerdame: boolean): Observable<any> {
     recuerdame = false;

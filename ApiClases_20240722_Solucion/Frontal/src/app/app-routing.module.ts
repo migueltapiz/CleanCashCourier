@@ -10,13 +10,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
-  { path: '', component:WelcomeComponentComponent},
+  { path: '', component:LoginComponent},
   { path: 'about', component: AboutComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'login', component: LoginComponent },
   { path: 'send-money', component: SendMoneyComponent },
   { path: 'transaction-history', component: TransaccionComponent },
-  { path: 'profile', component: ProfileComponent}
+  { path: 'profile', component: ProfileComponent },
+  {path: 'welcome',component:WelcomeComponentComponent}
 ];
 
 @NgModule({

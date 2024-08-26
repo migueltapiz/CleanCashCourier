@@ -84,7 +84,6 @@ namespace ApiClases_20270722_Proyecto.Controllers
                 Email = modelo.Email,
                 FechaNacimiento = modelo.FechaNacimiento,
                 Empleo = modelo.Empleo,
-                NombrePais = modelo.NombrePais,
             };
 
             var result = await _userManager.CreateAsync(usuario, modelo.Contrasena);

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   usuarios!: Usuario[];
 
@@ -20,26 +20,12 @@ username: any;
 
   constructor(private usuarioService: UserService, private route: Router) { }
 
-  ngOnInit() {
-    this.getUsuarios();
-  }
-
-  getUsuarios() {
-
-    this.usuarioService.getUsuarios().subscribe( datos => {
-      this.usuarios = datos;
-
-      console.log(datos);
-    });
-
-  }
-
   authentication() {
     this.usuarioService.autenticarUsuario(this.email, this.contrase, true).subscribe(response => {
       if (response && response.token) {
         localStorage.setItem('token', response.token);
         alert("funciona");
-        this.route.navigate(['/']); // Redirige a la ruta protegida
+        this.route.navigate(['/welcome']); // Redirige a la ruta protegida
       } else {
         alert('Credenciales incorrectas');
       }
