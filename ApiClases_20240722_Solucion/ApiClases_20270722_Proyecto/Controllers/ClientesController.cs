@@ -54,7 +54,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
             return Ok(finalClienteDto);
         }
 
-        [HttpGet("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromQuery] ModeloInicioSesion modelo)
         {
             var result = await _signInManager.PasswordSignInAsync(
@@ -84,7 +84,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
                 Email = modelo.Email,
                 FechaNacimiento = modelo.FechaNacimiento,
                 Empleo = modelo.Empleo,
-                NombrePais = modelo.NombrePais,
+                PaisId = modelo.PaisId,
             };
 
             var result = await _userManager.CreateAsync(usuario, modelo.Contrasena);
@@ -110,9 +110,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
             {
                 return BadRequest(new { Message = "Fallo al añadir el nuevo rol." });
             }
-
-            var token = _servicioToken.GenerateJwtToken(usuario);
-            return Ok(new { Token = token });
+            return Ok();
         }
 
         [HttpPut("{id}")]

@@ -13,6 +13,10 @@ public class Contexto: IdentityDbContext<UsuarioAplicacion>{
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Transaccion> Transacciones{ get; set; }
         public DbSet<Pais> Paises { get; set; }
+        public DbSet<Contacto> Contactos { get; set; }
+        
+        public virtual DbSet<VContacto> VContactos { get; set; }
+        
 
 
 
@@ -258,6 +262,9 @@ public class Contexto: IdentityDbContext<UsuarioAplicacion>{
             new Transaccion { Id = 29, IdEnvia = 17, CantidadEnvia = 1900.34, IdRecibe = 18, CantidadRecibe = 2652.87, Fecha = new DateTime(2016, 12, 22, 15, 45, 0), MonedaOrigen = "USD", MonedaDestino = "VND", CosteTransaccion = 19.34 },
             new Transaccion { Id = 30, IdEnvia = 19, CantidadEnvia = 5100.15, IdRecibe = 20, CantidadRecibe = 6120.57, Fecha = new DateTime(2024, 10, 18, 18, 0, 0), MonedaOrigen = "USD", MonedaDestino = "EGP", CosteTransaccion = 51.15 }
         );
+        modelBuilder.Entity<Contacto>().HasData(
+
+            );
     
             
 
