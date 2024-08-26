@@ -3,17 +3,18 @@ namespace ApiClases_20270722_Proyecto.Repositorios;
 
 public class TransaccionRepositorioMemoria<T>:IRepositorioGenerico<T> where T:Transaccion{
 
-    public List<TransaccionDto> Transacciones { get; set; }
+    public List<TransaccionBaseDto> Transacciones { get; set; }
     public static TransaccionRepositorioMemoria<T> Instancia { get; } = new TransaccionRepositorioMemoria<T>();
 
     public TransaccionRepositorioMemoria(){
         //Agregar paises a la lista
-        Transacciones = new List<TransaccionDto>() {
-            new TransaccionDto(){ Id = 1, IdEnvia = 101, CantidadEnvia = 50.5, IdRecibe = 201, CantidadRecibe = 30.2,Fecha = DateTime.Now },
-            new TransaccionDto(){ Id = 2, IdEnvia = 102, CantidadEnvia = 70.3, IdRecibe = 202, CantidadRecibe = 45.8,Fecha = DateTime.Now},
-            new TransaccionDto(){ Id = 3,  IdEnvia = 103, CantidadEnvia = 25.1, IdRecibe = 203, CantidadRecibe = 15.7,Fecha = DateTime.Now},
-            new TransaccionDto(){ Id = 4, IdEnvia = 104, CantidadEnvia = 40.9, IdRecibe = 204, CantidadRecibe = 20.3,Fecha = DateTime.Now},
-            new TransaccionDto(){ Id = 5, IdEnvia = 105, CantidadEnvia = 60.2, IdRecibe = 205, CantidadRecibe = 35.6,Fecha = DateTime.Now}
+        Transacciones = new List<TransaccionBaseDto>() {
+            new TransaccionBaseDto(){ IdEnvia = 101, CantidadEnvia = 50.5, IdRecibe = 201, CantidadRecibe = 30.2, Fecha = DateTime.Now, MonedaOrigen = "USD", MonedaDestino = "EUR", CosteTransaccion = 5.0 },
+            new TransaccionBaseDto(){ IdEnvia = 102, CantidadEnvia = 70.3, IdRecibe = 202, CantidadRecibe = 45.8, Fecha = DateTime.Now, MonedaOrigen = "USD", MonedaDestino = "EUR", CosteTransaccion = 7.0 },
+            new TransaccionBaseDto(){ IdEnvia = 103, CantidadEnvia = 25.1, IdRecibe = 203, CantidadRecibe = 15.7, Fecha = DateTime.Now, MonedaOrigen = "USD", MonedaDestino = "EUR", CosteTransaccion = 2.5 },
+            new TransaccionBaseDto(){ IdEnvia = 104, CantidadEnvia = 40.9, IdRecibe = 204, CantidadRecibe = 20.3, Fecha = DateTime.Now, MonedaOrigen = "USD", MonedaDestino = "EUR", CosteTransaccion = 4.0 },
+            new TransaccionBaseDto(){ IdEnvia = 105, CantidadEnvia = 60.2, IdRecibe = 205, CantidadRecibe = 35.6, Fecha = DateTime.Now, MonedaOrigen = "USD", MonedaDestino = "EUR", CosteTransaccion = 6.0 }
+
         };
     }
 

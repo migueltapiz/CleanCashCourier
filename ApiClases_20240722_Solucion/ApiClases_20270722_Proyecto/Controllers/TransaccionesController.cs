@@ -1,13 +1,10 @@
-﻿using ApiClases_20270722_Proyecto.Entidades;
-using ApiClases_20270722_Proyecto.Repositorios;
+﻿using ApiClases_20270722_Proyecto.Repositorios;
 using Microsoft.AspNetCore.Cors;
-using System.Reflection.Metadata.Ecma335;
 
 namespace ApiClases_20270722_Proyecto.Controllers;
 
-//[Route("api/[controller]")]
-[Route("api/Clientes/{id_cliente}/Transacciones")]
 
+[Route("api/Clientes/{id_cliente}/Transacciones")]
 [ApiController]
 public class TransaccionesController : ControllerBase{
 
@@ -21,7 +18,7 @@ public class TransaccionesController : ControllerBase{
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TransaccionDto>>> GetAsync([FromRoute] int id_cliente,[FromQuery] DateTime? fechaInicio,[FromQuery] DateTime? fechaFin,[FromQuery] double? cantidadEnviadaMin,[FromQuery] double? cantidadEnviadaMax,[FromQuery] double? cantidadRecibidaMin,[FromQuery] double? cantidadRecibidaMax)
+    public async Task<ActionResult<IEnumerable<TransaccionGetDto>>> GetAsync([FromRoute] int id_cliente,[FromQuery] DateTime? fechaInicio,[FromQuery] DateTime? fechaFin,[FromQuery] double? cantidadEnviadaMin,[FromQuery] double? cantidadEnviadaMax,[FromQuery] double? cantidadRecibidaMin,[FromQuery] double? cantidadRecibidaMax)
     {
         var filtro = new FiltroTransacciones
         {
@@ -34,12 +31,12 @@ public class TransaccionesController : ControllerBase{
             CantidadRecibidaMax = cantidadRecibidaMax
         };
 
-        return Ok(_mapper.Map<IEnumerable<TransaccionDto>>(await repositorio.ObtenerTodosFiltrado(filtro)));
+        return Ok(_mapper.Map<IEnumerable<TransaccionGetDto>>(await repositorio.ObtenerTodosFiltrado(filtro)));
     }
 
 
     [HttpGet("{id_transaccion}",  Name = "getTransaccion") ]
-    public ActionResult<TransaccionDto> Get([FromRoute] int id_cliente, [FromRoute] int id_transaccion)
+    public ActionResult<TransaccionGetDto> Get([FromRoute] int id_cliente, [FromRoute] int id_transaccion)
     {
         var transaccion = repositorio.ObtenerTransaccionId(id_cliente, id_transaccion);
 
@@ -49,51 +46,54 @@ public class TransaccionesController : ControllerBase{
             return NotFound();
         }
 
-        var finalTransaccionDto = _mapper.Map<TransaccionDto>(transaccion);
+        var finalTransaccionGetDto = _mapper.Map<TransaccionGetDto>(transaccion);
 
-        // Si el mapeo falla y finalTransaccionDto es null (aunque esto no debería suceder si transaccion no es null)
-        return finalTransaccionDto == null ? NotFound() : Ok(finalTransaccionDto);
+        // Si el mapeo falla y finalTransaccionGetDto es null (aunque esto no debería suceder si transaccion no es null)
+        return finalTransaccionGetDto == null ? NotFound() : Ok(finalTransaccionGetDto);
     }
 
 
 
     [EnableCors("AllowAllOrigins")]
     [HttpPost]
-    public async Task<ActionResult<TransaccionDto>> Post(TransaccionDto transaccion)
+    public async Task<ActionResult<TransaccionPostDto>> Post(TransaccionPostDto transaccion)
     {
-        var finalTransaccionNuevo = _mapper.Map<TransaccionDto, Transaccion>(transaccion);
-        repositorio.Agregar(finalTransaccionNuevo);
+        var transaccionEntidad = _mapper.Map<Transaccion>(transaccion);
+        repositorio.Agregar(transaccionEntidad);
 
         if (await repositorio.GuardarCambios())
         {
+            var transaccionDto = _mapper.Map<TransaccionPostDto>(transaccionEntidad);
             return CreatedAtAction(
                 nameof(Get),
-                new { id_cliente = finalTransaccionNuevo.IdEnvia, id_transaccion = finalTransaccionNuevo.Id },
-                _mapper.Map<TransaccionDto>(finalTransaccionNuevo)
+                new { id_cliente = transaccionEntidad.IdEnvia, id_transaccion = transaccionEntidad.Id },
+                transaccionDto
             );
         }
         else
         {
             return BadRequest();
         }
+
+        /* var finalTransaccionNuevo = _mapper.Map<TransaccionPostDto, Transaccion>(transaccion);
+        repositorio.Agregar(finalTransaccionNuevo);
+
+        if (await repositorio.GuardarCambios())
+        {            
+            return CreatedAtAction(
+                nameof(Get),
+                new { id_cliente = finalTransaccionNuevo.IdEnvia, id_transaccion = finalTransaccionNuevo.Id },
+                _mapper.Map<TransaccionPostDto>(finalTransaccionNuevo)
+            );
+        }
+        else
+        {
+            return BadRequest();
+        } */
     }
 
 
-    [HttpPut]
-    public async Task<ActionResult<TransaccionDto>> PutAsync(int id, TransaccionDto transaccion) {
-        var finalTransaccionActualizado = _mapper.Map<Transaccion>(transaccion);
-        repositorio.Actualizar(id, finalTransaccionActualizado);
-        // Devuelve un NoContent si la actualización fue exitosa
-        return await repositorio.GuardarCambios() ? NoContent() : BadRequest();
-    }
+    // No usamos ni Put ni Delete
 
-    [HttpDelete]
-    public async Task<ActionResult<TransaccionDto>> DeleteAsync(int id) {
-        repositorio.Borrar(id);
-        // Devuelve un NoContent si la eliminación fue exitosa
-        return await repositorio.GuardarCambios() ? NoContent() : BadRequest();
-    }
-
-    
 
 }

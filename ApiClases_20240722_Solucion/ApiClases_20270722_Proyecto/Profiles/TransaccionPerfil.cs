@@ -4,7 +4,22 @@ public class TransaccionPerfil: Profile{
 
     public TransaccionPerfil()
     {
-        CreateMap<Entidades.Transaccion, Modelos.TransaccionDto>();
-        CreateMap<Modelos.TransaccionDto, Entidades.Transaccion>();
+
+        // Mapeo de Transaccion a TransaccionBaseDto y viceversa
+        CreateMap<Transaccion, TransaccionBaseDto>().ReverseMap();
+
+        // Mapeo de Transaccion a TransaccionGetDto
+        CreateMap<Transaccion, TransaccionGetDto>()
+            .IncludeBase<Transaccion, TransaccionBaseDto>();
+
+        // Mapeo de TransaccionPostDto a Transaccion
+        CreateMap<TransaccionPostDto, Transaccion>()
+            .IncludeBase<TransaccionBaseDto, Transaccion>();
+
+        // Mapeo de Transaccion a TransaccionPostDto
+        CreateMap<Transaccion, TransaccionPostDto>()
+            .IncludeBase<Transaccion, TransaccionBaseDto>();
+
+
     }
 }

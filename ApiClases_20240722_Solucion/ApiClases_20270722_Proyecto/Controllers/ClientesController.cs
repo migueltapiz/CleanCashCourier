@@ -54,8 +54,8 @@ namespace ApiClases_20270722_Proyecto.Controllers
             return Ok(finalClienteDto);
         }
 
-        [HttpGet("login")]
-        public async Task<IActionResult> Login([FromQuery] ModeloInicioSesion modelo)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] ModeloInicioSesion modelo)
         {
             var result = await _signInManager.PasswordSignInAsync(
                 modelo.Usuario,
@@ -84,7 +84,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
                 Email = modelo.Email,
                 FechaNacimiento = modelo.FechaNacimiento,
                 Empleo = modelo.Empleo,
-                NombrePais = modelo.NombrePais,
+                PaisId = modelo.PaisId,
             };
 
             var result = await _userManager.CreateAsync(usuario, modelo.Contrasena);
