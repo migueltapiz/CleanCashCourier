@@ -31,11 +31,11 @@ public class PaisesController : ControllerBase{
         var finaloaisDto = _mapper.Map<Pais>(pais);
         return finaloaisDto == null ? NotFound() : Ok(finaloaisDto);
     }
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<string>>> Get()
-    {
-        var paises = await repositorio.ObtenerPaisesDesdeProcedimiento();
-        return Ok(paises);
-    }
 
+    [HttpGet("ContarPaisesConClientes")]
+    public async Task<ActionResult<int>> ContarPaisesConClientesAsync()
+    {
+        var numeroPaises = await repositorio.ContarPaisesConClientesAsync();
+        return Ok(numeroPaises);
+    }
 }

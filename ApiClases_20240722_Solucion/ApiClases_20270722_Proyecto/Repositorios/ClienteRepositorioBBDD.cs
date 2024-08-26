@@ -21,6 +21,15 @@ public class ClienteRepositorioBBDD<T> : IRepositorioGenerico<T> where T : Clien
         _contexto.Clientes.Remove(cliente);
     }
 
+    public Task<int> ContarPaisesConClientesAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int> ContarTransaccionesUnicasAsync()
+    {
+        throw new NotImplementedException();
+    }
 
     public async Task<bool> GuardarCambios() {
 
