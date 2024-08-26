@@ -15,8 +15,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-
-
 //var dondeSacoDatos = "BBDD";
 //if(dondeSacoDatos == "memoria")
 //{
@@ -28,21 +26,26 @@ builder.Services.AddSwaggerGen();
 //    //builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioCsv>();
 //}
 //else if(dondeSacoDatos == "BBDD") { 
+//    //TODO : considerar cambiarlo por scope
+
+//}
 
 builder.Services.AddScoped<IRepositorioGenerico<Transaccion>, TransaccionRepositorioBBDD<Transaccion>>();
 builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();
 builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD<Cliente>>();
-builder.Services.AddScoped<IServicioToken, ServicioToken>();
 // Agregar BBDD (SQLServer)
 builder.Services.AddDbContext<Contexto>(options =>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
-
-// Configurar Identity
 builder.Services.AddIdentity<UsuarioAplicacion, IdentityRole>()
     .AddEntityFrameworkStores<Contexto>()
     .AddDefaultTokenProviders();
+
+
+// Configurar Identity
+//builder.Services.AddIdentity<AplicacionClientes, IdentityRole>()
+//    .AddEntityFrameworkStores<Contexto>()
+//    .AddDefaultTokenProviders();
 // Ejemplo del libro:
 //builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 //{
@@ -80,7 +83,8 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-
+// Registro del servicio de generación de tokens
+builder.Services.AddScoped<IServicioToken, ServicioToken>();
 
 //Añadir Autommaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -125,6 +129,9 @@ if (app.Environment.IsDevelopment())
 }
 //Redirección a https
 app.UseHttpsRedirection();
+
+// Middleware de autenticación
+app.UseAuthentication();
 
 //Middleweare de autorización 
 app.UseAuthorization();

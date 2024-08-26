@@ -1,131 +1,153 @@
-﻿using ApiClases_20270722_Proyecto.Repositorios;
+﻿using ApiClases_20270722_Proyecto.Entidades;
+using ApiClases_20270722_Proyecto.Repositorios;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using ApiClases_20270722_Proyecto.Modelos;
-namespace ApiClases_20270722_Proyecto.Controllers;
+using System.Threading.Tasks;
+using static ApiClases_20270722_Proyecto.Modelos.ModeloInicioSesion;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ClientesController : ControllerBase
+namespace ApiClases_20270722_Proyecto.Controllers
 {
-    public readonly IRepositorioGenerico<Cliente> _clienteRepositorio;
-    private readonly IRepositorioGenerico<Pais> _paisRepositorio;
-    private readonly IServicioToken _servicioToken;
-    private readonly IMapper _mapper;
-    private readonly UserManager<UsuarioAplicacion> _userManager;
-    private readonly SignInManager<UsuarioAplicacion> _signInManager;
-    public ClientesController(
-        IRepositorioGenerico<Cliente> clienteRepositorio, 
-        IRepositorioGenerico<Pais> paisRepositorio,
-        IServicioToken servicioToken,
-        IMapper mapper,
-        UserManager<UsuarioAplicacion> userManager,
-        SignInManager<UsuarioAplicacion> signInManager)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ClientesController : ControllerBase
     {
-        _clienteRepositorio = clienteRepositorio;
-        _paisRepositorio = paisRepositorio;
-        _servicioToken = servicioToken;
-        _mapper = mapper ??
-               throw new ArgumentNullException(nameof(mapper));
-        _userManager = userManager;
-        _signInManager = signInManager;
-    }
+        private readonly IRepositorioGenerico<Cliente> _clienteRepositorio;
+        private readonly IRepositorioGenerico<Pais> _paisRepositorio;
+        private readonly IServicioToken _servicioToken;
+        private readonly IMapper _mapper;
+        private readonly UserManager<UsuarioAplicacion> _userManager;
+        private readonly SignInManager<UsuarioAplicacion> _signInManager;
 
-
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<ClienteDto>>> Get() {
-       return Ok(_mapper.Map<IEnumerable<ClienteDto>>(await _clienteRepositorio.Obtener()));
-   }
-
-
-    [HttpGet("{id}", Name = "getCliente")]
-    public ActionResult<ClienteDto> Get(int id) {
-        var cliente = _clienteRepositorio.ObtenerPorId(id);
-        var finalClienteDto = _mapper.Map<ClienteDto>(cliente);
-        return finalClienteDto == null ? NotFound() : Ok(finalClienteDto);
-    }
-
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] ModeloInicioSesion modelo)
-    {
-
-        System.Diagnostics.Debug.Write("--------------------MODELO INICIO SESION--------------------");
-        System.Diagnostics.Debug.Write(modelo);
-        var result = await _signInManager.PasswordSignInAsync(
-            modelo.Usuario,
-            modelo.Contrasena,
-            modelo.Recuerdame,
-            lockoutOnFailure: false);
-
-        if (result.Succeeded)
+        public ClientesController(
+            IRepositorioGenerico<Cliente> clienteRepositorio,
+            IRepositorioGenerico<Pais> paisRepositorio,
+            IServicioToken servicioToken,
+            IMapper mapper,
+            UserManager<UsuarioAplicacion> userManager,
+            SignInManager<UsuarioAplicacion> signInManager)
         {
-            var user = await _userManager.FindByNameAsync(modelo.Usuario);
-            if (user != null) {
+            _clienteRepositorio = clienteRepositorio;
+            _paisRepositorio = paisRepositorio;
+            _servicioToken = servicioToken;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ClienteBaseDto>>> Get()
+        {
+            var clientes = await _clienteRepositorio.Obtener();
+            var clientesDto = _mapper.Map<IEnumerable<ClienteBaseDto>>(clientes);
+            return Ok(clientesDto);
+        }
+
+        [HttpGet("{id}", Name = "getCliente")]
+        public async Task<ActionResult<ClienteGetDto>> Get(int id)
+        {
+            var cliente =  _clienteRepositorio.ObtenerPorId(id);
+            if (cliente == null) return NotFound();
+
+            var finalClienteDto = _mapper.Map<ClienteGetDto>(cliente);
+            return Ok(finalClienteDto);
+        }
+
+        [HttpGet("login")]
+        public async Task<IActionResult> Login([FromQuery] ModeloInicioSesion modelo)
+        {
+            var result = await _signInManager.PasswordSignInAsync(
+                modelo.Usuario,
+                modelo.Contrasena,
+                modelo.Recuerdame,
+                lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByNameAsync(modelo.Usuario);
                 var token = _servicioToken.GenerateJwtToken(user);
                 return Ok(new { Token = token });
-
             }
-            return BadRequest();
+
+            return Unauthorized();
         }
 
-        return Unauthorized();
-    }
-//TODO: Cuando se implemente el CLienteDtoBase, cambiaremos el Dto con el que trabajamos
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] ModeloRegistro modelo)
-    {
-        var usuario = new UsuarioAplicacion
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] ModeloRegistro modelo)
         {
-            Nombre = modelo.Nombre,
-            Apellido = modelo.Apellido,
-            UserName = modelo.Email.Split('@')[0],
-            Email = modelo.Email,
-            FechaNacimiento = modelo.FechaNacimiento,
-            Empleo = modelo.Empleo,
-            //NombrePais = _paisRepositorio.ObtenerPorId(modelo.PaisId).Nombre,
-            PaisId = modelo.PaisId
-        };
-        var result = await _userManager.CreateAsync(usuario, modelo.Contrasena);
-        if (!result.Succeeded)
-        {
-            return BadRequest(result.Errors);
+            var usuario = new UsuarioAplicacion
+            {
+                Nombre = modelo.Nombre,
+                Apellido = modelo.Apellido,
+                UserName = modelo.Email.Split('@')[0],
+                Email = modelo.Email,
+                FechaNacimiento = modelo.FechaNacimiento,
+                Empleo = modelo.Empleo,
+                NombrePais = modelo.NombrePais,
+            };
+
+            var result = await _userManager.CreateAsync(usuario, modelo.Contrasena);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            var cliente = _mapper.Map<Cliente>(modelo);
+            cliente.Email = modelo.Email;  // Mapeo adicional de email
+            cliente.Usuario = modelo.Email.Split('@')[0];
+
+            _clienteRepositorio.Agregar(cliente);
+            var addClienteResult = await _clienteRepositorio.GuardarCambios();
+
+            if (!addClienteResult)
+            {
+                return BadRequest("Error al guardar en la tabla Clientes");
+            }
+
+            var addRoleResult = await _userManager.AddToRoleAsync(usuario, "Cliente");
+            if (!addRoleResult.Succeeded)
+            {
+                return BadRequest(new { Message = "Fallo al añadir el nuevo rol." });
+            }
+
+            var token = _servicioToken.GenerateJwtToken(usuario);
+            return Ok(new { Token = token });
         }
 
-        _clienteRepositorio.Agregar(new Cliente
+        [HttpPut("{id}")]
+        public async Task<ActionResult> PutAsync(int id, ClientePutDto clienteDto)
         {
-            Nombre = modelo.Nombre,
-            Apellido = modelo.Apellido,
-            FechaNacimiento = modelo.FechaNacimiento,
-            Empleo = modelo.Empleo,
-            PaisId = modelo.PaisId,
-            Email = modelo.Email,
-            Usuario = modelo.Email.Split('@')[0],
-        });
-        await _clienteRepositorio.GuardarCambios();
-        //var addClienteResult = await _clienteRepositorio.GuardarCambios();
-        //System.Diagnostics.Debug.WriteLine(addClienteResult);
+            var clienteExistente = _clienteRepositorio.ObtenerPorId(id);
+            if (clienteExistente == null) return NotFound();
 
-        var addResult = await _userManager.AddToRoleAsync(usuario, "Cliente");
-        if (!addResult.Succeeded){
-            return BadRequest(new { Message = "Fallo al añadir el nuevo rol." });
+            clienteExistente.PaisId = clienteDto.PaisId;
+            clienteExistente.Empleo = clienteDto.Empleo;
+
+            _clienteRepositorio.Actualizar(id, clienteExistente);
+
+            if (await _clienteRepositorio.GuardarCambios())
+            {
+                return NoContent();
+            }
+
+            return BadRequest("Error al actualizar el cliente");
         }
-        return Ok();
-    }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var clienteExistente = _clienteRepositorio.ObtenerPorId(id);
+            if (clienteExistente == null) return NotFound();
 
-    [HttpPut]
-    public async Task<ActionResult<ClienteDto>> PutAsync(int id, ClienteDto cliente)
-    {
-        var finalClienteActualizado = _mapper.Map<Cliente>(cliente);
-        _clienteRepositorio.Actualizar(id, finalClienteActualizado);
+            _clienteRepositorio.Borrar(id);
 
-        return await _clienteRepositorio.GuardarCambios() ? NoContent() : BadRequest();
-    }
+            if (await _clienteRepositorio.GuardarCambios())
+            {
+                return NoContent();
+            }
 
-
-    [HttpDelete]
-    public async Task<ActionResult<ClienteDto>> DeleteAsync(int id) {
-        _clienteRepositorio.Borrar(id);
-        return await _clienteRepositorio.GuardarCambios() ? NoContent() : BadRequest();
+            return BadRequest("Error al borrar el cliente");
+        }
     }
 }

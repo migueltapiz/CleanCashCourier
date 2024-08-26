@@ -1,13 +1,8 @@
 ﻿
 namespace ApiClases_20270722_Proyecto.Modelos;
 
-public class ClienteDto :IValidatableObject
+public class ClienteBaseDto :IValidatableObject
 {
-    public int Id { get; set; }
-
-    //[Required]
-    //public string UserId { get; set; }
-
     [Required]
     [StringLength(25)]
     public string Nombre { get; set; }
@@ -26,8 +21,6 @@ public class ClienteDto :IValidatableObject
     [Required]
 
     public string Email { get; set; }
-
-
 
     [Required]
     public int PaisId { get; set; }

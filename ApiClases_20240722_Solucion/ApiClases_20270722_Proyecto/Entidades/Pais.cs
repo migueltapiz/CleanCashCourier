@@ -12,6 +12,7 @@ namespace ApiClases_20270722_Proyecto.Entidades
         [StringLength(100)] // Limita la longitud de la cadena
         public string Nombre { get; set; }
 
+        [Required]
         [StringLength(50)] // Limita la longitud de la cadena para la divisa
         public string Divisa { get; set; }
 
