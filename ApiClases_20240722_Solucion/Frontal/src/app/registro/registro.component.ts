@@ -108,6 +108,7 @@ export class RegistroComponent implements OnInit {
       Contrasena: this.registroForm.value.Contraseña,
       PaisId: this.paisSeleccionado,
       Empleo: this.registroForm.value.Empleo,
+      NombrePais: this.registroForm.value.PaisNombre,
 
       FechaNacimiento: fechaNac
     }
@@ -120,7 +121,7 @@ export class RegistroComponent implements OnInit {
       },
       error => {
         if (error.status === 400) {
-          console.error('Error de validación', error.error);
+          console.error('Error de validación', error);
           alert('Error al registrar usuario: ' + error.error);
         } else if (error.status === 0) {
           console.error('No se pudo conectar al servidor.');

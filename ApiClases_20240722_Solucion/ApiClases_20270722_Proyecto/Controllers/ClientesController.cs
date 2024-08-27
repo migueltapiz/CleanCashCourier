@@ -44,7 +44,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
             return Ok(clientesDto);
         }
 
-        [HttpGet("{id}", Name = "getCliente")]
+        [HttpGet("{id:int}", Name = "getCliente")]
         public async Task<ActionResult<ClienteGetDto>> Get(int id)
         {
             var cliente =  _clienteRepositorio.ObtenerPorId(id);
@@ -53,9 +53,19 @@ namespace ApiClases_20270722_Proyecto.Controllers
             var finalClienteDto = _mapper.Map<ClienteGetDto>(cliente);
             return Ok(finalClienteDto);
         }
+        
+        [HttpGet("{name:alpha}", Name = "getClientePorNombre")]
+        public async Task<ActionResult<ClienteGetDto>> Get(string name)
+        {
+            var cliente =  _clienteRepositorio.ObtenerPorNombre(name);
+            if (cliente == null) return NotFound();
 
-        [HttpGet("login")]
-        public async Task<IActionResult> Login([FromQuery] ModeloInicioSesion modelo)
+            var finalClienteDto = _mapper.Map<ClienteGetDto>(cliente);
+            return Ok(finalClienteDto);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] ModeloInicioSesion modelo)
         {
             var result = await _signInManager.PasswordSignInAsync(
                 modelo.Usuario,

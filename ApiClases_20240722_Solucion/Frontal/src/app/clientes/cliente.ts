@@ -1,13 +1,13 @@
-export class ICliente {
-  ["constructor"](): void {
-
-  }
-  id!: number;
-  nombre!: string;
-  apellido!: string;
-  usuario!: string;
-  pais!: string;
-  fechaNacimiento!: Date;
-  trabajo?: string;  // Asegúrate de incluir todas las propiedades necesarias
-  email?: string;   // Agrega la propiedad correo aquí
+export interface ICliente {
+  
+  
+  id: number;
+  nombre: string;
+  apellido: string;
+  usuario: string;
+  nombrePais: string;
+  fechaNacimiento: Date;
+  paisId: number;
+  trabajo: string;  // Asegúrate de incluir todas las propiedades necesarias
+  email: string;   // Agrega la propiedad correo aquí
 }

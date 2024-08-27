@@ -30,7 +30,6 @@ public class Cliente
     [ForeignKey(nameof(PaisId))]
     public Pais Pais { get; set; }  // Navegación a la entidad Pais
 
-    //public Usuario? Usuario { get; set; }  // Navegación a la entidad Usuario
 
     [Required]
     [StringLength(256)]
@@ -38,5 +37,5 @@ public class Cliente
     public string Email { get; set; }
 
     [StringLength(256)]
-    public string? Usuario { get; set; }
+    public string Usuario { get; set; }
 }
