@@ -33,6 +33,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepositorioGenerico<Transaccion>, TransaccionRepositorioBBDD<Transaccion>>();
 builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();
 builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD<Cliente>>();
+builder.Services.AddScoped<IServicioToken, ServicioToken>();
+builder.Services.AddScoped<IContarPaisesConClientes, ContarPaisesConClientesRepositorio>();
+builder.Services.AddScoped<IContarTransaccionesUltimos10AniosRepositorio, ContarTransaccionesUltimos10AniosRepositorio>();
 // Agregar BBDD (SQLServer)
 builder.Services.AddDbContext<Contexto>(options =>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -83,8 +86,6 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-// Registro del servicio de generación de tokens
-builder.Services.AddScoped<IServicioToken, ServicioToken>();
 
 //Añadir Autommaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -14,14 +14,15 @@ public class Contexto: IdentityDbContext<UsuarioAplicacion>{
         public DbSet<Transaccion> Transacciones{ get; set; }
         public DbSet<Pais> Paises { get; set; }
         public DbSet<Contacto> Contactos { get; set; }
-        
         public virtual DbSet<VContacto> VContactos { get; set; }
+        public DbSet<ConteoResult> ConteoResults { get; set; }  // DbSet temporal
+
         
 
 
 
-        // OnConfiguring se llama cuando se crea el contexto
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+    // OnConfiguring se llama cuando se crea el contexto
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             // Para activar el seguimiento de consultas,
             // se debe establecer el nivel de seguimiento en Debug
             // en el archivo de configuración de la aplicación (appsettings.json)
@@ -265,11 +266,10 @@ public class Contexto: IdentityDbContext<UsuarioAplicacion>{
         modelBuilder.Entity<Contacto>().HasData(
 
             );
-    
-            
-
+        modelBuilder.Entity<ConteoResult>().HasNoKey();
+        
         }
-    }
+}
 
 
 

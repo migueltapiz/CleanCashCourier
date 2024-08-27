@@ -96,6 +96,4 @@ public class TransaccionRepositorioBBDD<T> : IRepositorioGenerico<T> where T : T
     public T ObtenerTransaccionId(int id_cliente, int id_transaccion) {
         return _contexto.Set<T>().Where(t => t.IdEnvia == id_cliente || t.IdRecibe == id_cliente).FirstOrDefault(c => c.Id == id_transaccion);
     }
-
-   
 }

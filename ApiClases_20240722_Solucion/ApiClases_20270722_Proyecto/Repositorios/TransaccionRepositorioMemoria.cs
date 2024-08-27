@@ -37,4 +37,14 @@ public class TransaccionRepositorioMemoria<T>:IRepositorioGenerico<T> where T:Tr
     {
         throw new NotImplementedException();
     }
+
+    public Task<int> ContarPaisesConClientesAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int> ContarTransaccionesUltimos10AñosAsync()
+    {
+        throw new NotImplementedException();
+    }
 }
