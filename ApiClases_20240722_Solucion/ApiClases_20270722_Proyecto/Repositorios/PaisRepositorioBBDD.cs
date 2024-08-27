@@ -20,13 +20,6 @@ public class PaisRepositorioBBDD<T>: IRepositorioGenerico<T> where T:Pais {
         return await _contexto.SaveChangesAsync() > 0;
     }
 
-    public async Task<int> ContarPaisesConClientesAsync()
-    {
-        var result = await _contexto.Paises
-            .FromSqlInterpolated($"EXEC ContarPaisesConClientes")
-            .CountAsync();
-        return result;
-    }
     public async Task<List<T>> Obtener() => await _contexto.Set<T>().ToListAsync();
     public T ObtenerPorId(int id) => (T)_contexto.Paises.FirstOrDefault(c => c.Id == id);
     public T ObtenerPorNombre(string nombre) => (T)_contexto.Paises.FirstOrDefault(c => c.Nombre == nombre);
@@ -35,8 +28,4 @@ public class PaisRepositorioBBDD<T>: IRepositorioGenerico<T> where T:Pais {
     Task<List<T>> IRepositorioGenerico<T>.ObtenerTodosFiltrado(int id_cliente, DateTime? fechaInicio, DateTime? fechaFin, double? cantidadEnviadaMin, double? cantidadEnviadaMax, double? cantidadRecibidaMin, double? cantidadRecibidaMax) => throw new NotImplementedException();
     T IRepositorioGenerico<T>.ObtenerTransaccionId(int id_cliente, int id_transaccion) => throw new NotImplementedException();
 
-    public Task<int> ContarTransaccionesUnicasAsync()
-    {
-        throw new NotImplementedException();
-    }
 }

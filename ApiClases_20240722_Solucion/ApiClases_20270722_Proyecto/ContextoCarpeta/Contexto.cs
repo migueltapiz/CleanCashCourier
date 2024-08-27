@@ -13,11 +13,13 @@ public class Contexto: IdentityDbContext<UsuarioAplicacion>{
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Transaccion> Transacciones{ get; set; }
         public DbSet<Pais> Paises { get; set; }
+        public DbSet<ConteoResult> ConteoResults { get; set; }  // DbSet temporal
 
 
 
-        // OnConfiguring se llama cuando se crea el contexto
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+
+    // OnConfiguring se llama cuando se crea el contexto
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             // Para activar el seguimiento de consultas,
             // se debe establecer el nivel de seguimiento en Debug
             // en el archivo de configuración de la aplicación (appsettings.json)
@@ -256,11 +258,9 @@ public class Contexto: IdentityDbContext<UsuarioAplicacion>{
                 new Transaccion { Id = 29, IdEnvia = 17, CantidadEnvia = 1900.34, IdRecibe = 18, CantidadRecibe = 2652.87, Fecha = new DateTime(2016, 12, 22, 15, 45, 0) },
                 new Transaccion { Id = 30, IdEnvia = 19, CantidadEnvia = 5100.15, IdRecibe = 20, CantidadRecibe = 6120.57, Fecha = new DateTime(2024, 10, 18, 18, 0, 0) }
             );
-            
-
-
+        modelBuilder.Entity<ConteoResult>().HasNoKey();
     }
-    }
+}
 
 
 

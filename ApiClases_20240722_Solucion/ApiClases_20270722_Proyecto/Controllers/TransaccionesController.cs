@@ -52,11 +52,4 @@ public class TransaccionesController : ControllerBase{
         repositorio.Borrar(id);
         return await repositorio.GuardarCambios() ? Ok("Transacción borrada correctamente") : BadRequest();
     }
-
-    [HttpGet("ContarTransaccionesUnicas")]
-    public async Task<ActionResult<int>> ContarTransaccionesUnicasAsync()
-    {
-        var numeroTransacciones = await repositorio.ContarTransaccionesUnicasAsync();
-        return Ok(numeroTransacciones);
-    }
 }

@@ -26,7 +26,7 @@ public class ClienteRepositorioBBDD<T> : IRepositorioGenerico<T> where T : Clien
         throw new NotImplementedException();
     }
 
-    public Task<int> ContarTransaccionesUnicasAsync()
+    public Task<int> ContarTransaccionesUltimos10AñosAsync()
     {
         throw new NotImplementedException();
     }

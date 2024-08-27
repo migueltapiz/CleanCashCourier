@@ -33,14 +33,6 @@ public class TransaccionRepositorioBBDD<T> : IRepositorioGenerico<T> where T : T
 
     }
 
-    public async Task<int> ContarTransaccionesUnicasAsync()
-    {
-        var result = await _contexto.Transacciones
-            .FromSqlInterpolated($"EXEC ContarTransaccionesUnicas")
-            .CountAsync();
-        return result;
-    }
-
     public Task<List<T>> Obtener() => throw new NotImplementedException();
     public T ObtenerPorId(int id) => throw new NotImplementedException();
 
@@ -85,10 +77,5 @@ public class TransaccionRepositorioBBDD<T> : IRepositorioGenerico<T> where T : T
 
     public T ObtenerTransaccionId(int id_cliente, int id_transaccion) {
         return _contexto.Set<T>().Where(t => t.IdEnvia == id_cliente || t.IdRecibe == id_cliente).FirstOrDefault(c => c.Id == id_transaccion);
-    }
-
-    public Task<int> ContarPaisesConClientesAsync()
-    {
-        throw new NotImplementedException();
     }
 }

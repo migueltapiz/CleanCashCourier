@@ -43,7 +43,7 @@ public class TransaccionRepositorioMemoria<T>:IRepositorioGenerico<T> where T:Tr
         throw new NotImplementedException();
     }
 
-    public Task<int> ContarTransaccionesUnicasAsync()
+    public Task<int> ContarTransaccionesUltimos10AñosAsync()
     {
         throw new NotImplementedException();
     }
