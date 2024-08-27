@@ -31,6 +31,25 @@ public class Contexto: IdentityDbContext<UsuarioAplicacion>{
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<Contacto>()
+            .HasOne(c => c.ClienteOrigen)
+            .WithMany()
+            .HasForeignKey(c => c.ClienteOrigenId)
+            .OnDelete(DeleteBehavior.Restrict); // O DeleteBehavior.NoAction
+
+        modelBuilder.Entity<Contacto>()
+            .HasOne(c => c.ClienteDestino)
+            .WithMany()
+            .HasForeignKey(c => c.ClienteDestinoId)
+            .OnDelete(DeleteBehavior.Restrict); // O DeleteBehavior.NoAction
+
+
+        modelBuilder.Entity<VContacto>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VContactos");
+        });
         base.OnModelCreating(modelBuilder); // para el identity
         modelBuilder.Entity<Pais>().HasData(
                 new Pais { Id = 1, Nombre = "Afganistán", Divisa = "Afgani", Iso3 = "AFN" },
@@ -263,12 +282,112 @@ public class Contexto: IdentityDbContext<UsuarioAplicacion>{
             new Transaccion { Id = 29, IdEnvia = 17, CantidadEnvia = 1900.34, IdRecibe = 18, CantidadRecibe = 2652.87, Fecha = new DateTime(2016, 12, 22, 15, 45, 0), MonedaOrigen = "USD", MonedaDestino = "VND", CosteTransaccion = 19.34 },
             new Transaccion { Id = 30, IdEnvia = 19, CantidadEnvia = 5100.15, IdRecibe = 20, CantidadRecibe = 6120.57, Fecha = new DateTime(2024, 10, 18, 18, 0, 0), MonedaOrigen = "USD", MonedaDestino = "EGP", CosteTransaccion = 51.15 }
         );
-        modelBuilder.Entity<Contacto>().HasData(
 
+        modelBuilder.Entity<Contacto>().HasData(
+            new Contacto { Id = 1, ClienteOrigenId = 1, ClienteDestinoId = 5 },
+            new Contacto { Id = 2, ClienteOrigenId = 2, ClienteDestinoId = 10 },
+            new Contacto { Id = 3, ClienteOrigenId = 3, ClienteDestinoId = 15 },
+            new Contacto { Id = 4, ClienteOrigenId = 4, ClienteDestinoId = 8 },
+            new Contacto { Id = 5, ClienteOrigenId = 5, ClienteDestinoId = 20 },
+            new Contacto { Id = 6, ClienteOrigenId = 6, ClienteDestinoId = 14 },
+            new Contacto { Id = 7, ClienteOrigenId = 7, ClienteDestinoId = 3 },
+            new Contacto { Id = 8, ClienteOrigenId = 8, ClienteDestinoId = 16 },
+            new Contacto { Id = 9, ClienteOrigenId = 9, ClienteDestinoId = 2 },
+            new Contacto { Id = 10, ClienteOrigenId = 10, ClienteDestinoId = 12 },
+            new Contacto { Id = 11, ClienteOrigenId = 11, ClienteDestinoId = 7 },
+            new Contacto { Id = 12, ClienteOrigenId = 12, ClienteDestinoId = 9 },
+            new Contacto { Id = 13, ClienteOrigenId = 13, ClienteDestinoId = 1 },
+            new Contacto { Id = 14, ClienteOrigenId = 14, ClienteDestinoId = 18 },
+            new Contacto { Id = 15, ClienteOrigenId = 15, ClienteDestinoId = 4 },
+            new Contacto { Id = 16, ClienteOrigenId = 16, ClienteDestinoId = 13 },
+            new Contacto { Id = 17, ClienteOrigenId = 17, ClienteDestinoId = 6 },
+            new Contacto { Id = 18, ClienteOrigenId = 18, ClienteDestinoId = 11 },
+            new Contacto { Id = 19, ClienteOrigenId = 19, ClienteDestinoId = 17 },
+            new Contacto { Id = 20, ClienteOrigenId = 20, ClienteDestinoId = 19 },
+            new Contacto { Id = 21, ClienteOrigenId = 1, ClienteDestinoId = 7 },
+            new Contacto { Id = 22, ClienteOrigenId = 2, ClienteDestinoId = 5 },
+            new Contacto { Id = 23, ClienteOrigenId = 3, ClienteDestinoId = 9 },
+            new Contacto { Id = 24, ClienteOrigenId = 4, ClienteDestinoId = 13 },
+            new Contacto { Id = 25, ClienteOrigenId = 5, ClienteDestinoId = 3 },
+            new Contacto { Id = 26, ClienteOrigenId = 6, ClienteDestinoId = 20 },
+            new Contacto { Id = 27, ClienteOrigenId = 7, ClienteDestinoId = 14 },
+            new Contacto { Id = 28, ClienteOrigenId = 8, ClienteDestinoId = 11 },
+            new Contacto { Id = 29, ClienteOrigenId = 9, ClienteDestinoId = 15 },
+            new Contacto { Id = 30, ClienteOrigenId = 10, ClienteDestinoId = 4 },
+            new Contacto { Id = 31, ClienteOrigenId = 11, ClienteDestinoId = 8 },
+            new Contacto { Id = 32, ClienteOrigenId = 12, ClienteDestinoId = 1 },
+            new Contacto { Id = 33, ClienteOrigenId = 13, ClienteDestinoId = 19 },
+            new Contacto { Id = 34, ClienteOrigenId = 14, ClienteDestinoId = 6 },
+            new Contacto { Id = 35, ClienteOrigenId = 15, ClienteDestinoId = 10 },
+            new Contacto { Id = 36, ClienteOrigenId = 16, ClienteDestinoId = 2 },
+            new Contacto { Id = 37, ClienteOrigenId = 17, ClienteDestinoId = 18 },
+            new Contacto { Id = 38, ClienteOrigenId = 18, ClienteDestinoId = 16 },
+            new Contacto { Id = 39, ClienteOrigenId = 19, ClienteDestinoId = 12 },
+            new Contacto { Id = 40, ClienteOrigenId = 20, ClienteDestinoId = 17 },
+            new Contacto { Id = 41, ClienteOrigenId = 1, ClienteDestinoId = 14 },
+            new Contacto { Id = 42, ClienteOrigenId = 2, ClienteDestinoId = 6 },
+            new Contacto { Id = 43, ClienteOrigenId = 3, ClienteDestinoId = 11 },
+            new Contacto { Id = 44, ClienteOrigenId = 4, ClienteDestinoId = 20 },
+            new Contacto { Id = 45, ClienteOrigenId = 5, ClienteDestinoId = 7 },
+            new Contacto { Id = 46, ClienteOrigenId = 6, ClienteDestinoId = 9 },
+            new Contacto { Id = 47, ClienteOrigenId = 7, ClienteDestinoId = 1 },
+            new Contacto { Id = 48, ClienteOrigenId = 8, ClienteDestinoId = 4 },
+            new Contacto { Id = 49, ClienteOrigenId = 9, ClienteDestinoId = 13 },
+            new Contacto { Id = 50, ClienteOrigenId = 10, ClienteDestinoId = 3 },
+            new Contacto { Id = 51, ClienteOrigenId = 11, ClienteDestinoId = 8 },
+            new Contacto { Id = 52, ClienteOrigenId = 12, ClienteDestinoId = 15 },
+            new Contacto { Id = 53, ClienteOrigenId = 13, ClienteDestinoId = 18 },
+            new Contacto { Id = 54, ClienteOrigenId = 14, ClienteDestinoId = 16 },
+            new Contacto { Id = 55, ClienteOrigenId = 15, ClienteDestinoId = 2 },
+            new Contacto { Id = 56, ClienteOrigenId = 16, ClienteDestinoId = 12 },
+            new Contacto { Id = 57, ClienteOrigenId = 17, ClienteDestinoId = 19 },
+            new Contacto { Id = 58, ClienteOrigenId = 18, ClienteDestinoId = 5 },
+            new Contacto { Id = 59, ClienteOrigenId = 19, ClienteDestinoId = 14 },
+            new Contacto { Id = 60, ClienteOrigenId = 20, ClienteDestinoId = 9 },
+            new Contacto { Id = 61, ClienteOrigenId = 1, ClienteDestinoId = 10 },
+            new Contacto { Id = 62, ClienteOrigenId = 2, ClienteDestinoId = 3 },
+            new Contacto { Id = 63, ClienteOrigenId = 3, ClienteDestinoId = 17 },
+            new Contacto { Id = 64, ClienteOrigenId = 4, ClienteDestinoId = 11 },
+            new Contacto { Id = 65, ClienteOrigenId = 5, ClienteDestinoId = 6 },
+            new Contacto { Id = 66, ClienteOrigenId = 6, ClienteDestinoId = 8 },
+            new Contacto { Id = 67, ClienteOrigenId = 7, ClienteDestinoId = 19 },
+            new Contacto { Id = 68, ClienteOrigenId = 8, ClienteDestinoId = 2 },
+            new Contacto { Id = 69, ClienteOrigenId = 9, ClienteDestinoId = 7 },
+            new Contacto { Id = 70, ClienteOrigenId = 10, ClienteDestinoId = 1 },
+            new Contacto { Id = 71, ClienteOrigenId = 11, ClienteDestinoId = 16 },
+            new Contacto { Id = 72, ClienteOrigenId = 12, ClienteDestinoId = 4 },
+            new Contacto { Id = 73, ClienteOrigenId = 13, ClienteDestinoId = 9 },
+            new Contacto { Id = 74, ClienteOrigenId = 14, ClienteDestinoId = 13 },
+            new Contacto { Id = 75, ClienteOrigenId = 15, ClienteDestinoId = 18 },
+            new Contacto { Id = 76, ClienteOrigenId = 16, ClienteDestinoId = 10 },
+            new Contacto { Id = 77, ClienteOrigenId = 17, ClienteDestinoId = 6 },
+            new Contacto { Id = 78, ClienteOrigenId = 18, ClienteDestinoId = 12 },
+            new Contacto { Id = 79, ClienteOrigenId = 19, ClienteDestinoId = 15 },
+            new Contacto { Id = 80, ClienteOrigenId = 20, ClienteDestinoId = 11 },
+            new Contacto { Id = 81, ClienteOrigenId = 1, ClienteDestinoId = 17 },
+            new Contacto { Id = 82, ClienteOrigenId = 2, ClienteDestinoId = 8 },
+            new Contacto { Id = 83, ClienteOrigenId = 3, ClienteDestinoId = 5 },
+            new Contacto { Id = 84, ClienteOrigenId = 4, ClienteDestinoId = 14 },
+            new Contacto { Id = 85, ClienteOrigenId = 5, ClienteDestinoId = 3 },
+            new Contacto { Id = 86, ClienteOrigenId = 6, ClienteDestinoId = 18 },
+            new Contacto { Id = 87, ClienteOrigenId = 7, ClienteDestinoId = 13 },
+            new Contacto { Id = 88, ClienteOrigenId = 8, ClienteDestinoId = 19 },
+            new Contacto { Id = 89, ClienteOrigenId = 9, ClienteDestinoId = 4 },
+            new Contacto { Id = 90, ClienteOrigenId = 10, ClienteDestinoId = 7 },
+            new Contacto { Id = 91, ClienteOrigenId = 11, ClienteDestinoId = 15 },
+            new Contacto { Id = 92, ClienteOrigenId = 12, ClienteDestinoId = 6 },
+            new Contacto { Id = 93, ClienteOrigenId = 13, ClienteDestinoId = 20 },
+            new Contacto { Id = 94, ClienteOrigenId = 14, ClienteDestinoId = 1 },
+            new Contacto { Id = 95, ClienteOrigenId = 15, ClienteDestinoId = 9 },
+            new Contacto { Id = 96, ClienteOrigenId = 16, ClienteDestinoId = 11 },
+            new Contacto { Id = 97, ClienteOrigenId = 17, ClienteDestinoId = 8 },
+            new Contacto { Id = 98, ClienteOrigenId = 18, ClienteDestinoId = 2 },
+            new Contacto { Id = 99, ClienteOrigenId = 19, ClienteDestinoId = 12 },
+            new Contacto { Id = 100, ClienteOrigenId = 20, ClienteDestinoId = 10 }
             );
         modelBuilder.Entity<ConteoResult>().HasNoKey();
-        
-        }
+
+    }
 }
 
 
