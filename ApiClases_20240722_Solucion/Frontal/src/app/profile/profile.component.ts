@@ -5,7 +5,8 @@ import { DatosService } from "../datos/datos.service";
 import { IPais, PaisService } from '../servicios/pais.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { CabeceraComponent } from '../cabecera/cabecera.component'
+import { jwtDecode } from 'jwt-decode';
 @Component({
   selector: 'pm-profile-component',
   templateUrl: './profile.component.html',
@@ -42,7 +43,8 @@ export class ProfileComponent implements OnInit {
   paisSeleccionado: number = -1;
   empleos: string[] = [];
   empleosFiltrados: string[] = [];
-
+  token!: string;
+  nombre!: string;
   constructor(private fb: FormBuilder, private clienteService: ClienteService,private paisService:PaisService, private datosService: DatosService) { }
   showDropdownPais() {
     this.isDropdownPaisesVisible = true;
@@ -59,7 +61,14 @@ export class ProfileComponent implements OnInit {
     this.isDropdownEmpleosVisible = false;
   }
   ngOnInit(): void {
-    this.subClientes = this.clienteService.getClienteById(1).subscribe({
+
+    this.token = localStorage['token'];
+
+    const decoded = jwtDecode(this.token) as { [key: string]: any };
+
+    this.nombre = decoded['sub'];
+
+    this.subClientes = this.clienteService.getClienteByName(this.nombre).subscribe({
       next: (data) => this.cliente = data,
       error: (err) => console.error(err)
     });

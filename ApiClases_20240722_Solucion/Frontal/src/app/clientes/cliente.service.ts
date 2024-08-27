@@ -25,6 +25,12 @@ export class ClienteService {
       catchError(this.handleError)
     );
   }
+  getClienteByName(name:string): Observable<ICliente> {
+    return this.http.get<ICliente>(`${this.clientesUrl}/${name}`).pipe(
+      tap(data => console.log('Cliente:', data)),
+      catchError(this.handleError)
+    );
+  }
 
   updateCliente(id: number, cliente: ICliente): Observable<ICliente> {
     return this.http.put<ICliente>(`${this.clientesUrl}/${id}`, cliente).pipe(

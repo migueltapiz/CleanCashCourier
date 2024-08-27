@@ -1,65 +1,89 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TransaccionService } from './transaccion.service';
-import { Transaccion } from './transaccion';
+import { Transaccion, TransaccionTabla } from './transaccion';
 import { ICliente } from '../clientes/cliente';
 import { ClienteService } from '../clientes/cliente.service';
 import { format } from 'date-fns';
+import {CabeceraComponent } from '../cabecera/cabecera.component'
+import { Subscription } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'pm-transaccion',
   templateUrl: './transaccion.component.html',
   styleUrls: ['./transaccion.component.css']
 })
-export class TransaccionComponent implements OnInit {
+export class TransaccionComponent implements OnInit,OnDestroy {
   transacciones: Transaccion[] = [];
-
+  transaccionesTabla: TransaccionTabla[] = [];
   fechaInicio: string | null = null;
   fechaFin: string | null = null;
   cantidadMin: number | null = null;
   cantidadMax: number | null = null;
 
+  subcliente!: Subscription;
+  subTransaccion!: Subscription;
+
+  cuantas: number = 0;
   constructor(private transaccionService: TransaccionService, private clienteService: ClienteService) { }
 
-
-  clientes: ICliente[] = [];
-
-  clienteId: number = 6;
-
+  cliente!: ICliente;
   errorMessage: string = '';
+  token!: string;
+  nombre!: string;
 
   ngOnInit(): void {
-    this.obtenerTransacciones();
-    this.obtenerClientes();
-    this.filtrarTransacciones();
-  }
-  obtenerClientes(): void {
-    this.clienteService.getClientes().subscribe({
-      next: clientes => {
-        this.clientes = clientes;
+    this.token = localStorage['token'];
+
+    const decoded = jwtDecode(this.token) as { [key: string]: any };
+
+    this.nombre = decoded['sub'];
+
+    this.clienteService.getClienteByName(this.nombre).subscribe({
+      next: cliente => {
+        this.cliente = cliente;
+        this.subTransaccion = this.transaccionService.getTransacciones(this.cliente.id).subscribe(
+          async (data: Transaccion[]) => {
+            this.transacciones = data;
+            await Promise.all(this.transacciones.map(async (transaccion) => {
+              const transaccionTabla = new TransaccionTabla();
+              transaccionTabla.nombre = await this.obtenerIdUsuario(transaccion);
+              transaccionTabla.cantidad = this.obtenerCantidad(transaccion);
+              transaccionTabla.fecha = this.obtenerFecha(transaccion);
+              transaccionTabla.tipo = this.obtenerTipoTransaccion(transaccion);
+              this.transaccionesTabla.push(transaccionTabla);
+            }));
+          },
+          error => console.error(error)
+        );
+        
       },
       error: err => this.errorMessage = err
     });
   }
-
-  obtenerTransacciones(): void {
-    this.transaccionService.getTransacciones(this.clienteId).subscribe(
-      (data: Transaccion[]) => this.transacciones = data,
-      error => console.error(error)
-    );
+  ngOnDestroy(): void {
+    this.subcliente.unsubscribe();
+    this.subTransaccion?.unsubscribe();
   }
 
-  obtenerIdUsuario(transaccion: Transaccion): string {
+ 
+
+  obtenerIdUsuario(transaccion: Transaccion): Promise<string> {
+    console.log(transaccion);
     // Si la transacción es recibida (idRecibe es 1), muestra el idEnvia, de lo contrario, muestra idRecibe
-    var clienteIdAux = transaccion.idRecibe === this.clienteId ? transaccion.idEnvia : transaccion.idRecibe;
-    const cliente = this.clientes.find(c => c.id === clienteIdAux);
-    if (cliente) {
-      const usuario = cliente.usuario;
-      return usuario;
-    } else {
-      return 'Unknown';
-    }
-    //return clienteIdAux;
-    //return transaccion.idRecibe === 1 ? transaccion.idEnvia : transaccion.idRecibe;
+    var clienteIdAux = transaccion.idRecibe === this.cliente.id ? transaccion.idEnvia : transaccion.idRecibe;
+    return new Promise((resolve, reject) => {
+      this.subcliente = this.clienteService.getClienteById(clienteIdAux).subscribe({
+        next: cliente => {
+          resolve(cliente.usuario);
+        },
+        error: err => {
+          this.errorMessage = err;
+          reject('Unknow');
+        }
+      });
+    });
+    
   }
 
   obtenerCantidad(transaccion: Transaccion): number {
@@ -67,7 +91,7 @@ export class TransaccionComponent implements OnInit {
   }
 
   obtenerTipoTransaccion(transaccion: Transaccion): string {
-    return transaccion.idEnvia === this.clienteId ? 'Enviada' : 'Recibida';
+    return transaccion.idEnvia === this.cliente.id ? 'Enviada' : 'Recibida';
   }
 
   obtenerFecha(transaccion: Transaccion): string {
@@ -105,19 +129,22 @@ export class TransaccionComponent implements OnInit {
       cantidadMaxElement.value = '';
     }
   }
-
   filtrarTransacciones(): void {
     // Aquí puedes construir los parámetros de la consulta con base en los filtros aplicados.
     // Luego, realiza la llamada al servicio para obtener las transacciones filtradas.
     // Por ejemplo:
-    this.transaccionService.getTransaccionesFiltradas({
+    this.subTransaccion = this.transaccionService.getTransaccionesFiltradas({
       fechaInicio: this.fechaInicio,
       fechaFin: this.fechaFin,
       cantidadMin: this.cantidadMin,
       cantidadMax: this.cantidadMax
-    },this.clienteId).subscribe(
+    }, this.cliente.id).subscribe(
       (data: Transaccion[]) => this.transacciones = data,
       error => console.error(error)
     );
   }
+
+
+ 
+ 
 }

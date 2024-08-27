@@ -11,6 +11,8 @@ import { TransaccionComponent } from './transaccion/transaccion.component';
 import { RegistroComponent } from './registro/registro.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
+import { CabeceraComponent } from './cabecera/cabecera.component';
+import { WelcomeComponentComponent } from './welcome-component/welcome-component.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { ProfileComponent } from './profile/profile.component';
     TransaccionComponent,
     RegistroComponent,
     LoginComponent,
-    ProfileComponent
+    ProfileComponent,
+    CabeceraComponent,
+    WelcomeComponentComponent
   ],
   imports: [
     BrowserModule,
@@ -28,13 +32,7 @@ import { ProfileComponent } from './profile/profile.component';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule
-    // RouterModule.forRoot([
-    //   { path: 'about', component: AboutComponent, title: 'Acerca de Nosotros' },
-    //   // { path: 'products/:id', component: ProductDetailComponent },
-    //   { path: 'welcome', component: WelcomeComponentComponent },
-    //   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
-    //   { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
-    // ])
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

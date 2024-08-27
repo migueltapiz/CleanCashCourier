@@ -2,6 +2,7 @@
 {
     public class ModeloRegistro : ClienteBaseDto
     {
+        
         [Required]
         public string Contrasena { get; set; }
 

@@ -1,3 +1,4 @@
+<cabecera></cabecera>
 <div class="container">
   <h2 class="text-center">Historial de transacciones</h2>
 
@@ -58,12 +59,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let transaccion of transacciones">
-        <td>{{ obtenerIdUsuario(transaccion) }}</td>
-        <td>{{ obtenerCantidad(transaccion) }}</td>
-        <td>{{ obtenerFecha(transaccion) }}</td>
-<!--        <td>{{ transaccion.fecha | date: 'shortDate' }}</td>-->
-        <td>{{ obtenerTipoTransaccion(transaccion) }}</td>
+      <tr *ngFor="let transaccion of transaccionesTabla">
+        <td>{{ transaccion.nombre}}</td>
+        <td>{{ transaccion.cantidad}}</td>
+        <td>{{ transaccion.fecha }}</td>
+        <td>{{ transaccion.tipo }}</td>
       </tr>
     </tbody>
   </table>

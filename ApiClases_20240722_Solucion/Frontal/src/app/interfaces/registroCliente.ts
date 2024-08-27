@@ -8,6 +8,7 @@ export interface RegistroCliente {
   PaisId: number;
   Empleo: string;
   FechaNacimiento: Date;
+  NombrePais: string;
 }
 export interface InicioSesionCliente {
   Usuario: string;

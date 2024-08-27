@@ -12,13 +12,6 @@ export class TransaccionService {
   private urlConversor = 'https://api.getgeoapi.com/v2/currency/convert?api_key=fa412676602886da01c7aab7dc3ffc8645840ace&from='
   constructor(private http: HttpClient) { }
 
-  /*getClientes(): Observable<ICliente[]> {
-    return this.http.get<ICliente[]>(this.clientesUrl).pipe(
-      tap(data => data),
-      catchError(this.handleError)
-    );
-  }*/
-
 
   crearTransaccion(transaccion: Transaccion): Observable<Transaccion> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin':'*'});
@@ -37,22 +30,9 @@ export class TransaccionService {
         catchError(this.handleError)
       );
   }
-  private handleError(err: HttpErrorResponse) {
-    // in a real world app, we may send the server to some remote logging infrastructure
-    // instead of just logging it to the console
-    let errorMessage = '';
-    if (err.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      errorMessage = `An error occurred (12345678): ${err.error.message}`;
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
-    }
-    console.error(errorMessage);
-    return throwError(() => errorMessage);
-  }
-  getTransacciones(id_cliente:number): Observable<Transaccion[]> {
+
+
+  getTransacciones(id_cliente: number): Observable<Transaccion[]> {
     return this.http.get<Transaccion[]>(`${this.url}/${id_cliente}/Transacciones`).pipe(
       tap(data => console.log('Transacciones obtenidas: ', JSON.stringify(data))),
       catchError(this.handleError)
@@ -60,7 +40,7 @@ export class TransaccionService {
   }
 
 
-  getTransaccionesFiltradas(filtros: any,id_cliente:number): Observable<Transaccion[]> {
+  getTransaccionesFiltradas(filtros: any, id_cliente: number): Observable<Transaccion[]> {
     let urlConFiltros = `${this.url}/${id_cliente}/Transacciones`;
 
 
@@ -87,5 +67,22 @@ export class TransaccionService {
       tap(data => console.log('Transacciones filtradas obtenidas: ', JSON.stringify(data))),
       catchError(this.handleError)
     );
+  }
+
+
+  private handleError(err: HttpErrorResponse) {
+    // in a real world app, we may send the server to some remote logging infrastructure
+    // instead of just logging it to the console
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      errorMessage = `An error occurred (12345678): ${err.error.message}`;
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
     }
+    console.error(errorMessage);
+    return throwError(() => errorMessage);
+  }
   }

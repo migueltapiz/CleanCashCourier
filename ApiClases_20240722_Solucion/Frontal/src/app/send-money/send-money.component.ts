@@ -7,7 +7,8 @@ import { TransaccionService } from "../transaccion/transaccion.service";
 import { ITransaccion, Transaccion } from "../transaccion/transaccion";
 import { Router } from '@angular/router';
 import { PaisService } from '../servicios/pais.service';
-
+import { CabeceraComponent } from '../cabecera/cabecera.component'
+import { jwtDecode } from 'jwt-decode';
 declare var bootstrap: any;
 
 @Component({
@@ -20,10 +21,8 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   subcliente!: Subscription;
   subPais!: Subscription;
   subTransaccion!: Subscription;
-  filteredClientes: ICliente[] = [];
-  clientes: ICliente[] = [];
-  selectedCliente: ICliente | undefined = undefined;
-  clienteEnvia: ICliente = new ICliente();
+  selectedCliente!: ICliente;
+  clienteEnvia!: ICliente;
   modalMessage: string = '';
   transaccion!: Transaccion;
   
@@ -37,57 +36,78 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   tarifaTransferencia: number = 0.00; // Tarifa de transferencia fija por ahora
   totalTransferencia: string = '0.00';
   private timeout: any;
+
+  token: any;
+  nombre!: string;
   constructor(private clienteService: ClienteService, private transaccionService: TransaccionService,private paisService: PaisService, private router: Router) { }
 
   ngOnInit(): void {
-    this.clienteEnvia.id = 1;
-    this.subPais = this.paisService.getPaisId(this.clienteEnvia.id).subscribe({
-      next: pais => {
-        this.currencyEnviada = pais.iso3;
+    this.token = localStorage['token'];
+
+    const decoded = jwtDecode(this.token) as { [key: string]: any };
+
+    this.nombre = decoded['sub'];
+
+    this.subcliente = this.clienteService.getClienteByName(this.nombre).subscribe({
+      next: cliente => {
+        
+        this.clienteEnvia = cliente;
+        
+        this.subPais = this.paisService.getPaisId(this.clienteEnvia.id).subscribe({
+          next: pais => {
+            this.currencyEnviada = pais.iso3;
+          },
+          error: err => this.errorMessage = err
+        });
       },
       error: err => this.errorMessage = err
     });
-    this.subcliente = this.clienteService.getClientes().subscribe({
-      next: clientes => {
-        this.clientes = clientes;
-        this.filteredClientes = [];
-      },
-      error: err => this.errorMessage = err
-    });
+    
+    
+    
   }
   prueba(): void {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
     this.timeout = setTimeout(() => {
-      this.selectedCliente = this.clientes.find(cliente => cliente.usuario === this.recipientFilter.trim());
-      if (this.selectedCliente) {
-        this.subTransaccion = this.paisService.getPaisId(this.selectedCliente.id).subscribe({
-          next: pais => {
-            this.currencyRecibida = pais.iso3;
-            console.log(this.currencyRecibida);
-            this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
-              next: factor => {
-                this.factorConversion = factor;
+      this.subcliente = this.clienteService.getClienteByName(this.recipientFilter.trim()).subscribe({
+        next: cliente => {
+
+          this.selectedCliente = cliente;
+
+          if (this.selectedCliente) {
+            this.subTransaccion = this.paisService.getPaisId(this.selectedCliente.id).subscribe({
+              next: pais => {
+                this.currencyRecibida = pais.iso3;
+                console.log(this.currencyRecibida);
+                this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
+                  next: factor => {
+                    this.factorConversion = factor;
+                  },
+                  error: err => this.errorMessage = err
+                });
               },
               error: err => this.errorMessage = err
             });
-          },
-          error: err => this.errorMessage = err
-        });
-       
-        
-      } else {
-        this.currencyRecibida = '';
-        this.factorConversion = 0;
-      }
+
+
+          } else {
+            this.currencyRecibida = '';
+            this.factorConversion = 0;
+          }
+        },
+        error: err => this.errorMessage = err
+      });
+
+     
       clearTimeout(this.timeout);
     }, 1000);
   }
   ngOnDestroy(): void {
     this.subcliente.unsubscribe();
     this.subPais.unsubscribe();
-    this.subTransaccion.unsubscribe();
+    this.subTransaccion?.unsubscribe();
   }
 
   validateAmount(event: Event, isEnviada: boolean) {
@@ -124,7 +144,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
     input.value = value;
   }
-
+  
   crearTransaccion() {
     this.transaccion = new Transaccion();
 
@@ -133,6 +153,9 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     this.transaccion.idEnvia = this.clienteEnvia.id;
     this.transaccion.idRecibe = this.selectedCliente?.id === null ? 0 : this.selectedCliente?.id || 0;
     this.transaccion.fecha = new Date(Date.now()).toJSON();
+    this.transaccion.monedaOrigen= this.currencyEnviada;
+    this.transaccion.monedaDestino = this.currencyRecibida;
+    this.transaccion.costeTransaccion = this.tarifaTransferencia;
     console.log(this.transaccion);
   }
 

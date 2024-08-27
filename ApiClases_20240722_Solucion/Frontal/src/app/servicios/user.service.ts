@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Usuario } from '../clases/usuario';
 import { environment } from '../../environments/environment';
-import { InicioSesionCliente } from '../interfaces/registroCliente';
+import { InicioSesionCliente, RegistroCliente } from '../interfaces/registroCliente';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +19,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(`${this.URL}Clientes/users`);
-  }
+  
 
   autenticarUsuario(usuario: string, contrasena: string, recuerdame: boolean): Observable<any> {
     recuerdame = false;
@@ -35,7 +33,8 @@ export class UserService {
     return this.http.post<any>(`${this.URL}Clientes/login`, clienteInicioSesion);
   }
 
-  registrarUsuario(usuario: any): Observable<any> {
+  registrarUsuario(usuario: RegistroCliente): Observable<any> {
+    console.log(usuario);
     return this.http.post<any>(`${this.URL}Clientes/register`, usuario);
   }
 

@@ -1,0 +1,11 @@
+<!-- app.component.html -->
+<div class="navbar">
+  <img src="assets/Logo.png" alt="Logo" class="logo" routerLink="/welcome">
+  <div class="nav-items">
+    <a routerLink="/about" class="nav-item">Sobre nosotros</a>
+    <a routerLink="/send-money" class="nav-item">Enviar Dinero</a>
+    <a routerLink="/profile" class="nav-item">Perfil</a>
+    <a routerLink="/transaction-history" class="nav-item">Registro de transacciones</a>
+    <a routerLink="/registro" class="nav-item" (click)="cerrarSesion()">Cerrar sesion</a>
+  </div>
+</div>
