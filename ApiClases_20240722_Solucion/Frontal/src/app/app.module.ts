@@ -12,6 +12,7 @@ import { RegistroComponent } from './registro/registro.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CabeceraComponent } from './cabecera/cabecera.component';
+import { WelcomeComponentComponent } from './welcome-component/welcome-component.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CabeceraComponent } from './cabecera/cabecera.component';
     RegistroComponent,
     LoginComponent,
     ProfileComponent,
-    CabeceraComponent
+    CabeceraComponent,
+    WelcomeComponentComponent
   ],
   imports: [
     BrowserModule,
