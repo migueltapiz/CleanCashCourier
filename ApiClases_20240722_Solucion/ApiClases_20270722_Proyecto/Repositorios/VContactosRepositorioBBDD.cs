@@ -23,7 +23,7 @@ namespace ApiClases_20270722_Proyecto.Repositorios
 
         public void Borrar(int id)
         {
-            var contacto = _contexto.VContactos.FirstOrDefault(c => c.Id == id);
+            var contacto = _contexto.VContactos.FirstOrDefault(c => c.IdCliente == id);
             _contexto.VContactos.Remove(contacto);
         }
 
@@ -34,7 +34,7 @@ namespace ApiClases_20270722_Proyecto.Repositorios
 
         public async Task<List<T>> Obtener() => await _contexto.Set<T>().ToListAsync();
 
-        public T ObtenerPorId(int id) => _contexto.Set<T>().FirstOrDefault(c => c.Id == id);
+        public T ObtenerPorId(int id) => _contexto.Set<T>().FirstOrDefault(c => c.IdCliente == id);
 
         public T ObtenerPorNombre(string username) => _contexto.Set<T>().FirstOrDefault(c => c.NombreContacto == username);
 
