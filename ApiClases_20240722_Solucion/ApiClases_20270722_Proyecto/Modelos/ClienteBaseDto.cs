@@ -16,20 +16,19 @@ public class ClienteBaseDto :IValidatableObject
 
     public string Empleo { get; set; }
 
-    public string NombrePais { get; set; }
+    public string? NombrePais { get; set; }
 
     [Required]
-
     public string Email { get; set; }
 
     [Required]
     public int PaisId { get; set; }
 
-    public string Usuario { get; set; }
+    public string? Usuario { get; set; }
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
 
-        if (Char.IsDigit(Usuario[0]))
+        if (Char.IsDigit(Email[0]))
         {
             yield return new ValidationResult("El usuario no puede empezar por un número", new[] { "Usuario" });
         }

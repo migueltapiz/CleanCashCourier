@@ -4,9 +4,8 @@ public class ClientePerfil:Profile {
 
     public ClientePerfil(){
         CreateMap<Cliente, ClienteBaseDto>()
-                    .ForMember(dest => dest.NombrePais, opt => opt.MapFrom(src => src.Pais.Nombre))  // Mapea el nombre del país
-                    .ReverseMap();
-        CreateMap<Pais, PaisDto>().ReverseMap();
+                    .ForMember(dest => dest.NombrePais, opt => opt.MapFrom(src => src.Pais.Nombre));  // Mapea el nombre del país
+        CreateMap<ClienteBaseDto, Cliente>();
 
         // Mapeo de Cliente a ClienteGetDto y viceversa
         CreateMap<Cliente, ClienteGetDto>()
@@ -20,8 +19,10 @@ public class ClientePerfil:Profile {
         CreateMap<ClienteDeleteDto, Cliente>()
             .IncludeBase<ClienteBaseDto, Cliente>();
 
-        CreateMap<Cliente, ModeloRegistro>()
-            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-            .ReverseMap();
+        CreateMap<ModeloRegistro, Cliente>().
+            IncludeBase<ClienteBaseDto, Cliente>();
+
+
+        CreateMap<Pais, PaisDto>().ReverseMap();
     }
 }
