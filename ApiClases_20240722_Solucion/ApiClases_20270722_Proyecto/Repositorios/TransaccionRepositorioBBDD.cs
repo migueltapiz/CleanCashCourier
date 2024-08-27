@@ -25,10 +25,9 @@ public class TransaccionRepositorioBBDD<T> : IRepositorioGenerico<T> where T : T
         _contexto.Transacciones.Remove(transaccion);
     }
 
-    public async Task<bool> GuardarCambios() {
-
+    public async Task<bool> GuardarCambios()
+    {
         return await _contexto.SaveChangesAsync() > 0;
-
     }
 
     public Task<List<T>> Obtener() => throw new NotImplementedException();
