@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ApiClases_20270722_Proyecto.Migrations
 {
     /// <inheritdoc />
-    public partial class Migracion240823 : Migration
+    public partial class added_contacts : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,6 +221,32 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         principalTable: "Paises",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Contactos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClienteOrigenId = table.Column<int>(type: "int", nullable: false),
+                    ClienteDestinoId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contactos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contactos_Clientes_ClienteDestinoId",
+                        column: x => x.ClienteDestinoId,
+                        principalTable: "Clientes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Contactos_Clientes_ClienteOrigenId",
+                        column: x => x.ClienteOrigenId,
+                        principalTable: "Clientes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -466,6 +492,113 @@ namespace ApiClases_20270722_Proyecto.Migrations
                     { 20, "Johnson", "therock@gmail.com", "Actor", new DateTime(1972, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Dwayne", 5, "therock" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Contactos",
+                columns: new[] { "Id", "ClienteDestinoId", "ClienteOrigenId" },
+                values: new object[,]
+                {
+                    { 1, 5, 1 },
+                    { 2, 10, 2 },
+                    { 3, 15, 3 },
+                    { 4, 8, 4 },
+                    { 5, 20, 5 },
+                    { 6, 14, 6 },
+                    { 7, 3, 7 },
+                    { 8, 16, 8 },
+                    { 9, 2, 9 },
+                    { 10, 12, 10 },
+                    { 11, 7, 11 },
+                    { 12, 9, 12 },
+                    { 13, 1, 13 },
+                    { 14, 18, 14 },
+                    { 15, 4, 15 },
+                    { 16, 13, 16 },
+                    { 17, 6, 17 },
+                    { 18, 11, 18 },
+                    { 19, 17, 19 },
+                    { 20, 19, 20 },
+                    { 21, 7, 1 },
+                    { 22, 5, 2 },
+                    { 23, 9, 3 },
+                    { 24, 13, 4 },
+                    { 25, 3, 5 },
+                    { 26, 20, 6 },
+                    { 27, 14, 7 },
+                    { 28, 11, 8 },
+                    { 29, 15, 9 },
+                    { 30, 4, 10 },
+                    { 31, 8, 11 },
+                    { 32, 1, 12 },
+                    { 33, 19, 13 },
+                    { 34, 6, 14 },
+                    { 35, 10, 15 },
+                    { 36, 2, 16 },
+                    { 37, 18, 17 },
+                    { 38, 16, 18 },
+                    { 39, 12, 19 },
+                    { 40, 17, 20 },
+                    { 41, 14, 1 },
+                    { 42, 6, 2 },
+                    { 43, 11, 3 },
+                    { 44, 20, 4 },
+                    { 45, 7, 5 },
+                    { 46, 9, 6 },
+                    { 47, 1, 7 },
+                    { 48, 4, 8 },
+                    { 49, 13, 9 },
+                    { 50, 3, 10 },
+                    { 51, 8, 11 },
+                    { 52, 15, 12 },
+                    { 53, 18, 13 },
+                    { 54, 16, 14 },
+                    { 55, 2, 15 },
+                    { 56, 12, 16 },
+                    { 57, 19, 17 },
+                    { 58, 5, 18 },
+                    { 59, 14, 19 },
+                    { 60, 9, 20 },
+                    { 61, 10, 1 },
+                    { 62, 3, 2 },
+                    { 63, 17, 3 },
+                    { 64, 11, 4 },
+                    { 65, 6, 5 },
+                    { 66, 8, 6 },
+                    { 67, 19, 7 },
+                    { 68, 2, 8 },
+                    { 69, 7, 9 },
+                    { 70, 1, 10 },
+                    { 71, 16, 11 },
+                    { 72, 4, 12 },
+                    { 73, 9, 13 },
+                    { 74, 13, 14 },
+                    { 75, 18, 15 },
+                    { 76, 10, 16 },
+                    { 77, 6, 17 },
+                    { 78, 12, 18 },
+                    { 79, 15, 19 },
+                    { 80, 11, 20 },
+                    { 81, 17, 1 },
+                    { 82, 8, 2 },
+                    { 83, 5, 3 },
+                    { 84, 14, 4 },
+                    { 85, 3, 5 },
+                    { 86, 18, 6 },
+                    { 87, 13, 7 },
+                    { 88, 19, 8 },
+                    { 89, 4, 9 },
+                    { 90, 7, 10 },
+                    { 91, 15, 11 },
+                    { 92, 6, 12 },
+                    { 93, 20, 13 },
+                    { 94, 1, 14 },
+                    { 95, 9, 15 },
+                    { 96, 11, 16 },
+                    { 97, 8, 17 },
+                    { 98, 2, 18 },
+                    { 99, 12, 19 },
+                    { 100, 10, 20 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -509,6 +642,17 @@ namespace ApiClases_20270722_Proyecto.Migrations
                 name: "IX_Clientes_PaisId",
                 table: "Clientes",
                 column: "PaisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contactos_ClienteDestinoId",
+                table: "Contactos",
+                column: "ClienteDestinoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contactos_ClienteOrigenId",
+                table: "Contactos",
+                column: "ClienteOrigenId");
+            CrearVistas(migrationBuilder);
         }
 
         /// <inheritdoc />
@@ -530,7 +674,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Clientes");
+                name: "Contactos");
 
             migrationBuilder.DropTable(
                 name: "Transacciones");
@@ -542,7 +686,11 @@ namespace ApiClases_20270722_Proyecto.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Clientes");
+
+            migrationBuilder.DropTable(
                 name: "Paises");
+            EliminarVistas(migrationBuilder);
         }
     }
 }

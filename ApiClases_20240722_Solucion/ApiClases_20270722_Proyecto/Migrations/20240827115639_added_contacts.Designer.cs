@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiClases_20270722_Proyecto.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240823122548_Migracion240823")]
-    partial class Migracion240823
+    [Migration("20240827115639_added_contacts")]
+    partial class added_contacts
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -289,6 +289,631 @@ namespace ApiClases_20270722_Proyecto.Migrations
                             Nombre = "Dwayne",
                             PaisId = 5,
                             Usuario = "therock"
+                        });
+                });
+
+            modelBuilder.Entity("ApiClases_20270722_Proyecto.Entidades.Contacto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClienteDestinoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClienteOrigenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteDestinoId");
+
+                    b.HasIndex("ClienteOrigenId");
+
+                    b.ToTable("Contactos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClienteDestinoId = 5,
+                            ClienteOrigenId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClienteDestinoId = 10,
+                            ClienteOrigenId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClienteDestinoId = 15,
+                            ClienteOrigenId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ClienteDestinoId = 8,
+                            ClienteOrigenId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ClienteDestinoId = 20,
+                            ClienteOrigenId = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ClienteDestinoId = 14,
+                            ClienteOrigenId = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ClienteDestinoId = 3,
+                            ClienteOrigenId = 7
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ClienteDestinoId = 16,
+                            ClienteOrigenId = 8
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ClienteDestinoId = 2,
+                            ClienteOrigenId = 9
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ClienteDestinoId = 12,
+                            ClienteOrigenId = 10
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ClienteDestinoId = 7,
+                            ClienteOrigenId = 11
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ClienteDestinoId = 9,
+                            ClienteOrigenId = 12
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ClienteDestinoId = 1,
+                            ClienteOrigenId = 13
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ClienteDestinoId = 18,
+                            ClienteOrigenId = 14
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ClienteDestinoId = 4,
+                            ClienteOrigenId = 15
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ClienteDestinoId = 13,
+                            ClienteOrigenId = 16
+                        },
+                        new
+                        {
+                            Id = 17,
+                            ClienteDestinoId = 6,
+                            ClienteOrigenId = 17
+                        },
+                        new
+                        {
+                            Id = 18,
+                            ClienteDestinoId = 11,
+                            ClienteOrigenId = 18
+                        },
+                        new
+                        {
+                            Id = 19,
+                            ClienteDestinoId = 17,
+                            ClienteOrigenId = 19
+                        },
+                        new
+                        {
+                            Id = 20,
+                            ClienteDestinoId = 19,
+                            ClienteOrigenId = 20
+                        },
+                        new
+                        {
+                            Id = 21,
+                            ClienteDestinoId = 7,
+                            ClienteOrigenId = 1
+                        },
+                        new
+                        {
+                            Id = 22,
+                            ClienteDestinoId = 5,
+                            ClienteOrigenId = 2
+                        },
+                        new
+                        {
+                            Id = 23,
+                            ClienteDestinoId = 9,
+                            ClienteOrigenId = 3
+                        },
+                        new
+                        {
+                            Id = 24,
+                            ClienteDestinoId = 13,
+                            ClienteOrigenId = 4
+                        },
+                        new
+                        {
+                            Id = 25,
+                            ClienteDestinoId = 3,
+                            ClienteOrigenId = 5
+                        },
+                        new
+                        {
+                            Id = 26,
+                            ClienteDestinoId = 20,
+                            ClienteOrigenId = 6
+                        },
+                        new
+                        {
+                            Id = 27,
+                            ClienteDestinoId = 14,
+                            ClienteOrigenId = 7
+                        },
+                        new
+                        {
+                            Id = 28,
+                            ClienteDestinoId = 11,
+                            ClienteOrigenId = 8
+                        },
+                        new
+                        {
+                            Id = 29,
+                            ClienteDestinoId = 15,
+                            ClienteOrigenId = 9
+                        },
+                        new
+                        {
+                            Id = 30,
+                            ClienteDestinoId = 4,
+                            ClienteOrigenId = 10
+                        },
+                        new
+                        {
+                            Id = 31,
+                            ClienteDestinoId = 8,
+                            ClienteOrigenId = 11
+                        },
+                        new
+                        {
+                            Id = 32,
+                            ClienteDestinoId = 1,
+                            ClienteOrigenId = 12
+                        },
+                        new
+                        {
+                            Id = 33,
+                            ClienteDestinoId = 19,
+                            ClienteOrigenId = 13
+                        },
+                        new
+                        {
+                            Id = 34,
+                            ClienteDestinoId = 6,
+                            ClienteOrigenId = 14
+                        },
+                        new
+                        {
+                            Id = 35,
+                            ClienteDestinoId = 10,
+                            ClienteOrigenId = 15
+                        },
+                        new
+                        {
+                            Id = 36,
+                            ClienteDestinoId = 2,
+                            ClienteOrigenId = 16
+                        },
+                        new
+                        {
+                            Id = 37,
+                            ClienteDestinoId = 18,
+                            ClienteOrigenId = 17
+                        },
+                        new
+                        {
+                            Id = 38,
+                            ClienteDestinoId = 16,
+                            ClienteOrigenId = 18
+                        },
+                        new
+                        {
+                            Id = 39,
+                            ClienteDestinoId = 12,
+                            ClienteOrigenId = 19
+                        },
+                        new
+                        {
+                            Id = 40,
+                            ClienteDestinoId = 17,
+                            ClienteOrigenId = 20
+                        },
+                        new
+                        {
+                            Id = 41,
+                            ClienteDestinoId = 14,
+                            ClienteOrigenId = 1
+                        },
+                        new
+                        {
+                            Id = 42,
+                            ClienteDestinoId = 6,
+                            ClienteOrigenId = 2
+                        },
+                        new
+                        {
+                            Id = 43,
+                            ClienteDestinoId = 11,
+                            ClienteOrigenId = 3
+                        },
+                        new
+                        {
+                            Id = 44,
+                            ClienteDestinoId = 20,
+                            ClienteOrigenId = 4
+                        },
+                        new
+                        {
+                            Id = 45,
+                            ClienteDestinoId = 7,
+                            ClienteOrigenId = 5
+                        },
+                        new
+                        {
+                            Id = 46,
+                            ClienteDestinoId = 9,
+                            ClienteOrigenId = 6
+                        },
+                        new
+                        {
+                            Id = 47,
+                            ClienteDestinoId = 1,
+                            ClienteOrigenId = 7
+                        },
+                        new
+                        {
+                            Id = 48,
+                            ClienteDestinoId = 4,
+                            ClienteOrigenId = 8
+                        },
+                        new
+                        {
+                            Id = 49,
+                            ClienteDestinoId = 13,
+                            ClienteOrigenId = 9
+                        },
+                        new
+                        {
+                            Id = 50,
+                            ClienteDestinoId = 3,
+                            ClienteOrigenId = 10
+                        },
+                        new
+                        {
+                            Id = 51,
+                            ClienteDestinoId = 8,
+                            ClienteOrigenId = 11
+                        },
+                        new
+                        {
+                            Id = 52,
+                            ClienteDestinoId = 15,
+                            ClienteOrigenId = 12
+                        },
+                        new
+                        {
+                            Id = 53,
+                            ClienteDestinoId = 18,
+                            ClienteOrigenId = 13
+                        },
+                        new
+                        {
+                            Id = 54,
+                            ClienteDestinoId = 16,
+                            ClienteOrigenId = 14
+                        },
+                        new
+                        {
+                            Id = 55,
+                            ClienteDestinoId = 2,
+                            ClienteOrigenId = 15
+                        },
+                        new
+                        {
+                            Id = 56,
+                            ClienteDestinoId = 12,
+                            ClienteOrigenId = 16
+                        },
+                        new
+                        {
+                            Id = 57,
+                            ClienteDestinoId = 19,
+                            ClienteOrigenId = 17
+                        },
+                        new
+                        {
+                            Id = 58,
+                            ClienteDestinoId = 5,
+                            ClienteOrigenId = 18
+                        },
+                        new
+                        {
+                            Id = 59,
+                            ClienteDestinoId = 14,
+                            ClienteOrigenId = 19
+                        },
+                        new
+                        {
+                            Id = 60,
+                            ClienteDestinoId = 9,
+                            ClienteOrigenId = 20
+                        },
+                        new
+                        {
+                            Id = 61,
+                            ClienteDestinoId = 10,
+                            ClienteOrigenId = 1
+                        },
+                        new
+                        {
+                            Id = 62,
+                            ClienteDestinoId = 3,
+                            ClienteOrigenId = 2
+                        },
+                        new
+                        {
+                            Id = 63,
+                            ClienteDestinoId = 17,
+                            ClienteOrigenId = 3
+                        },
+                        new
+                        {
+                            Id = 64,
+                            ClienteDestinoId = 11,
+                            ClienteOrigenId = 4
+                        },
+                        new
+                        {
+                            Id = 65,
+                            ClienteDestinoId = 6,
+                            ClienteOrigenId = 5
+                        },
+                        new
+                        {
+                            Id = 66,
+                            ClienteDestinoId = 8,
+                            ClienteOrigenId = 6
+                        },
+                        new
+                        {
+                            Id = 67,
+                            ClienteDestinoId = 19,
+                            ClienteOrigenId = 7
+                        },
+                        new
+                        {
+                            Id = 68,
+                            ClienteDestinoId = 2,
+                            ClienteOrigenId = 8
+                        },
+                        new
+                        {
+                            Id = 69,
+                            ClienteDestinoId = 7,
+                            ClienteOrigenId = 9
+                        },
+                        new
+                        {
+                            Id = 70,
+                            ClienteDestinoId = 1,
+                            ClienteOrigenId = 10
+                        },
+                        new
+                        {
+                            Id = 71,
+                            ClienteDestinoId = 16,
+                            ClienteOrigenId = 11
+                        },
+                        new
+                        {
+                            Id = 72,
+                            ClienteDestinoId = 4,
+                            ClienteOrigenId = 12
+                        },
+                        new
+                        {
+                            Id = 73,
+                            ClienteDestinoId = 9,
+                            ClienteOrigenId = 13
+                        },
+                        new
+                        {
+                            Id = 74,
+                            ClienteDestinoId = 13,
+                            ClienteOrigenId = 14
+                        },
+                        new
+                        {
+                            Id = 75,
+                            ClienteDestinoId = 18,
+                            ClienteOrigenId = 15
+                        },
+                        new
+                        {
+                            Id = 76,
+                            ClienteDestinoId = 10,
+                            ClienteOrigenId = 16
+                        },
+                        new
+                        {
+                            Id = 77,
+                            ClienteDestinoId = 6,
+                            ClienteOrigenId = 17
+                        },
+                        new
+                        {
+                            Id = 78,
+                            ClienteDestinoId = 12,
+                            ClienteOrigenId = 18
+                        },
+                        new
+                        {
+                            Id = 79,
+                            ClienteDestinoId = 15,
+                            ClienteOrigenId = 19
+                        },
+                        new
+                        {
+                            Id = 80,
+                            ClienteDestinoId = 11,
+                            ClienteOrigenId = 20
+                        },
+                        new
+                        {
+                            Id = 81,
+                            ClienteDestinoId = 17,
+                            ClienteOrigenId = 1
+                        },
+                        new
+                        {
+                            Id = 82,
+                            ClienteDestinoId = 8,
+                            ClienteOrigenId = 2
+                        },
+                        new
+                        {
+                            Id = 83,
+                            ClienteDestinoId = 5,
+                            ClienteOrigenId = 3
+                        },
+                        new
+                        {
+                            Id = 84,
+                            ClienteDestinoId = 14,
+                            ClienteOrigenId = 4
+                        },
+                        new
+                        {
+                            Id = 85,
+                            ClienteDestinoId = 3,
+                            ClienteOrigenId = 5
+                        },
+                        new
+                        {
+                            Id = 86,
+                            ClienteDestinoId = 18,
+                            ClienteOrigenId = 6
+                        },
+                        new
+                        {
+                            Id = 87,
+                            ClienteDestinoId = 13,
+                            ClienteOrigenId = 7
+                        },
+                        new
+                        {
+                            Id = 88,
+                            ClienteDestinoId = 19,
+                            ClienteOrigenId = 8
+                        },
+                        new
+                        {
+                            Id = 89,
+                            ClienteDestinoId = 4,
+                            ClienteOrigenId = 9
+                        },
+                        new
+                        {
+                            Id = 90,
+                            ClienteDestinoId = 7,
+                            ClienteOrigenId = 10
+                        },
+                        new
+                        {
+                            Id = 91,
+                            ClienteDestinoId = 15,
+                            ClienteOrigenId = 11
+                        },
+                        new
+                        {
+                            Id = 92,
+                            ClienteDestinoId = 6,
+                            ClienteOrigenId = 12
+                        },
+                        new
+                        {
+                            Id = 93,
+                            ClienteDestinoId = 20,
+                            ClienteOrigenId = 13
+                        },
+                        new
+                        {
+                            Id = 94,
+                            ClienteDestinoId = 1,
+                            ClienteOrigenId = 14
+                        },
+                        new
+                        {
+                            Id = 95,
+                            ClienteDestinoId = 9,
+                            ClienteOrigenId = 15
+                        },
+                        new
+                        {
+                            Id = 96,
+                            ClienteDestinoId = 11,
+                            ClienteOrigenId = 16
+                        },
+                        new
+                        {
+                            Id = 97,
+                            ClienteDestinoId = 8,
+                            ClienteOrigenId = 17
+                        },
+                        new
+                        {
+                            Id = 98,
+                            ClienteDestinoId = 2,
+                            ClienteOrigenId = 18
+                        },
+                        new
+                        {
+                            Id = 99,
+                            ClienteDestinoId = 12,
+                            ClienteOrigenId = 19
+                        },
+                        new
+                        {
+                            Id = 100,
+                            ClienteDestinoId = 10,
+                            ClienteOrigenId = 20
                         });
                 });
 
@@ -2010,6 +2635,22 @@ namespace ApiClases_20270722_Proyecto.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ApiClases_20270722_Proyecto.Modelos.VContacto", b =>
+                {
+                    b.Property<int>("IdCliente")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NombreContacto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaisId")
+                        .HasColumnType("int");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("VContactos", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -2152,6 +2793,25 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         .IsRequired();
 
                     b.Navigation("Pais");
+                });
+
+            modelBuilder.Entity("ApiClases_20270722_Proyecto.Entidades.Contacto", b =>
+                {
+                    b.HasOne("ApiClases_20270722_Proyecto.Entidades.Cliente", "ClienteDestino")
+                        .WithMany()
+                        .HasForeignKey("ClienteDestinoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ApiClases_20270722_Proyecto.Entidades.Cliente", "ClienteOrigen")
+                        .WithMany()
+                        .HasForeignKey("ClienteOrigenId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClienteDestino");
+
+                    b.Navigation("ClienteOrigen");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
