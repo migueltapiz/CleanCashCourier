@@ -4,17 +4,8 @@
   <div class="nav-items">
     <a routerLink="/about" class="nav-item">Sobre nosotros</a>
     <a routerLink="/send-money" class="nav-item">Enviar Dinero</a>
-    <div class="dropdown">
-      <button class="dropbtn">
-        &#9776;
-      </button>
-      <div class="dropdown-content">
-        <a href="#">Cartera</a>
-        <a href="profile">Perfil</a>
-        <a routerLink="/transaction-history">Registro de transacciones</a>
-      </div>
-    </div>
-    <a routerLink="/registro" class="nav-item">Registrarse</a>
-    <a routerLink="/login" class="nav-item">Iniciar Sesión</a>
+    <a routerLink="/profile" class="nav-item">Perfil</a>
+    <a routerLink="/transaction-history" class="nav-item">Registro de transacciones</a>
+    <a routerLink="/registro" class="nav-item" (click)="cerrarSesion()">Cerrar sesion</a>
   </div>
 </div>

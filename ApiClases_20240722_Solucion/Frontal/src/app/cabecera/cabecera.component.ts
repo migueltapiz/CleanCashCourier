@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cabecera',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrl: './cabecera.component.css'
 })
 export class CabeceraComponent {
- 
+  constructor(private router: Router) { }
+
+  cerrarSesion() {
+
+    localStorage.removeItem('token');
+
+  }
 }
