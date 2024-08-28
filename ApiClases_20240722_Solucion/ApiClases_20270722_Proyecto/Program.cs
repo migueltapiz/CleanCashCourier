@@ -35,9 +35,6 @@ builder.Services.AddIdentity<UsuarioAplicacion, IdentityRole>()
 // Configurar MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-                                                                                /* builder.Services.AddSingleton<SignalRServicio>(provider =>
-                                                                                    new SignalRServicio("https://localhost:7040/simuladorHub",
-                                                                                        provider.GetRequiredService<IServiceScopeFactory>())); */
 
 // Registra SignalRServicio
 builder.Services.AddSingleton<SignalRServicio>(provider =>
@@ -54,7 +51,6 @@ builder.Services.AddTransient<IRequestHandler<SignalRRequest, string>, SignalRRe
 
 // Configurar SignalR
 builder.Services.AddSignalR();
-
 
 
 

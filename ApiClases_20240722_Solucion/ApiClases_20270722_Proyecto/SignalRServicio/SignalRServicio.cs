@@ -9,6 +9,7 @@ public class SignalRServicio
 {
     private readonly HubConnection _hubConnection;
     private readonly IServiceScopeFactory _serviceScopeFactory;
+    private bool _isEventRegistered = false;
 
     public SignalRServicio(string hubUrl, IServiceScopeFactory serviceScopeFactory)
     {
@@ -26,11 +27,15 @@ public class SignalRServicio
             await _hubConnection.StopAsync();
         }
 
-        // Configura el manejo de mensajes recibidos
-        _hubConnection.On<string>("RecibirMensaje", (mensaje) =>
+        if (!_isEventRegistered)
         {
-            Console.WriteLine($"Mensaje recibido del simulador: {mensaje}");
-        });
+            // Configura el manejo de mensajes recibidos
+            _hubConnection.On<string>("RecibirMensaje", (mensaje) =>
+            {
+                Console.WriteLine($"Mensaje recibido del simulador: {mensaje}");
+            });
+            _isEventRegistered = true;
+        }
 
         // Inicia la conexión al hub
         await _hubConnection.StartAsync();

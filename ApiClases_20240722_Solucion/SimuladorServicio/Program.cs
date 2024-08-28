@@ -35,7 +35,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Map SignalR hubs
-app.MapHub<SimuladorHub>("/simuladorHub");
+app.MapHub<SimuladorHub>("/SimuladorHub");
 
 // Define an endpoint to trigger sending random messages
 app.MapPost("/send-random-messages", async (MonitoringService monitoringService) =>
