@@ -9,6 +9,25 @@ public class SignalRServicio
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private bool _isEventRegistered = false;
 
+
+    /* LO QUE TIENEN CLIENTES EN SU SIMULADOR DE LO NUESTRO:
+     * 
+    private readonly ILogger<MonitoringBackgroundService> _logger;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
+    private readonly int _intervalInSeconds; 
+    
+    public MonitoringBackgroundService(
+
+            ILogger<MonitoringBackgroundService> logger,
+            IServiceScopeFactory serviceScopeFactory,
+            int intervalInSeconds = 5) // Puedes cambiar este valor según tu necesidad
+    {
+        _logger = logger;
+        _serviceScopeFactory = serviceScopeFactory;
+        _intervalInSeconds = intervalInSeconds;
+    }*/
+
+
     public SignalRServicio(string hubUrl, IServiceScopeFactory serviceScopeFactory)
     {
         _hubConnection = new HubConnectionBuilder()
