@@ -2,25 +2,24 @@
 
 namespace ApiClases_20270722_Proyecto.Entidades
 {
-    [Table("Paises")] // Opcional: Especifica el nombre de la tabla en la base de datos
+    [Table("Paises")] 
     public class Pais
     {
-        [Key] // Marca esta propiedad como la clave primaria
+        [Key] 
         public int Id { get; set; }
 
-        [Required] // Indica que esta propiedad es obligatoria
-        [StringLength(100)] // Limita la longitud de la cadena
+        [Required] 
+        [StringLength(100)] 
         public string Nombre { get; set; }
 
         [Required]
-        [StringLength(50)] // Limita la longitud de la cadena para la divisa
+        [StringLength(50)] 
         public string Divisa { get; set; }
 
 
         [Required]
-        [StringLength(3)] // Limita la longitud de la cadena para la divisa
+        [StringLength(3)] 
         public string Iso3 { get; set; }
 
-       // public ICollection<Cliente> Clientes { get; set; } // Navegación a la colección de Clientes
     }
 }

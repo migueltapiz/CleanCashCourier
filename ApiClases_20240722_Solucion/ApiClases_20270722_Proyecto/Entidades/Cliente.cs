@@ -7,9 +7,6 @@ public class Cliente
     [Key]
     public int Id { get; set; }
 
-    //[ForeignKey(nameof(Usuario))]
-    //public int UserId { get; set; }
-
     [Required]
     [StringLength(25)]
     public string Nombre { get; set; }
@@ -28,9 +25,7 @@ public class Cliente
     public int PaisId { get; set; }
 
     [ForeignKey(nameof(PaisId))]
-    public Pais Pais { get; set; }  // Navegación a la entidad Pais
-
-
+    public Pais Pais { get; set; }  
     [Required]
     [StringLength(256)]
 

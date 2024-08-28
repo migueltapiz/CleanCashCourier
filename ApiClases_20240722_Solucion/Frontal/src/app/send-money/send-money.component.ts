@@ -47,7 +47,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
     const decoded = jwtDecode(this.token) as { [key: string]: any };
 
-    this.nombre = decoded['sub'];
+    this.nombre = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
 
     this.subcliente = this.clienteService.getClienteByName(this.nombre).subscribe({
       next: cliente => {
@@ -72,7 +72,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       clearTimeout(this.timeout);
     }
     this.timeout = setTimeout(() => {
-      this.subcliente = this.clienteService.getClienteByName(this.recipientFilter.trim()).subscribe({
+      this.subcliente = this.clienteService.getClienteByName(this.recipientFilter).subscribe({
         next: cliente => {
 
           this.selectedCliente = cliente;
