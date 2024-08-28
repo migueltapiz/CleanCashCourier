@@ -69,8 +69,6 @@ export class TransaccionComponent implements OnInit,OnDestroy {
  
 
   obtenerIdUsuario(transaccion: Transaccion): Promise<string> {
-    console.log(transaccion);
-    // Si la transacción es recibida (idRecibe es 1), muestra el idEnvia, de lo contrario, muestra idRecibe
     var clienteIdAux = transaccion.idRecibe === this.cliente.id ? transaccion.idEnvia : transaccion.idRecibe;
     return new Promise((resolve, reject) => {
       this.subcliente = this.clienteService.getClienteById(clienteIdAux).subscribe({

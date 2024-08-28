@@ -80,7 +80,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
             this.subTransaccion = this.paisService.getPaisId(this.selectedCliente.paisId).subscribe({
               next: pais => {
                 this.currencyRecibida = pais.iso3;
-                console.log(this.currencyRecibida);
                 this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
                   next: factor => {
                     this.factorConversion = factor;
@@ -156,7 +155,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     this.transaccion.monedaOrigen= this.currencyEnviada;
     this.transaccion.monedaDestino = this.currencyRecibida;
     this.transaccion.costeTransaccion = this.tarifaTransferencia;
-    console.log(this.transaccion);
   }
 
   sendMoney() {
@@ -180,7 +178,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     this.crearTransaccion();
     this.transaccionService.crearTransaccion(this.transaccion).subscribe({
       next: (transaccion) => {
-        console.log(`Transacción creada: ` + JSON.stringify(transaccion));
       },
       error: (err) => {
         console.error('Error creando la transacción: ', err);

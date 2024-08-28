@@ -18,7 +18,6 @@ export class TransaccionService {
     const urlConId = `${this.url}/${transaccion.idEnvia}/Transacciones`;
     return this.http.post<Transaccion>(urlConId, transaccion, { headers })
       .pipe(
-        tap(data => console.log('Transaccion creada: ', JSON.stringify(data))),
         catchError(this.handleError)
       );
   }
@@ -34,7 +33,7 @@ export class TransaccionService {
 
   getTransacciones(id_cliente: number): Observable<Transaccion[]> {
     return this.http.get<Transaccion[]>(`${this.url}/${id_cliente}/Transacciones`).pipe(
-      tap(data => console.log('Transacciones obtenidas: ', JSON.stringify(data))),
+      
       catchError(this.handleError)
     );
   }
@@ -64,22 +63,17 @@ export class TransaccionService {
     }
 
     return this.http.get<Transaccion[]>(urlConFiltros).pipe(
-      tap(data => console.log('Transacciones filtradas obtenidas: ', JSON.stringify(data))),
+     
       catchError(this.handleError)
     );
   }
 
 
   private handleError(err: HttpErrorResponse) {
-    // in a real world app, we may send the server to some remote logging infrastructure
-    // instead of just logging it to the console
     let errorMessage = '';
     if (err.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
       errorMessage = `An error occurred (12345678): ${err.error.message}`;
     } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
       errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
     }
     console.error(errorMessage);

@@ -101,7 +101,7 @@ export class RegistroComponent implements OnInit {
 
     this.clienteService.registrarCliente(clienteRegistro).subscribe(
       next => {
-        console.log('Usuario registrado exitosamente', next);
+       
         this.router.navigate(['/login']);
 
       },
@@ -157,10 +157,7 @@ export class RegistroComponent implements OnInit {
   
 
   selectPais(paisNombre: string) {
-    console.log(paisNombre);
-    //this.registroForm.value.PaisNombre = paisNombre;
     this.registroForm.patchValue({ PaisNombre: paisNombre })
-    //this.listPaisesFilter = paisNombre;
 
     var resultado = this.paises.find(pais => pais.nombre === paisNombre)?.id;
     if (resultado != undefined) {
@@ -178,7 +175,6 @@ export class RegistroComponent implements OnInit {
       pais.nombre.toLowerCase().startsWith(query)
     );
 
-    // Si hay un elemento coincidente, desplazar la vista hacia él
     if (this.paisesFiltrado.length > 0) {
       setTimeout(() => {
         const firstMatch = this.paisItems.first;

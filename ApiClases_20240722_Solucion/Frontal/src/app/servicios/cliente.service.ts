@@ -27,7 +27,6 @@ export class ClienteService {
       Contrasena: contrasena,
       Recuerdame: recuerdame
     }
-    console.log(clienteInicioSesion);
     return this.http.post<any>(`${this.clientesUrl}/login`, clienteInicioSesion);
   }
 
@@ -50,7 +49,6 @@ export class ClienteService {
 
   updateCliente(id: number, cliente: ActualizarPerfilCliente): Observable<ICliente> {
     return this.http.put<ICliente>(`${this.clientesUrl}/${id}`, cliente).pipe(
-      tap(data => console.log('Cliente actualizado:', data)),
       catchError(this.handleError)
     );
   }
