@@ -16,12 +16,16 @@ public class SignalRServicio
             .WithUrl(hubUrl)
             .Build();
 
-         _serviceScopeFactory = serviceScopeFactory;
+        _serviceScopeFactory = serviceScopeFactory;
     }
-
 
     public async Task StartListeningAsync()
     {
+        if (_hubConnection.State != HubConnectionState.Disconnected)
+        {
+            await _hubConnection.StopAsync();
+        }
+
         // Configura el manejo de mensajes recibidos
         _hubConnection.On<string>("RecibirMensaje", (mensaje) =>
         {
@@ -37,5 +41,4 @@ public class SignalRServicio
     {
         await _hubConnection.InvokeAsync("SendMessage", user, message);
     }
-
 }

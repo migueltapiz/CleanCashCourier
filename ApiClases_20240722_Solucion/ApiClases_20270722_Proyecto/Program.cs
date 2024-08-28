@@ -35,13 +35,27 @@ builder.Services.AddIdentity<UsuarioAplicacion, IdentityRole>()
 // Configurar MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
+                                                                                /* builder.Services.AddSingleton<SignalRServicio>(provider =>
+                                                                                    new SignalRServicio("https://localhost:7040/simuladorHub",
+                                                                                        provider.GetRequiredService<IServiceScopeFactory>())); */
+
+// Registra SignalRServicio
+builder.Services.AddSingleton<SignalRServicio>(provider =>
+{
+    var serviceScopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
+    var hubUrl = "https://localhost:7219/SimuladorHub"; // Reemplaza con la URL de tu hub de SignalR
+    return new SignalRServicio(hubUrl, serviceScopeFactory);
+});
+
+
+// Registra IRequestHandler
+builder.Services.AddTransient<IRequestHandler<SignalRRequest, string>, SignalRRequestHandler>();
+
 
 // Configurar SignalR
 builder.Services.AddSignalR();
 
-builder.Services.AddSingleton<SignalRServicio>(provider =>
-    new SignalRServicio("https://localhost:7040/simuladorHub",
-        provider.GetRequiredService<IServiceScopeFactory>()));
+
 
 
 // Configurar JWT
@@ -91,7 +105,7 @@ builder.Services.AddCors(options =>
 //Agregar servicios a la aplicación
 var app = builder.Build();
 
-app.MapHub<SignalRHubNotificacion>("/notificationHub");
+app.MapHub<SignalRHubNotificacion>("/signalrhubnotificacion");
 
 
 // Iniciar el cliente SignalR
