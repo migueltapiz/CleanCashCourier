@@ -6,7 +6,7 @@ Desarrolladores:
     - Amaia Vertiz
     - Iñigo Varela
     - Miguel Tapiz
-    - Obed Rodas
+    - Obed Rodas 
 
 
 # Getting Started
