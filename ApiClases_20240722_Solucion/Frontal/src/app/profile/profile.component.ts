@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CabeceraComponent } from '../cabecera/cabecera.component'
 import { jwtDecode } from 'jwt-decode';
+import { ActualizarPerfilCliente } from '../interfaces/registroCliente';
 @Component({
   selector: 'pm-profile-component',
   templateUrl: './profile.component.html',
@@ -30,8 +31,6 @@ export class ProfileComponent implements OnInit {
     pais: false,
     trabajo: false
   };
-  isModified = false;
-  isAnyFieldEdited = false;
   
   trabajos: string[] = [];
   subPaises!: Subscription;
@@ -45,6 +44,8 @@ export class ProfileComponent implements OnInit {
   empleosFiltrados: string[] = [];
   token!: string;
   nombre!: string;
+
+  isLoading: boolean = true;
   constructor(private fb: FormBuilder, private clienteService: ClienteService,private paisService:PaisService, private datosService: DatosService) { }
   showDropdownPais() {
     this.isDropdownPaisesVisible = true;
@@ -69,10 +70,27 @@ export class ProfileComponent implements OnInit {
     this.nombre = decoded['sub'];
 
     this.subClientes = this.clienteService.getClienteByName(this.nombre).subscribe({
-      next: (data) => this.cliente = data,
-      error: (err) => console.error(err)
+      next: (data) => {
+        this.cliente = data
+        this.isLoading = false;
+        this.perfilForm = this.fb.group({
+          Nombre: [this.cliente.nombre, [Validators.required, Validators.minLength(3)]],
+          Apellido: [this.cliente.apellido, [Validators.required, Validators.minLength(3)]],
+          Correo: [this.cliente.email, [Validators.required, Validators.email]],
+          Contraseña: ['', [Validators.required, Validators.minLength(6)]],
+          Contraseña2: ['', [Validators.required]],
+          Rol: ['Client', Validators.required],
+          PaisNombre: ['', Validators.required],
+          Empleo: [''],
+          FechaNac: [this.cliente.fechaNacimiento, Validators.required]
+        }, {
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading = false;
+      }
     });
-    console.log(this.cliente);
 
     this.subPaises = this.paisService.getPaises().subscribe({
       next: paises => {
@@ -84,21 +102,8 @@ export class ProfileComponent implements OnInit {
     this.empleos = this.datosService.getTrabajos();
     this.empleosFiltrados = this.datosService.getTrabajos();
 
-    //this.paises = this.datosService.getPaises();
     this.trabajos = this.datosService.getTrabajos();
-    this.perfilForm = this.fb.group({
-      Nombre: ['', [Validators.required, Validators.minLength(3)]],
-      Apellido: ['', [Validators.required, Validators.minLength(3)]],
-      Correo: ['', [Validators.required, Validators.email]],
-      Contraseña: ['', [Validators.required, Validators.minLength(6)]],
-      Contraseña2: ['', [Validators.required]],
-      Rol: ['Client', Validators.required],
-      PaisNombre: ['', Validators.required],
-      Empleo: [''],
-      FechaNac: ['', Validators.required]
-    }, {
-      //validator: this.passwordMatchValidator('Contraseña', 'Contraseña2')
-    });
+    
   }
 
   enableEdit(field: keyof ICliente): void {
@@ -112,30 +117,31 @@ export class ProfileComponent implements OnInit {
       this.isEditing[field as keyof typeof this.isEditing] = false;
     }
   }
+  onSubmit(): void {
 
-  onFieldChange(): void {
-    this.isModified = true;
-  }
+    const clieteActualizar: ActualizarPerfilCliente = {
+      Nombre: this.perfilForm.value.Nombre,
+      Apellido: this.perfilForm.value.Apellido,
+      Email: this.perfilForm.value.Correo,
+      Contrasena: this.perfilForm.value.Contraseña,
+      PaisId: this.paisSeleccionado,
+      Empleo: this.perfilForm.value.Empleo,
+      NombrePais: this.perfilForm.value.PaisNombre,
+      FechaNacimiento: new Date(this.perfilForm.value.FechaNac),
+      Id: this.cliente.id
 
-  saveChanges(): void {
-    if (this.cliente && this.isModified) {
-      this.clienteService.updateCliente(this.cliente.id, this.cliente).subscribe({
+    }
+    this.clienteService.updateCliente(this.cliente.id, clieteActualizar).subscribe({
         next: (data) => {
-          this.cliente = data;
-          this.isModified = false;
+          //this.cliente = data;
           alert('Cambios guardados exitosamente.');
         },
         error: (err) => console.error(err)
       });
-    }
-  }
-  onSubmit(): void {
-
+    
   }
   selectPais(paisNombre: string) {
-    //this.registroForm.value.PaisNombre = paisNombre;
     this.perfilForm.patchValue({ PaisNombre: paisNombre })
-    //this.listPaisesFilter = paisNombre;
 
     var resultado = this.paises.find(pais => pais.nombre === paisNombre)?.id;
     if (resultado != undefined) {
@@ -144,17 +150,9 @@ export class ProfileComponent implements OnInit {
     }
   }
   selectEmpleo(empleoNombre: string) {
-    // Actualiza la propiedad correspondiente en tu formulario o donde sea necesario
     this.perfilForm.patchValue({ Empleo: empleoNombre });
     this.hideDropdownEmpleo();
-    // Busca el empleo por nombre y obtén su ID (ajusta esto según tu estructura de datos)
-    
-    
   }
-
-
-
-
 
   filterPaises(event: Event) {
     const query = (event.target as HTMLInputElement).value.toLowerCase();
@@ -162,7 +160,6 @@ export class ProfileComponent implements OnInit {
       pais.nombre.toLowerCase().startsWith(query)
     );
 
-    // Si hay un elemento coincidente, desplazar la vista hacia él
     if (this.paisesFiltrado.length > 0) {
       setTimeout(() => {
         const firstMatch = this.paisItems.first;
@@ -173,13 +170,13 @@ export class ProfileComponent implements OnInit {
     }
 
   }
+
   filterEmpleos(event: Event) {
     const query = (event.target as HTMLInputElement).value.toLowerCase();
     this.empleosFiltrados = this.empleos.filter(empleo =>
       empleo.toLowerCase().startsWith(query)
     );
 
-    // Si hay un elemento coincidente, desplazar la vista hacia él
     if (this.empleosFiltrados.length > 0) {
       setTimeout(() => {
         const firstMatch = this.empleoItems.first;
@@ -189,6 +186,4 @@ export class ProfileComponent implements OnInit {
       }, 0);
     }
   }
-
-    
 }

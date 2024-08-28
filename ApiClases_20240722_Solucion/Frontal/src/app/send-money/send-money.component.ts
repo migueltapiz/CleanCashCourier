@@ -53,7 +53,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
         
         this.clienteEnvia = cliente;
         
-        this.subPais = this.paisService.getPaisId(this.clienteEnvia.id).subscribe({
+        this.subPais = this.paisService.getPaisId(this.clienteEnvia.paisId).subscribe({
           next: pais => {
             this.currencyEnviada = pais.iso3;
           },

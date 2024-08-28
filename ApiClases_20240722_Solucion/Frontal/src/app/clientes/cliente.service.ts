@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from "rxjs";
 import { ICliente } from "./cliente";
+import { ActualizarPerfilCliente } from "../interfaces/registroCliente";
 
 @Injectable({
   providedIn: 'root'
@@ -21,18 +22,17 @@ export class ClienteService {
 
   getClienteById(id: number): Observable<ICliente> {
     return this.http.get<ICliente>(`${this.clientesUrl}/${id}`).pipe(
-      tap(data => console.log('Cliente:', data)),
+     
       catchError(this.handleError)
     );
   }
   getClienteByName(name:string): Observable<ICliente> {
     return this.http.get<ICliente>(`${this.clientesUrl}/${name}`).pipe(
-      tap(data => console.log('Cliente:', data)),
       catchError(this.handleError)
     );
   }
 
-  updateCliente(id: number, cliente: ICliente): Observable<ICliente> {
+  updateCliente(id: number, cliente: ActualizarPerfilCliente): Observable<ICliente> {
     return this.http.put<ICliente>(`${this.clientesUrl}/${id}`, cliente).pipe(
       tap(data => console.log('Cliente actualizado:', data)),
       catchError(this.handleError)
