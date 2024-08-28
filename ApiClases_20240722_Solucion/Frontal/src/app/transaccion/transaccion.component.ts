@@ -39,7 +39,7 @@ export class TransaccionComponent implements OnInit,OnDestroy {
 
     this.nombre = decoded['sub'];
 
-    this.clienteService.getClienteByName(this.nombre).subscribe({
+    this.subcliente = this.clienteService.getClienteByName(this.nombre).subscribe({
       next: cliente => {
         this.cliente = cliente;
         this.subTransaccion = this.transaccionService.getTransacciones(this.cliente.id).subscribe(
@@ -62,7 +62,7 @@ export class TransaccionComponent implements OnInit,OnDestroy {
     });
   }
   ngOnDestroy(): void {
-    this.subcliente.unsubscribe();
+    this.subcliente?.unsubscribe();
     this.subTransaccion?.unsubscribe();
   }
 

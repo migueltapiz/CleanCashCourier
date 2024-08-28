@@ -130,7 +130,7 @@ export class RegistroComponent implements OnInit {
           alert('Error al registrar usuario: ' + error.message);
         }
       },
-      () => { console.log("proceso completado"); alert('Proceso completado'); }
+      
     );
   }
 

@@ -15,3 +15,15 @@ export interface InicioSesionCliente {
   Contrasena: string;
   Recuerdame: boolean;
 }
+
+export interface ActualizarPerfilCliente {
+  Nombre: string;
+  Apellido: string;
+  Email: string;
+  Contrasena: string;
+  PaisId: number;
+  Empleo: string;
+  FechaNacimiento: Date;
+  NombrePais: string;
+  Id: number;
+}
