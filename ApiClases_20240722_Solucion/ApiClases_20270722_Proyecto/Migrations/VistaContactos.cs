@@ -9,8 +9,8 @@ namespace ApiClases_20270722_Proyecto.Migrations
             migrationBuilder.Sql(@"
                     CREATE VIEW VCONTACTOS 
                     AS SELECT
-                      Clientes_Origen.Id AS IdCliente
-                     ,Clientes_Contacto.Usuario AS NombreContacto
+                      Clientes_Origen.Nombre AS NombreUsuarioCliente
+                     ,Clientes_Contacto.Usuario AS NombreUsuarioContacto
                      ,Paises_Contacto.Nombre AS Pais
                     FROM dbo.Contactos
                     INNER JOIN dbo.Clientes Clientes_Origen
