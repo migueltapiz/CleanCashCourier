@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-// using ApiBasesDeDatosProyecto.Models;
-// using ApiBasesDeDatosProyecto.Repository;
 
 
 namespace ApiClases_20270722_Proyecto.SignalRServicio;
@@ -27,7 +25,7 @@ public class SignalRServicio
             await _hubConnection.StopAsync();
         }
 
-        if (!_isEventRegistered)
+        if (!_isEventRegistered) // Queremos que el mensaje solo llegue 1 vez y sin repeticiones. Antes lo mandaba 2 veces.
         {
             // Configura el manejo de mensajes recibidos
             _hubConnection.On<string>("RecibirMensaje", (mensaje) =>

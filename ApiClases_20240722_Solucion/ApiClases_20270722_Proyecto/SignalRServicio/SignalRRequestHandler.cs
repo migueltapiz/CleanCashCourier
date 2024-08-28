@@ -15,7 +15,7 @@ public class SignalRRequestHandler : IRequestHandler<SignalRRequest, string>
 
     public async Task<string> Handle(SignalRRequest request, CancellationToken cancellationToken)
     {
-        await _signalRServicio.SendMessageAsync("User", request.Mensaje);
+        await _signalRServicio.SendMessageAsync("Aplicación de envio", request.Mensaje);
         return "Mensaje enviado correctamente.";
     }
 }
