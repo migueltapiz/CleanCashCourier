@@ -1,10 +1,10 @@
 /* send-money.component.ts */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ICliente } from "../clientes/cliente";
-import { ClienteService } from "../clientes/cliente.service";
-import { TransaccionService } from "../transaccion/transaccion.service";
-import { ITransaccion, Transaccion } from "../transaccion/transaccion";
+import { ICliente } from "../interfaces/cliente";
+import { ClienteService } from "../servicios/cliente.service";
+import { TransaccionService } from "../servicios/transaccion.service";
+import { ITransaccion, Transaccion } from "../interfaces/transaccion";
 import { Router } from '@angular/router';
 import { PaisService } from '../servicios/pais.service';
 import { CabeceraComponent } from '../cabecera/cabecera.component'
@@ -77,10 +77,9 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
           this.selectedCliente = cliente;
 
           if (this.selectedCliente) {
-            this.subTransaccion = this.paisService.getPaisId(this.selectedCliente.id).subscribe({
+            this.subTransaccion = this.paisService.getPaisId(this.selectedCliente.paisId).subscribe({
               next: pais => {
                 this.currencyRecibida = pais.iso3;
-                console.log(this.currencyRecibida);
                 this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
                   next: factor => {
                     this.factorConversion = factor;
@@ -156,7 +155,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     this.transaccion.monedaOrigen= this.currencyEnviada;
     this.transaccion.monedaDestino = this.currencyRecibida;
     this.transaccion.costeTransaccion = this.tarifaTransferencia;
-    console.log(this.transaccion);
   }
 
   sendMoney() {
@@ -180,7 +178,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     this.crearTransaccion();
     this.transaccionService.crearTransaccion(this.transaccion).subscribe({
       next: (transaccion) => {
-        console.log(`Transacción creada: ` + JSON.stringify(transaccion));
       },
       error: (err) => {
         console.error('Error creando la transacción: ', err);

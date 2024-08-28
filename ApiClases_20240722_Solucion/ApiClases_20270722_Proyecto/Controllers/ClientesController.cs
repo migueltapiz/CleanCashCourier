@@ -1,11 +1,12 @@
 ﻿using ApiClases_20270722_Proyecto.Entidades;
+using ApiClases_20270722_Proyecto.Modelos.Clientes;
 using ApiClases_20270722_Proyecto.Repositorios;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static ApiClases_20270722_Proyecto.Modelos.ModeloInicioSesion;
+using static ApiClases_20270722_Proyecto.Modelos.Clientes.ClienteInicioSesion;
 
 namespace ApiClases_20270722_Proyecto.Controllers
 {
@@ -67,7 +68,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] ModeloInicioSesion modelo)
+        public async Task<IActionResult> Login([FromBody] ClienteInicioSesion modelo)
         {
             var result = await _signInManager.PasswordSignInAsync(
                 modelo.Usuario,
@@ -86,7 +87,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] ModeloRegistro modelo)
+        public async Task<IActionResult> Register([FromBody] ClienteRegistro modelo)
         {
             var usuario = new UsuarioAplicacion
             {

@@ -1,4 +1,5 @@
-﻿using ApiClases_20270722_Proyecto.Repositorios;
+﻿using ApiClases_20270722_Proyecto.Modelos.Transacciones;
+using ApiClases_20270722_Proyecto.Repositorios;
 using Microsoft.AspNetCore.Cors;
 
 namespace ApiClases_20270722_Proyecto.Controllers;

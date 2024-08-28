@@ -1,4 +1,6 @@
-﻿namespace ApiClases_20270722_Proyecto.Profiles;
+﻿using ApiClases_20270722_Proyecto.Modelos.Transacciones;
+
+namespace ApiClases_20270722_Proyecto.Profiles;
 
 public class TransaccionPerfil: Profile{
 

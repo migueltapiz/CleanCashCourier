@@ -1,10 +1,9 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../servicios/user.service';
-import { Usuario } from '../interfaces/usuario.interface';
 import { RegistroCliente } from '../interfaces/registroCliente';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { IPais, PaisService } from '../servicios/pais.service';
+import { ClienteService } from '../servicios/cliente.service';
 
 @Component({
   selector: 'app-registro',
@@ -24,7 +23,7 @@ export class RegistroComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private userService: UserService, private paisService: PaisService, private router: Router) { }
+  constructor(private fb: FormBuilder, private clienteService: ClienteService, private paisService: PaisService, private router: Router) { }
   showDropdown() {
     this.isDropdownVisible = true;
   }
@@ -87,18 +86,6 @@ export class RegistroComponent implements OnInit {
     const fechaNac = new Date(this.registroForm.value.FechaNac);
 
     this.paisSeleccionado = this.paises.find(pais => pais.id === this.paisSeleccionado) == undefined ? -1 : this.paisSeleccionado;
-
-    const usuario: Usuario = {
-      Email: this.registroForm.value.Correo,
-      Password: this.registroForm.value.Contraseña,
-      ConfirmPassword: this.registroForm.value.Contraseña2,
-      Nombre: this.registroForm.value.Nombre,
-      Apellido: this.registroForm.value.Apellido,
-      Rol: this.registroForm.value.Rol,
-      PaisNombre: this.registroForm.value.PaisNombre,
-      Empleo: this.registroForm.value.Empleo,
-      FechaNacimiento: fechaNac
-    };
     const clienteRegistro: RegistroCliente = {
       Nombre: this.registroForm.value.Nombre,
       Apellido: this.registroForm.value.Apellido,
@@ -112,9 +99,9 @@ export class RegistroComponent implements OnInit {
     }
 
 
-    this.userService.registrarUsuario(clienteRegistro).subscribe(
+    this.clienteService.registrarCliente(clienteRegistro).subscribe(
       next => {
-        console.log('Usuario registrado exitosamente', next);
+       
         this.router.navigate(['/login']);
 
       },
@@ -170,10 +157,7 @@ export class RegistroComponent implements OnInit {
   
 
   selectPais(paisNombre: string) {
-    console.log(paisNombre);
-    //this.registroForm.value.PaisNombre = paisNombre;
     this.registroForm.patchValue({ PaisNombre: paisNombre })
-    //this.listPaisesFilter = paisNombre;
 
     var resultado = this.paises.find(pais => pais.nombre === paisNombre)?.id;
     if (resultado != undefined) {
@@ -191,7 +175,6 @@ export class RegistroComponent implements OnInit {
       pais.nombre.toLowerCase().startsWith(query)
     );
 
-    // Si hay un elemento coincidente, desplazar la vista hacia él
     if (this.paisesFiltrado.length > 0) {
       setTimeout(() => {
         const firstMatch = this.paisItems.first;

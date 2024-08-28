@@ -1,4 +1,5 @@
-﻿using ApiClases_20270722_Proyecto.Repositorios;
+﻿using ApiClases_20270722_Proyecto.Modelos.Clientes;
+using ApiClases_20270722_Proyecto.Repositorios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

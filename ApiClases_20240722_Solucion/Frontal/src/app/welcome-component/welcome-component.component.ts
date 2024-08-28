@@ -14,13 +14,10 @@ export class WelcomeComponentComponent implements OnInit{
   constructor(private router: Router) { }
     ngOnInit(): void {
       this.token = localStorage['token'];
-      console.log(this.token);
 
       const decoded = jwtDecode(this.token);
-      console.log(decoded);
 
       const nombre = decoded.sub;
-      console.log(nombre);
     }
 
   navegarAEnvioDinero() {

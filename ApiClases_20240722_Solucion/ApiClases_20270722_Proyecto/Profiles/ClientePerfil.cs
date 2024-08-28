@@ -1,4 +1,6 @@
-﻿namespace ApiClases_20270722_Proyecto.Profiles;
+﻿using ApiClases_20270722_Proyecto.Modelos.Clientes;
+
+namespace ApiClases_20270722_Proyecto.Profiles;
 
 public class ClientePerfil:Profile {
 
@@ -19,7 +21,7 @@ public class ClientePerfil:Profile {
         CreateMap<ClienteDeleteDto, Cliente>()
             .IncludeBase<ClienteBaseDto, Cliente>();
 
-        CreateMap<ModeloRegistro, Cliente>().
+        CreateMap<ClienteRegistro, Cliente>().
             IncludeBase<ClienteBaseDto, Cliente>();
 
 

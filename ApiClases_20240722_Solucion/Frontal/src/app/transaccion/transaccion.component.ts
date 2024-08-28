@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TransaccionService } from './transaccion.service';
-import { Transaccion, TransaccionTabla } from './transaccion';
-import { ICliente } from '../clientes/cliente';
-import { ClienteService } from '../clientes/cliente.service';
+import { TransaccionService } from '../servicios/transaccion.service';
+import { Transaccion, TransaccionTabla } from '../interfaces/transaccion';
+import { ICliente } from '../interfaces/cliente';
+import { ClienteService } from '../servicios/cliente.service';
 import { format } from 'date-fns';
 import {CabeceraComponent } from '../cabecera/cabecera.component'
 import { Subscription } from 'rxjs';
@@ -69,8 +69,6 @@ export class TransaccionComponent implements OnInit,OnDestroy {
  
 
   obtenerIdUsuario(transaccion: Transaccion): Promise<string> {
-    console.log(transaccion);
-    // Si la transacción es recibida (idRecibe es 1), muestra el idEnvia, de lo contrario, muestra idRecibe
     var clienteIdAux = transaccion.idRecibe === this.cliente.id ? transaccion.idEnvia : transaccion.idRecibe;
     return new Promise((resolve, reject) => {
       this.subcliente = this.clienteService.getClienteById(clienteIdAux).subscribe({

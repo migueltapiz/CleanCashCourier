@@ -1,4 +1,4 @@
-﻿namespace ApiClases_20270722_Proyecto.Modelos
+﻿namespace ApiClases_20270722_Proyecto.Modelos.Transacciones
 {
     public class TransaccionPostDto : TransaccionBaseDto
     {
