@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, tap, throwError } from "rxjs";
-import { ITransaccion, Transaccion } from "./transaccion";
+import { ITransaccion, Transaccion } from "../interfaces/transaccion";
 
 @Injectable({
   providedIn: 'root'

@@ -1,14 +1,13 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from "rxjs";
-import { ICliente } from "./cliente";
-import { ActualizarPerfilCliente } from "../interfaces/registroCliente";
+import { ICliente } from "../interfaces/cliente";
+import { ActualizarPerfilCliente, InicioSesionCliente, RegistroCliente } from "../interfaces/registroCliente";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
-  // private clientesUrl = 'api/clientes/clientes.json';
   private clientesUrl = 'https://localhost:7138/api/Clientes';
   
   constructor(private http: HttpClient) { }
@@ -18,6 +17,23 @@ export class ClienteService {
       tap(data => data),
       catchError(this.handleError)
     );
+  }
+
+  autenticarUsuario(usuario: string, contrasena: string, recuerdame: boolean): Observable<any> {
+    recuerdame = false;
+
+    const clienteInicioSesion: InicioSesionCliente = {
+      Usuario: usuario,
+      Contrasena: contrasena,
+      Recuerdame: recuerdame
+    }
+    console.log(clienteInicioSesion);
+    return this.http.post<any>(`${this.clientesUrl}/login`, clienteInicioSesion);
+  }
+
+  registrarCliente(cliente: RegistroCliente): Observable<any> {
+    
+    return this.http.post<any>(`${this.clientesUrl}/register`, cliente);
   }
 
   getClienteById(id: number): Observable<ICliente> {

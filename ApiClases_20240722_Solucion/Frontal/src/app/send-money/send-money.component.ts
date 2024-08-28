@@ -1,10 +1,10 @@
 /* send-money.component.ts */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs";
-import { ICliente } from "../clientes/cliente";
-import { ClienteService } from "../clientes/cliente.service";
-import { TransaccionService } from "../transaccion/transaccion.service";
-import { ITransaccion, Transaccion } from "../transaccion/transaccion";
+import { ICliente } from "../interfaces/cliente";
+import { ClienteService } from "../servicios/cliente.service";
+import { TransaccionService } from "../servicios/transaccion.service";
+import { ITransaccion, Transaccion } from "../interfaces/transaccion";
 import { Router } from '@angular/router';
 import { PaisService } from '../servicios/pais.service';
 import { CabeceraComponent } from '../cabecera/cabecera.component'
@@ -77,7 +77,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
           this.selectedCliente = cliente;
 
           if (this.selectedCliente) {
-            this.subTransaccion = this.paisService.getPaisId(this.selectedCliente.id).subscribe({
+            this.subTransaccion = this.paisService.getPaisId(this.selectedCliente.paisId).subscribe({
               next: pais => {
                 this.currencyRecibida = pais.iso3;
                 console.log(this.currencyRecibida);

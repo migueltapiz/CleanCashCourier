@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TransaccionService } from './transaccion.service';
-import { Transaccion, TransaccionTabla } from './transaccion';
-import { ICliente } from '../clientes/cliente';
-import { ClienteService } from '../clientes/cliente.service';
+import { TransaccionService } from '../servicios/transaccion.service';
+import { Transaccion, TransaccionTabla } from '../interfaces/transaccion';
+import { ICliente } from '../interfaces/cliente';
+import { ClienteService } from '../servicios/cliente.service';
 import { format } from 'date-fns';
 import {CabeceraComponent } from '../cabecera/cabecera.component'
 import { Subscription } from 'rxjs';

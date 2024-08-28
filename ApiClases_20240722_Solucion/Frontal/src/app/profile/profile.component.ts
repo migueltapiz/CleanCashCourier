@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ClienteService } from "../clientes/cliente.service";
-import { ICliente } from "../clientes/cliente";
-import { DatosService } from "../datos/datos.service";
+import { ClienteService } from "../servicios/cliente.service";
+import { ICliente } from "../interfaces/cliente";
+import { DatosService } from "../servicios/datos.service";
 import { IPais, PaisService } from '../servicios/pais.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
