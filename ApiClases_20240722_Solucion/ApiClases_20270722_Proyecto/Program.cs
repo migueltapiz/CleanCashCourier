@@ -1,9 +1,6 @@
-using ApiClases_20270722_Proyecto.ContextoCarpeta;
+
 using ApiClases_20270722_Proyecto.Repositorios;
 using ApiClases_20270722_Proyecto.SignalRServicio;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Collections;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,7 +32,8 @@ builder.Services.AddScoped<IRepositorioGenerico<Transaccion>, TransaccionReposit
 builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();
 builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD<Cliente>>();
 // Agregar BBDD (SQLServer)
-builder.Services.AddDbContext<Contexto>(options =>{
+builder.Services.AddDbContext<Contexto>(options =>
+{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
@@ -113,7 +111,7 @@ builder.Services.AddCors(options =>
     .AllowAnyMethod()
 
     .AllowAnyHeader();
-            
+
         });
 
     });

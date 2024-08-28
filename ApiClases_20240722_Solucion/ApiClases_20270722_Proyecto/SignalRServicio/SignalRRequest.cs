@@ -4,4 +4,3 @@ public class SignalRRequest : IRequest<string>
 {
     public string Mensaje { get; set; }
 }
-
