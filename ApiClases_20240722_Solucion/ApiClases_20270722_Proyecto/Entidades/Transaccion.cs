@@ -28,5 +28,5 @@ public class Transaccion
     public string MonedaDestino { get; set; }
 
     [Required]
-    public double CosteTransaccion { get; set; } //Puede ser un valor fijo o un porcentaje. Hay que hablarlo.
+    public double CosteTransaccion { get; set; }
 }

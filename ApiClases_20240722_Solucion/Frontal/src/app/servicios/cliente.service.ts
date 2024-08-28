@@ -41,8 +41,8 @@ export class ClienteService {
       catchError(this.handleError)
     );
   }
-  getClienteByName(name:string): Observable<ICliente> {
-    return this.http.get<ICliente>(`${this.clientesUrl}/${name}`).pipe(
+  getClienteByName(name:any): Observable<ICliente> {
+    return this.http.get<ICliente>(`${this.clientesUrl}/${name.toString()}`).pipe(
       catchError(this.handleError)
     );
   }

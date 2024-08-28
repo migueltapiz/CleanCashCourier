@@ -57,10 +57,11 @@ namespace ApiClases_20270722_Proyecto.Controllers
 
        
         
-        [HttpGet("{name:alpha}", Name = "getClientePorNombre")]
+        [HttpGet("{name}", Name = "getClientePorNombre")]
         public async Task<ActionResult<ClienteGetDto>> Get(string name)
         {
-            var cliente =  _clienteRepositorio.ObtenerPorNombre(name);
+            Console.WriteLine($"Valor recibido: {name}");
+            var cliente =  _clienteRepositorio.ObtenerPorNombre(name.ToString());
             if (cliente == null) return NotFound();
 
             var finalClienteDto = _mapper.Map<ClienteGetDto>(cliente);
