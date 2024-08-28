@@ -19,6 +19,7 @@ namespace ApiClases_20270722_Proyecto.Entidades
 
         [Required]
         [StringLength(3)] // Limita la longitud de la cadena para la divisa
+        [RegularExpression(@"^[A-Z]{3}$", ErrorMessage = "Iso3 debe tener exactamente 3 letras mayúsculas.")]
         public string Iso3 { get; set; }
 
        // public ICollection<Cliente> Clientes { get; set; } // Navegación a la colección de Clientes
