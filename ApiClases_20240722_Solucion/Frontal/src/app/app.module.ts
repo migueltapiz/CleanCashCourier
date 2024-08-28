@@ -13,6 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CabeceraComponent } from './cabecera/cabecera.component';
 import { WelcomeComponentComponent } from './welcome-component/welcome-component.component';
+import { ContactsTableComponent } from './contacts-table/contacts-table.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { WelcomeComponentComponent } from './welcome-component/welcome-component
     LoginComponent,
     ProfileComponent,
     CabeceraComponent,
-    WelcomeComponentComponent
+    WelcomeComponentComponent,
+    ContactsTableComponent
   ],
   imports: [
     BrowserModule,
