@@ -17,7 +17,7 @@ TODO: Guide users through getting your code up and running on their own system. 
 4.	API references
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+- [![Build status](https://dev.azure.com/tracasa-sm-2024/CleanCashCourier/_apis/build/status/CleanCashCourier-ASP.NET%20Core-CI)](https://dev.azure.com/tracasa-sm-2024/CleanCashCourier/_build/latest?definitionId=1)
 
 # Contribute
 TODO: Explain how other users and developers can contribute to make your code better. 
@@ -26,4 +26,3 @@ If you want to learn more about creating good readme files then refer the follow
 - [ASP.NET Core](https://github.com/aspnet/Home)
 - [Visual Studio Code](https://github.com/Microsoft/vscode)
 - [Chakra Core](https://github.com/Microsoft/ChakraCore)
-- [![Build status](https://dev.azure.com/tracasa-sm-2024/CleanCashCourier/_apis/build/status/CleanCashCourier-ASP.NET%20Core-CI)](https://dev.azure.com/tracasa-sm-2024/CleanCashCourier/_build/latest?definitionId=1)
