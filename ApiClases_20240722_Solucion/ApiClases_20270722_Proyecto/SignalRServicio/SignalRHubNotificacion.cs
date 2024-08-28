@@ -2,8 +2,8 @@
 
 public class SignalRHubNotificacion : Hub
 {
-    public async Task SendNotification(string message)
+    public async Task SendNotification(string user, string message)
     {
-        await Clients.All.SendAsync("ReceiveNotification", message);
+        await Clients.All.SendAsync("ReceiveNotification", user, message);
     }
 }

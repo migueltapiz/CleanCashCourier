@@ -1,36 +1,24 @@
-
 using ApiClases_20270722_Proyecto.Repositorios;
 using ApiClases_20270722_Proyecto.SignalRServicio;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 //Agregar servicio MVC
 builder.Services.AddControllers();
+
 
 //Agregar servicio swagger (OpenAPI)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-//var dondeSacoDatos = "BBDD";
-//if(dondeSacoDatos == "memoria")
-//{
-//    //builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioMemoria>();
-//}
-//else if(dondeSacoDatos == "csv")
-//{
-
-//    //builder.Services.AddSingleton<IClienteRepositorio, ClienteRepositorioCsv>();
-//}
-//else if(dondeSacoDatos == "BBDD") { 
-//    //TODO : considerar cambiarlo por scope
-
-//}
-
 builder.Services.AddScoped<IRepositorioGenerico<Transaccion>, TransaccionRepositorioBBDD<Transaccion>>();
 builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();
 builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD<Cliente>>();
+
+
 // Agregar BBDD (SQLServer)
 builder.Services.AddDbContext<Contexto>(options =>
 {
@@ -42,27 +30,18 @@ builder.Services.AddDbContext<Contexto>(options =>
 builder.Services.AddIdentity<UsuarioAplicacion, IdentityRole>()
     .AddEntityFrameworkStores<Contexto>()
     .AddDefaultTokenProviders();
-// Ejemplo del libro:
-//builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-//{
-//    options.SignIn.RequireConfirmedAccount = true;
-//    options.Password.RequireLowercase = true;         //At least one lowercase letter
-//    options.Password.RequireUppercase = true;         //At least one uppercase lette
-//    options.Password.RequireDigit = true;             //At least one digit character
-//    options.Password.RequireNonAlphanumeric = true;   //At least one non-alphanumeric character
-//    options.Password.RequiredLength = 8;              //Minimum length of 8 characters
-//})
-//.AddEntityFrameworkStores<ApplicationDbContext>();
-
-
 
 
 // Configurar MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
+
 // Configurar SignalR
 builder.Services.AddSignalR();
 
+builder.Services.AddSingleton<SignalRServicio>(provider =>
+    new SignalRServicio("https://localhost:7040/simuladorHub",
+        provider.GetRequiredService<IServiceScopeFactory>()));
 
 
 // Configurar JWT
@@ -90,30 +69,21 @@ builder.Services.AddAuthentication(x =>
 });
 
 
-
 //Añadir Autommaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
-
+// Configuración CORS
 builder.Services.AddCors(options =>
-
     {
-
         options.AddPolicy("AllowAllOrigins",
-
         builder =>
-
         {
-
             builder.AllowAnyOrigin()
-
-    .AllowAnyMethod()
-
-    .AllowAnyHeader();
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
 
         });
-
     });
 
 
@@ -123,8 +93,13 @@ var app = builder.Build();
 
 app.MapHub<SignalRHubNotificacion>("/notificationHub");
 
-await CreateRoles(app);
 
+// Iniciar el cliente SignalR
+var signalRServicio = app.Services.GetRequiredService<SignalRServicio>();
+await signalRServicio.StartListeningAsync();
+
+
+await CreateRoles(app);
 
 
 app.UseCors("AllowAllOrigins");
@@ -147,6 +122,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 
+// Start listening to the SignalR hub
+var signalRServicios = app.Services.GetServices<SignalRServicio>();
+var tareaEscucha = signalRServicios.Select(service => service.StartListeningAsync());
+await Task.WhenAll(tareaEscucha);
+
+// Runeamos la aplicacion
 app.Run();
 
 

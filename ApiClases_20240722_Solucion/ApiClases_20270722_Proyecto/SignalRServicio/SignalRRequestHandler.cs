@@ -1,19 +1,20 @@
 ﻿
+using Microsoft.AspNetCore.SignalR.Client;
+
 namespace ApiClases_20270722_Proyecto.SignalRServicio;
 
 public class SignalRRequestHandler : IRequestHandler<SignalRRequest, string>
 {
-    private readonly IHubContext<SignalRHubNotificacion> _hubContext;
+    private readonly HubConnection _hubConnection;
 
-    public SignalRRequestHandler(IHubContext<SignalRHubNotificacion> hubContext)
+    public SignalRRequestHandler(HubConnection hubConnection)
     {
-        _hubContext = hubContext;
+        _hubConnection = hubConnection;
     }
 
     public async Task<string> Handle(SignalRRequest request, CancellationToken cancellationToken)
     {
-        await _hubContext.Clients.All.SendAsync("ReceiveNotification", request.Mensaje);
-        return "Mensaje enviado";
+        await _hubConnection.InvokeAsync("ReceiveNotification", "User", request.Mensaje);
+        return "Mensaje enviado correctamente.";
     }
-
 }

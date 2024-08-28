@@ -1,19 +1,24 @@
-﻿using Microsoft.AspNet.SignalR.Client;
-using Microsoft.AspNetCore.SignalR.Client;
-using HubConnection = Microsoft.AspNetCore.SignalR.Client.HubConnection;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+// using ApiBasesDeDatosProyecto.Models;
+// using ApiBasesDeDatosProyecto.Repository;
 
 
-// Recepción de mensajes de un hub de SignalR
+namespace ApiClases_20270722_Proyecto.SignalRServicio;
+
 public class SignalRServicio
 {
     private readonly HubConnection _hubConnection;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
 
-    public SignalRServicio(string hubUrl)
+    public SignalRServicio(string hubUrl, IServiceScopeFactory serviceScopeFactory)
     {
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(hubUrl)
             .Build();
+
+         _serviceScopeFactory = serviceScopeFactory;
     }
+
 
     public async Task StartListeningAsync()
     {
@@ -24,7 +29,13 @@ public class SignalRServicio
         });
 
         // Inicia la conexión al hub
-        // await _hubConnection.StartAsync();
+        await _hubConnection.StartAsync();
         Console.WriteLine("Conectado al hub de SignalR");
     }
+
+    public async Task SendMessageAsync(string user, string message)
+    {
+        await _hubConnection.InvokeAsync("SendMessage", user, message);
+    }
+
 }
