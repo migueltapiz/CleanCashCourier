@@ -1,7 +1,6 @@
-﻿
-namespace ApiClases_20270722_Proyecto.Modelos;
+﻿namespace ApiClases_20270722_Proyecto.Modelos.Clientes;
 
-public class ClienteBaseDto :IValidatableObject
+public class ClienteBaseDto : IValidatableObject
 {
     [Required]
     [StringLength(25)]
@@ -28,7 +27,7 @@ public class ClienteBaseDto :IValidatableObject
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
 
-        if (Char.IsDigit(Email[0]))
+        if (char.IsDigit(Email[0]))
         {
             yield return new ValidationResult("El usuario no puede empezar por un número", new[] { "Usuario" });
         }
