@@ -21,6 +21,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   subcliente!: Subscription;
   subPais!: Subscription;
   subTransaccion!: Subscription;
+  subListaContactos!: Subscription;
   selectedCliente!: ICliente;
   clienteEnvia!: ICliente;
   modalMessage: string = '';
