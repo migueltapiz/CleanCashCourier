@@ -16,10 +16,13 @@ namespace ApiClases_20240722_Proyecto.Test
             return new ValidationContext(objeto, serviceProvider: null, items: null);
         }
 
-        private IList<ValidationResult> ValidarModelo(object modelo)
+        public static List<ValidationResult> ValidarModelo(object modelo)
         {
             var resultados = new List<ValidationResult>();
-            Validator.TryValidateObject(modelo, ObtenerContextoValidacion(modelo), resultados, true);
+            var contexto = new ValidationContext(modelo);
+
+            Validator.TryValidateObject(modelo, contexto, resultados, true);
+
             return resultados;
         }
 
@@ -67,8 +70,10 @@ namespace ApiClases_20240722_Proyecto.Test
             var resultados = ValidarModelo(cliente);
 
             // Assert
+            Assert.NotEmpty(resultados);  // Asegurarse de que hay errores de validación
             Assert.Contains(resultados, r => r.MemberNames.Contains(nameof(Cliente.Email)));
         }
+
 
         [Fact]
         public void DeberiaRetornarErrorSiFechaNacimientoEsFutura()
@@ -80,8 +85,10 @@ namespace ApiClases_20240722_Proyecto.Test
             var resultados = ValidarModelo(cliente);
 
             // Assert
+            Assert.NotEmpty(resultados);  // Asegurarse de que hay errores de validación
             Assert.Contains(resultados, r => r.MemberNames.Contains(nameof(Cliente.FechaNacimiento)));
         }
+
 
         [Theory]
         [InlineData(0)]  // PaisId igual a 0
@@ -161,7 +168,9 @@ namespace ApiClases_20240722_Proyecto.Test
             var resultados = ValidarModelo(cliente);
 
             // Assert
+            Assert.NotEmpty(resultados);  // Asegurarse de que hay errores de validación
             Assert.Contains(resultados, r => r.MemberNames.Contains(nameof(Cliente.Usuario)));
         }
+
     }
 }
