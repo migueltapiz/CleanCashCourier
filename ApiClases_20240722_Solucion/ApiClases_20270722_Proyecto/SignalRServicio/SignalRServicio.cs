@@ -49,7 +49,7 @@ public class SignalRServicio
             // Configura el manejo de mensajes recibidos
             _hubConnection.On<string>("RecibirMensaje", (mensaje) =>
             {
-                Console.WriteLine($"Mensaje recibido del simulador: {mensaje}");
+                Console.WriteLine($"GestionTransacciones: {mensaje}");
             });
             _isEventRegistered = true;
         }

@@ -1,11 +1,11 @@
-﻿using ApiClases_20270722_Proyecto.SignalRServicio;
+﻿
+using ApiClases_20270722_Proyecto.SignalRServicio;
+
 
 namespace ApiClases_20270722_Proyecto.Controllers;
 
-
 [ApiController]
 [Route("api/[controller]")]
-
 public class SignalREnvioController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -15,17 +15,28 @@ public class SignalREnvioController : ControllerBase
         _mediator = mediator;
     }
 
-
-    [HttpPost("enviar")]
-    public async Task<IActionResult> EnviarMensaje([FromBody] string mensaje)
+    [HttpPost("enviarCliente")]
+    public async Task<IActionResult> EnviarCliente([FromBody] ClienteDto cliente)
     {
-        if (string.IsNullOrEmpty(mensaje))
+        if (cliente == null)
         {
-            return BadRequest("El mensaje no puede estar vacío.");
+            return BadRequest("El cliente no puede estar vacío.");
         }
 
-        var resultado = await _mediator.Send(new SignalRRequest { Mensaje = mensaje });
+        var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = cliente });
         return Ok(resultado);
     }
 
+
+    [HttpPost("enviarTransaccion")]
+    public async Task<IActionResult> EnviarTransaccion([FromBody] TransaccionDto transaccion)
+    {
+        if (transaccion == null)
+        {
+            return BadRequest("La transacción no puede estar vacía.");
+        }
+
+        var resultado = await _mediator.Send(new SignalRRequest { MandamosTransaccion = transaccion });
+        return Ok(resultado);
+    }
 }
