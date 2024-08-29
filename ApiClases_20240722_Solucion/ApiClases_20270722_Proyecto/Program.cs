@@ -43,10 +43,6 @@ builder.Services.AddSingleton<SignalRServicio>(provider =>
     return new SignalRServicio(hubUrl, serviceScopeFactory);
 });
 
-/* builder.Services.AddSingleton<SignalRServicio>(provider =>
-    new SignalRServicio("https://localhost:7138/SimuladorHub",
-        provider.GetRequiredService<IServiceScopeFactory>())); */
-
 
 // Registra IRequestHandler
 builder.Services.AddTransient<IRequestHandler<SignalRRequest, string>, SignalRRequestHandler>();
