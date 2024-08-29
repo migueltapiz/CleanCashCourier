@@ -1,4 +1,5 @@
-﻿namespace ApiClases_20270722_Proyecto.SignalRServicio;
+﻿
+namespace ApiClases_20270722_Proyecto.SignalRServicio;
 
 public class SignalRHubNotificacion : Hub
 {

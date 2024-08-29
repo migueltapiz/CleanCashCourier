@@ -1,5 +1,3 @@
-using ApiClases_20270722_Proyecto.Repositorios;
-using ApiClases_20270722_Proyecto.SignalRServicio;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +9,6 @@ builder.Services.AddControllers();
 //Agregar servicio swagger (OpenAPI)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
-
 builder.Services.AddScoped<IRepositorioGenerico<Transaccion>, TransaccionRepositorioBBDD<Transaccion>>();
 builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();
 builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD<Cliente>>();
@@ -105,6 +100,8 @@ builder.Services.AddCors(options =>
 //Agregar servicios a la aplicación
 var app = builder.Build();
 
+app.UseCors("AllowAllOrigins");
+
 app.MapHub<SignalRHubNotificacion>("/signalrhubnotificacion");
 
 
@@ -116,7 +113,7 @@ await signalRServicio.StartListeningAsync();
 await CreateRoles(app);
 
 
-app.UseCors("AllowAllOrigins");
+
 
 
 //Comprobar si el entorno es de desarrollo

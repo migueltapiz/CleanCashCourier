@@ -10,8 +10,6 @@ global using ApiClases_20270722_Proyecto.ContextoCarpeta;
 
 global using System.ComponentModel.DataAnnotations;
 
-
-
 global using CsvHelper;
 
 global using CsvHelper.Configuration;
@@ -41,3 +39,13 @@ global using MediatR;
 global using Microsoft.AspNetCore.SignalR;
 
 global using System.Threading.Tasks;
+
+global using ApiClases_20270722_Proyecto.Modelos.Clientes;
+
+global using ApiClases_20270722_Proyecto.Modelos.Transacciones;
+
+global using ApiClases_20270722_Proyecto.SignalRServicio;
+
+global using ApiClases_20270722_Proyecto.Repositorios;
+
+global using System.IdentityModel.Tokens.Jwt;

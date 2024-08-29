@@ -1,6 +1,4 @@
 ﻿
-using ApiClases_20270722_Proyecto.SignalRServicio;
-
 namespace ApiClases_20270722_Proyecto.Controllers;
 
 [ApiController]
@@ -15,7 +13,7 @@ public class SignalREnvioController : ControllerBase
     }
 
     [HttpPost("enviarCliente")] 
-    public async Task<IActionResult> EnviarCliente([FromBody] ClienteDto cliente)  // Aquí después se añadirán los datos del cliente que se registra o inicia sesión.
+    public async Task<IActionResult> EnviarCliente([FromBody] ClienteBaseDto cliente)  // Aquí después se añadirán los datos del cliente que se registra o inicia sesión.
     {
         if (cliente == null)
         {
@@ -28,7 +26,7 @@ public class SignalREnvioController : ControllerBase
 
 
     [HttpPost("enviarTransaccion")]
-    public async Task<IActionResult> EnviarTransaccion([FromBody] TransaccionDto transaccion)  // Aquí en vez de escribir por el POST se añadirán al haber una transacción. 
+    public async Task<IActionResult> EnviarTransaccion([FromBody] TransaccionBaseDto transaccion)  // Aquí en vez de escribir por el POST se añadirán al haber una transacción. 
     {
         if (transaccion == null)
         {
