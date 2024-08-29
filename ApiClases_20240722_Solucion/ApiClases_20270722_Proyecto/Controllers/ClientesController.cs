@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using static ApiClases_20270722_Proyecto.Modelos.Clientes.ClienteInicioSesion;
 
@@ -45,7 +46,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
             return Ok(clientesDto);
         }
 
-        [HttpGet("{id:int}", Name = "getCliente")]
+        [HttpGet("{id:int}", Name = "getClienteId")]
         public async Task<ActionResult<ClienteGetDto>> Get(int id)
         {
             var cliente =  _clienteRepositorio.ObtenerPorId(id);
@@ -56,12 +57,25 @@ namespace ApiClases_20270722_Proyecto.Controllers
         }
 
        
-        
-        [HttpGet("{name}", Name = "getClientePorNombre")]
-        public async Task<ActionResult<ClienteGetDto>> Get(string name)
+        [HttpGet("{valor}", Name = "getCliente")]
+        public async Task<ActionResult<ClienteGetDto>> Get(string valor)
         {
-            Console.WriteLine($"Valor recibido: {name}");
-            var cliente =  _clienteRepositorio.ObtenerPorNombre(name.ToString());
+            string nombre;
+
+            // Intentar decodificar el token JWT
+            var handler = new JwtSecurityTokenHandler();
+            try
+            {
+                var jwtToken = handler.ReadJwtToken(valor);
+                nombre = jwtToken.Claims.First(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value;
+            }
+            catch(ArgumentException)
+            {
+                // Si no es un token JWT válido, asumir que es un nombre
+                nombre = valor;
+            }
+
+            var cliente =  _clienteRepositorio.ObtenerPorNombre(nombre.ToString());
             if (cliente == null) return NotFound();
 
             var finalClienteDto = _mapper.Map<ClienteGetDto>(cliente);

@@ -65,11 +65,7 @@ export class ProfileComponent implements OnInit {
 
     this.token = localStorage['token'];
 
-    const decoded = jwtDecode(this.token) as { [key: string]: any };
-
-    this.nombre = decoded['sub'];
-
-    this.subClientes = this.clienteService.getClienteByName(this.nombre).subscribe({
+    this.subClientes = this.clienteService.getCliente(this.token).subscribe({
       next: (data) => {
         this.cliente = data
         this.isLoading = false;

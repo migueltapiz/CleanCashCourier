@@ -22,13 +22,12 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   subPais!: Subscription;
   subTransaccion!: Subscription;
   subListaContactos!: Subscription;
-  selectedCliente!: ICliente;
-  clienteEnvia!: ICliente;
   modalMessage: string = '';
   transaccion!: Transaccion;
-  
+  identificaciorClienteEnvia!: number;
+  identificadorClienteRecibe!: number;
 
-  recipientFilter: string = '';
+  nombreClienteRecibe: string = '';
   cantidadEnviada: string = '';
   cantidadRecibida: string = '';
   currencyEnviada: string = '';
@@ -45,16 +44,9 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.token = localStorage['token'];
 
-    const decoded = jwtDecode(this.token) as { [key: string]: any };
-
-    this.nombre = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
-
-    this.subcliente = this.clienteService.getClienteByName(this.nombre).subscribe({
+    this.subcliente = this.clienteService.getCliente(this.token).subscribe({
       next: cliente => {
-        
-        this.clienteEnvia = cliente;
-        
-        this.subPais = this.paisService.getPaisId(this.clienteEnvia.paisId).subscribe({
+        this.subPais = this.paisService.getPaisId(cliente.paisId).subscribe({
           next: pais => {
             this.currencyEnviada = pais.iso3;
           },
@@ -72,18 +64,16 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       clearTimeout(this.timeout);
     }
     this.timeout = setTimeout(() => {
-      this.subcliente = this.clienteService.getClienteByName(this.recipientFilter).subscribe({
+      this.subcliente = this.clienteService.getCliente(this.nombreClienteRecibe).subscribe({
         next: cliente => {
-
-          this.selectedCliente = cliente;
-
-          if (this.selectedCliente) {
-            this.subTransaccion = this.paisService.getPaisId(this.selectedCliente.paisId).subscribe({
+          if (cliente) {
+            this.subTransaccion = this.paisService.getPaisId(cliente.paisId).subscribe({
               next: pais => {
                 this.currencyRecibida = pais.iso3;
                 this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
                   next: factor => {
                     this.factorConversion = factor;
+                    this.cantidadRecibida = this.cantidadEnviada?(parseInt( this.cantidadEnviada) * factor).toString():'';
                   },
                   error: err => this.errorMessage = err
                 });
@@ -150,8 +140,8 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
     this.transaccion.cantidadEnvia = parseFloat(this.cantidadEnviada.replace(',', '.'));
     this.transaccion.cantidadRecibe = parseFloat(this.cantidadRecibida.replace(',', '.'));
-    this.transaccion.idEnvia = this.clienteEnvia.id;
-    this.transaccion.idRecibe = this.selectedCliente?.id === null ? 0 : this.selectedCliente?.id || 0;
+    this.transaccion.idEnvia = this.identificaciorClienteEnvia;
+    this.transaccion.idRecibe = this.identificadorClienteRecibe === null ? 0 : this.identificadorClienteRecibe || 0;
     this.transaccion.fecha = new Date(Date.now()).toJSON();
     this.transaccion.monedaOrigen= this.currencyEnviada;
     this.transaccion.monedaDestino = this.currencyRecibida;
@@ -162,7 +152,11 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     // Validación de coincidencia exacta del usuario
     
 
-    if (!this.selectedCliente) {
+    if (!this.identificadorClienteRecibe) {
+      this.showInvalidUserModal();
+      return;
+    }
+    if (this.identificadorClienteRecibe === this.identificaciorClienteEnvia) {
       this.showInvalidUserModal();
       return;
     }
@@ -185,7 +179,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       }
     });
 
-    const user = this.selectedCliente.usuario === undefined ? 'unknown' : this.selectedCliente.usuario;
+    const user = this.nombreClienteRecibe === undefined ? 'unknown' : this.nombreClienteRecibe;
     this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currencyEnviada} al destinatario ${user}.`;
     this.showModal();
   }

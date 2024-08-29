@@ -27,7 +27,7 @@ export class TransaccionComponent implements OnInit,OnDestroy {
   cuantas: number = 0;
   constructor(private transaccionService: TransaccionService, private clienteService: ClienteService) { }
 
-  cliente!: ICliente;
+  identificaciorCliente!: number;
   errorMessage: string = '';
   token!: string;
   nombre!: string;
@@ -35,14 +35,9 @@ export class TransaccionComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.token = localStorage['token'];
 
-    const decoded = jwtDecode(this.token) as { [key: string]: any };
-
-    this.nombre = decoded['sub'];
-
-    this.subcliente = this.clienteService.getClienteByName(this.nombre).subscribe({
+    this.subcliente = this.clienteService.getCliente(this.token).subscribe({
       next: cliente => {
-        this.cliente = cliente;
-        this.subTransaccion = this.transaccionService.getTransacciones(this.cliente.id).subscribe(
+        this.subTransaccion = this.transaccionService.getTransacciones(this.identificaciorCliente).subscribe(
           async (data: Transaccion[]) => {
             this.transacciones = data;
             await Promise.all(this.transacciones.map(async (transaccion) => {
@@ -69,7 +64,7 @@ export class TransaccionComponent implements OnInit,OnDestroy {
  
 
   obtenerIdUsuario(transaccion: Transaccion): Promise<string> {
-    var clienteIdAux = transaccion.idRecibe === this.cliente.id ? transaccion.idEnvia : transaccion.idRecibe;
+    var clienteIdAux = transaccion.idRecibe === this.identificaciorCliente ? transaccion.idEnvia : transaccion.idRecibe;
     return new Promise((resolve, reject) => {
       this.subcliente = this.clienteService.getClienteById(clienteIdAux).subscribe({
         next: cliente => {
@@ -89,7 +84,7 @@ export class TransaccionComponent implements OnInit,OnDestroy {
   }
 
   obtenerTipoTransaccion(transaccion: Transaccion): string {
-    return transaccion.idEnvia === this.cliente.id ? 'Enviada' : 'Recibida';
+    return transaccion.idEnvia === this.identificaciorCliente ? 'Enviada' : 'Recibida';
   }
 
   obtenerFecha(transaccion: Transaccion): string {
@@ -128,15 +123,13 @@ export class TransaccionComponent implements OnInit,OnDestroy {
     }
   }
   filtrarTransacciones(): void {
-    // Aquí puedes construir los parámetros de la consulta con base en los filtros aplicados.
-    // Luego, realiza la llamada al servicio para obtener las transacciones filtradas.
-    // Por ejemplo:
+    
     this.subTransaccion = this.transaccionService.getTransaccionesFiltradas({
       fechaInicio: this.fechaInicio,
       fechaFin: this.fechaFin,
       cantidadMin: this.cantidadMin,
       cantidadMax: this.cantidadMax
-    }, this.cliente.id).subscribe(
+    }, this.identificaciorCliente).subscribe(
       (data: Transaccion[]) => this.transacciones = data,
       error => console.error(error)
     );
