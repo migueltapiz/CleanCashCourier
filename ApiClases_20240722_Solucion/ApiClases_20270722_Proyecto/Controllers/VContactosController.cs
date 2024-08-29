@@ -15,8 +15,8 @@ namespace ApiClases_20270722_Proyecto.Controllers
         [HttpPost("getAllContacts")]
         public async Task<ActionResult<IEnumerable<VContacto>>> GetVistaContactos(VContactoParametrosFiltradoDto filtro)
         {
-            var contactos = await _vistacontactorepositorio.GetVContactosAsync(filtro);
-            return contactos.Data.ToList();
+            var (contactos, count) = await _vistacontactorepositorio.GetVContactosAsync(filtro);
+            return contactos.ToList();
         }
     }
 }

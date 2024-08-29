@@ -11,7 +11,7 @@
         public async Task<(IEnumerable<VContacto> Data, int TotalCount)> GetVContactosAsync(VContactoParametrosFiltradoDto parametrosfiltro)
         {
             var query = _contexto.VContactos.AsQueryable();
-            if (string.IsNullOrEmpty(parametrosfiltro.NombreUsuarioContacto))
+            if (!string.IsNullOrEmpty(parametrosfiltro.NombreUsuarioContacto))
             {
                 query = query.Where(v => v.NombreUsuarioContacto == parametrosfiltro.NombreUsuarioContacto);
             }
@@ -19,15 +19,15 @@
             {
                 query = query.Where(v => v.IdCliente == parametrosfiltro.IdCliente);
             }
-            if (parametrosfiltro.PaisId.HasValue)
+            if (!string.IsNullOrEmpty(parametrosfiltro.Pais))
             {
-                query = query.Where(v => v.PaisId == parametrosfiltro.PaisId);
+                query = query.Where(v => v.Pais == parametrosfiltro.Pais);
             }
             var nuevaConsulta = query.Select(v => new VContacto
             {
                 IdCliente = v.IdCliente,
                 NombreUsuarioContacto = v.NombreUsuarioContacto,
-                PaisId = v.PaisId,
+                Pais = v.Pais,
             });
             var pageSize = parametrosfiltro.TamanoPagina;
             if (nuevaConsulta.Count() < 10)

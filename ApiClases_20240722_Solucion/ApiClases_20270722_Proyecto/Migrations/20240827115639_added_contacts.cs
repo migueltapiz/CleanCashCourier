@@ -467,7 +467,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
 
             migrationBuilder.InsertData(
                 table: "Clientes",
-                columns: new[] { "Id", "Apellido", "Email", "Empleo", "FechaNacimiento", "Nombre", "PaisId", "Usuario" },
+                columns: new[] { "Id", "Apellido", "Email", "Empleo", "FechaNacimiento", "Nombre", "Pais", "Usuario" },
                 values: new object[,]
                 {
                     { 1, "Juanes", "ana777@gmail.com", "Ingeniera de Software", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ana", 4, "ana777" },
@@ -641,7 +641,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Clientes_PaisId",
                 table: "Clientes",
-                column: "PaisId");
+                column: "Pais");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contactos_ClienteDestinoId",
