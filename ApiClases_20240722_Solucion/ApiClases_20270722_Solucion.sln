@@ -9,6 +9,8 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Frontal", "Frontal\Frontal.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiClases_20240722_Proyecto.Test", "ApiClases_20240722_Proyecto.Test\ApiClases_20240722_Proyecto.Test.csproj", "{5FC6A059-8A55-4D59-AFED-ACB7204C2B54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimuladorServicio", "SimuladorServicio\SimuladorServicio.csproj", "{BF6F08B8-698A-476F-9F31-F5F0EACD5707}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{5FC6A059-8A55-4D59-AFED-ACB7204C2B54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FC6A059-8A55-4D59-AFED-ACB7204C2B54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FC6A059-8A55-4D59-AFED-ACB7204C2B54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF6F08B8-698A-476F-9F31-F5F0EACD5707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF6F08B8-698A-476F-9F31-F5F0EACD5707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF6F08B8-698A-476F-9F31-F5F0EACD5707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF6F08B8-698A-476F-9F31-F5F0EACD5707}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
