@@ -10,7 +10,7 @@ public class SignalRRequestHandler : IRequestHandler<SignalRRequest, string>
         _signalRServicio = signalRServicio;
     }
 
-    public async Task<string> Handle(SignalRRequest request, CancellationToken cancellationToken)
+    public async Task<string> Handle(SignalRRequest request, CancellationToken cancellationToken) // Para lo de inicio o registro habrá que añadir un campo nuevo.
     {
         if (request.MandamosCliente != null)
         {
@@ -22,7 +22,9 @@ public class SignalRRequestHandler : IRequestHandler<SignalRRequest, string>
                 cliente.FechaNacimiento,
                 cliente.Empleo,
                 cliente.PaisId,
-                cliente.Email
+                cliente.Email,
+                TipoAcceso = "Registro" // Esto se cambiará según se registra o se inicia sesión. CAMBIAR.
+
             };
 
             await _signalRServicio.SendMessageAsync("NuevoRegistro", Newtonsoft.Json.JsonConvert.SerializeObject(clienteData));
@@ -35,11 +37,12 @@ public class SignalRRequestHandler : IRequestHandler<SignalRRequest, string>
             var transaccion = request.MandamosTransaccion;
             var transaccionData = new
             {
-                transaccion.IdEnvia,
-                transaccion.CantidadEnvia,
-                transaccion.IdRecibe,
-                transaccion.CantidadRecibe,
-                transaccion.Fecha
+                transaccion.IdEnvia, // hay que sacar de aquí el PaisOrigen y CilienteOrigen
+                transaccion.IdRecibe, // hay que sacar de aquí el PaisDestino y CilienteDestino
+                ValorOrigen = transaccion.CantidadEnvia,
+                ValorDestino = transaccion.CantidadRecibe,
+                Timestamp = transaccion.Fecha
+
             };
 
             await _signalRServicio.SendMessageAsync("NuevaTransaccion", Newtonsoft.Json.JsonConvert.SerializeObject(transaccionData));

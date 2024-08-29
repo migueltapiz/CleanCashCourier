@@ -15,8 +15,8 @@ public class SignalREnvioController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost("enviarCliente")]
-    public async Task<IActionResult> EnviarCliente([FromBody] ClienteDto cliente)
+    [HttpPost("enviarCliente")] 
+    public async Task<IActionResult> EnviarCliente([FromBody] ClienteDto cliente)  // Aquí después se añadirán los datos del cliente que se registra o inicia sesión.
     {
         if (cliente == null)
         {
@@ -29,7 +29,7 @@ public class SignalREnvioController : ControllerBase
 
 
     [HttpPost("enviarTransaccion")]
-    public async Task<IActionResult> EnviarTransaccion([FromBody] TransaccionDto transaccion)
+    public async Task<IActionResult> EnviarTransaccion([FromBody] TransaccionDto transaccion)  // Aquí en vez de escribir por el POST se añadirán al haber una transacción. 
     {
         if (transaccion == null)
         {
