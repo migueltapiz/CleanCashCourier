@@ -1,7 +1,6 @@
 ﻿
 using ApiClases_20270722_Proyecto.SignalRServicio;
 
-
 namespace ApiClases_20270722_Proyecto.Controllers;
 
 [ApiController]
