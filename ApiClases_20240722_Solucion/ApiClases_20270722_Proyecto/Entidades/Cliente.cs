@@ -18,6 +18,15 @@ public class Cliente
     [StringLength(30)]
     public string Apellido { get; set; }
 
+    public static ValidationResult ValidarFechaNacimiento(DateTime fechaNacimiento, ValidationContext validationContext)
+    {
+        if (fechaNacimiento > DateTime.Now)
+        {
+            return new ValidationResult("La fecha de nacimiento no puede ser posterior a la fecha actual.");
+        }
+        return ValidationResult.Success;
+    }
+
     [Required]
     [CustomValidation(typeof(Cliente), nameof(ValidarFechaNacimiento))]
     public DateTime FechaNacimiento { get; set; }
@@ -40,13 +49,4 @@ public class Cliente
 
     [StringLength(256, ErrorMessage = "El Usuario no puede tener más de 256 caracteres.")]
     public string Usuario { get; set; }
-
-    public static ValidationResult ValidarFechaNacimiento(DateTime fechaNacimiento, ValidationContext validationContext)
-    {
-        if (fechaNacimiento > DateTime.Now)
-        {
-            return new ValidationResult("La fecha de nacimiento no puede ser posterior a la fecha actual.");
-        }
-        return ValidationResult.Success;
-    }
 }

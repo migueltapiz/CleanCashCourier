@@ -16,13 +16,11 @@ namespace ApiClases_20240722_Proyecto.Test
             return new ValidationContext(objeto, serviceProvider: null, items: null);
         }
 
-        public static List<ValidationResult> ValidarModelo(object modelo)
+        private IList<ValidationResult> ValidarModelo(object modelo)
         {
+            var context = new ValidationContext(modelo, serviceProvider: null, items: null);
             var resultados = new List<ValidationResult>();
-            var contexto = new ValidationContext(modelo);
-
-            Validator.TryValidateObject(modelo, contexto, resultados, true);
-
+            Validator.TryValidateObject(modelo, context, resultados, validateAllProperties: true);
             return resultados;
         }
 
@@ -60,7 +58,7 @@ namespace ApiClases_20240722_Proyecto.Test
 
         [Theory]
         [InlineData("EmailInvalido")]  // Email sin formato válido
-        [InlineData("email@demasiadolargo....................................................................................com")] // Email demasiado largo
+        [InlineData("email@demasiadolargo..........................................................................................................................................................................................................................................com")] // Email demasiado largo
         public void DeberiaRetornarErrorParaEmailInvalido(string email)
         {
             // Arrange
@@ -79,16 +77,22 @@ namespace ApiClases_20240722_Proyecto.Test
         public void DeberiaRetornarErrorSiFechaNacimientoEsFutura()
         {
             // Arrange
-            var cliente = new Cliente { Nombre = "Juan", Apellido = "Perez", FechaNacimiento = DateTime.Now.AddDays(1), PaisId = 1, Email = "test@example.com" };
+            var cliente = new Cliente 
+            { 
+                Nombre = "Juan", 
+                Apellido = "Perez", 
+                FechaNacimiento = DateTime.Now.AddDays(1), 
+                PaisId = 1, 
+                Email = "test@example.com" 
+            };
 
             // Act
             var resultados = ValidarModelo(cliente);
 
             // Assert
-            Assert.NotEmpty(resultados);  // Asegurarse de que hay errores de validación
-            Assert.Contains(resultados, r => r.MemberNames.Contains(nameof(Cliente.FechaNacimiento)));
+            Assert.NotEmpty(resultados);  // Asegúrate de que hay errores de validación
+            Assert.Contains(resultados, r => r.ErrorMessage == "La fecha de nacimiento no puede ser posterior a la fecha actual.");
         }
-
 
         [Theory]
         [InlineData(0)]  // PaisId igual a 0
@@ -150,7 +154,7 @@ namespace ApiClases_20240722_Proyecto.Test
         }
 
         [Theory]
-        [InlineData("UsuarioConUnNombreExcesivamenteLargoParaElCampoUsuarioQueDeberiaSerCorto")] // Usuario demasiado largo
+        [InlineData("UsuarioConUnNombreExcesivamenteLargoQueDeberiaExcederElLimiteDeCaracteresDelCampoUsuario...............................MasCaracteresHastaExceder256..............................................................................................................")] // Usuario excesivamente largo, más de 256 caracteres
         public void DeberiaRetornarErrorParaUsuarioInvalido(string usuario)
         {
             // Arrange
@@ -171,6 +175,5 @@ namespace ApiClases_20240722_Proyecto.Test
             Assert.NotEmpty(resultados);  // Asegurarse de que hay errores de validación
             Assert.Contains(resultados, r => r.MemberNames.Contains(nameof(Cliente.Usuario)));
         }
-
     }
 }
