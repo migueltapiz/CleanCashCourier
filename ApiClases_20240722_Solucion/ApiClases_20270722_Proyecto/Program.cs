@@ -39,9 +39,13 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 builder.Services.AddSingleton<SignalRServicio>(provider =>
 {
     var serviceScopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
-    var hubUrl = "https://localhost:7219/SimuladorHub"; // Reemplaza con la URL de tu hub de SignalR
+    var hubUrl = "https://localhost:7040/SimuladorHub"; // Reemplaza con la URL de tu hub de SignalR
     return new SignalRServicio(hubUrl, serviceScopeFactory);
 });
+
+/* builder.Services.AddSingleton<SignalRServicio>(provider =>
+    new SignalRServicio("https://localhost:7138/SimuladorHub",
+        provider.GetRequiredService<IServiceScopeFactory>())); */
 
 
 // Registra IRequestHandler
