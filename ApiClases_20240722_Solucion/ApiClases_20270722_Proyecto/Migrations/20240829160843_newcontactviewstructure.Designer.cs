@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiClases_20270722_Proyecto.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240827115639_added_contacts")]
-    partial class added_contacts
+    [Migration("20240829160843_newcontactviewstructure")]
+    partial class newcontactviewstructure
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,16 +56,17 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<int>("Pais")
+                    b.Property<int>("PaisId")
                         .HasColumnType("int");
 
                     b.Property<string>("Usuario")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Pais");
+                    b.HasIndex("PaisId");
 
                     b.ToTable("Clientes");
 
@@ -917,6 +918,14 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ApiClases_20270722_Proyecto.Entidades.ConteoResult", b =>
+                {
+                    b.Property<int>("Conteo")
+                        .HasColumnType("int");
+
+                    b.ToTable("ConteoResults");
+                });
+
             modelBuilder.Entity("ApiClases_20270722_Proyecto.Entidades.Pais", b =>
                 {
                     b.Property<int>("Id")
@@ -1299,7 +1308,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         {
                             Id = 51,
                             Divisa = "Euro",
-                            Iso3 = "ESP",
+                            Iso3 = "EUR",
                             Nombre = "España"
                         },
                         new
@@ -1348,7 +1357,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         {
                             Id = 58,
                             Divisa = "Euro",
-                            Iso3 = "FRA",
+                            Iso3 = "EUR",
                             Nombre = "Francia"
                         },
                         new
@@ -1474,7 +1483,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         {
                             Id = 76,
                             Divisa = "Euro",
-                            Iso3 = "IRL",
+                            Iso3 = "EUR",
                             Nombre = "Irlanda"
                         },
                         new
@@ -1488,7 +1497,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         {
                             Id = 78,
                             Divisa = "Euro",
-                            Iso3 = "ITA",
+                            Iso3 = "EUR",
                             Nombre = "Italia"
                         },
                         new
@@ -2600,7 +2609,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("Pais")
+                    b.Property<int>("PaisId")
                         .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
@@ -2637,14 +2646,14 @@ namespace ApiClases_20270722_Proyecto.Migrations
 
             modelBuilder.Entity("ApiClases_20270722_Proyecto.Modelos.VContacto", b =>
                 {
-                    b.Property<int>("IdCliente")
+                    b.Property<int?>("IdCliente")
                         .HasColumnType("int");
 
-                    b.Property<string>("NombreContacto")
+                    b.Property<string>("NombreUsuarioContacto")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Pais")
-                        .HasColumnType("int");
+                    b.Property<string>("Pais")
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable((string)null);
 
@@ -2788,7 +2797,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                 {
                     b.HasOne("ApiClases_20270722_Proyecto.Entidades.Pais", "Pais")
                         .WithMany()
-                        .HasForeignKey("Pais")
+                        .HasForeignKey("PaisId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

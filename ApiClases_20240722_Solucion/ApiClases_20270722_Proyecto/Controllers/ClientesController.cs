@@ -143,6 +143,21 @@ namespace ApiClases_20270722_Proyecto.Controllers
             }
 
             var token = _servicioToken.GenerateJwtToken(usuario);
+
+
+            var numClientes = (await _clienteRepositorio.Obtener()).Count();
+            Random random = new Random();
+            for (var i = 0; i <= 6; i++)
+            {
+                _contactoRepositorio.Agregar(new Contacto
+                {
+                    Id = 0,
+                    ClienteOrigenId = numClientes,
+                    ClienteDestinoId = random.Next(1, numClientes),
+                });
+            }
+            await _contactoRepositorio.GuardarCambios();
+
             return Ok(new { Token = token });
         }
 
