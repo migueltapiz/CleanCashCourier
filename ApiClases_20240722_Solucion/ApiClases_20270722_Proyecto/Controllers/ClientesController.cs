@@ -13,10 +13,11 @@ namespace ApiClases_20270722_Proyecto.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientesController : ControllerBase
+    public partial class ClientesController : ControllerBase
     {
         private readonly IRepositorioGenerico<Cliente> _clienteRepositorio;
         private readonly IRepositorioGenerico<Pais> _paisRepositorio;
+        private readonly IRepositorioGenerico<Contacto> _contactoRepositorio;
         private readonly IServicioToken _servicioToken;
         private readonly IMapper _mapper;
         private readonly UserManager<UsuarioAplicacion> _userManager;
@@ -25,6 +26,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
         public ClientesController(
             IRepositorioGenerico<Cliente> clienteRepositorio,
             IRepositorioGenerico<Pais> paisRepositorio,
+            IRepositorioGenerico<Contacto> contactoRepositorio,
             IServicioToken servicioToken,
             IMapper mapper,
             UserManager<UsuarioAplicacion> userManager,
@@ -32,6 +34,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
         {
             _clienteRepositorio = clienteRepositorio;
             _paisRepositorio = paisRepositorio;
+            _contactoRepositorio = contactoRepositorio;
             _servicioToken = servicioToken;
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userManager = userManager;
