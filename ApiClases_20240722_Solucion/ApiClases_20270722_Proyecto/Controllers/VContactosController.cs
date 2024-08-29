@@ -18,5 +18,17 @@ namespace ApiClases_20270722_Proyecto.Controllers
             var (contactos, count) = await _vistacontactorepositorio.GetVContactosAsync(filtro);
             return contactos.ToList();
         }
+        [HttpGet("getAllContactsById")]
+        public async Task<ActionResult<IEnumerable<VContacto>>> GetVistaContactos(int id)
+        {
+            VContactoParametrosFiltradoDto filtro = new VContactoParametrosFiltradoDto
+            {
+                IdCliente = id,
+                NumeroPaginas = 1,
+                TamanoPagina = 30
+            };
+            var (contactos, count) = await _vistacontactorepositorio.GetVContactosAsync(filtro);
+            return contactos.ToList();
+        }
     }
 }
