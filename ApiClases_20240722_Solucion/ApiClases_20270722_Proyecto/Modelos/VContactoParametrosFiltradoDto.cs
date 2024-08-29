@@ -2,7 +2,7 @@
 {
     public class VContactoParametrosFiltradoDto
     {
-        public string? NombreUsuarioCliente { get; set; }
+        public int? IdCliente{ get; set; }
         public string? NombreUsuarioContacto { get; set; }
         public int? PaisId { get; set; }
         public int NumeroPaginas { get; set; } = 1;

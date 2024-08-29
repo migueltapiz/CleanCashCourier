@@ -1,9 +1,9 @@
 ﻿namespace ApiClases_20270722_Proyecto.Repositorios
 {
-    public class RepositorioVistaContactos : IRepositorioVistaContacto<VContacto>
+    public class VistaContactosRepositorio : IVistaContactoRepositorio<VContacto>
     {
         private readonly Contexto _contexto;
-        public RepositorioVistaContactos(Contexto contexto)
+        public VistaContactosRepositorio(Contexto contexto)
         {
             _contexto = contexto;
         }
@@ -15,9 +15,9 @@
             {
                 query = query.Where(v => v.NombreUsuarioContacto == parametrosfiltro.NombreUsuarioContacto);
             }
-            if (string.IsNullOrEmpty(parametrosfiltro.NombreUsuarioCliente))
+            if (parametrosfiltro.IdCliente.HasValue)
             {
-                query = query.Where(v => v.NombreUsuarioCliente == parametrosfiltro.NombreUsuarioCliente);
+                query = query.Where(v => v.IdCliente == parametrosfiltro.IdCliente);
             }
             if (parametrosfiltro.PaisId.HasValue)
             {
@@ -25,7 +25,7 @@
             }
             var nuevaConsulta = query.Select(v => new VContacto
             {
-                NombreUsuarioCliente = v.NombreUsuarioCliente,
+                IdCliente = v.IdCliente,
                 NombreUsuarioContacto = v.NombreUsuarioContacto,
                 PaisId = v.PaisId,
             });
