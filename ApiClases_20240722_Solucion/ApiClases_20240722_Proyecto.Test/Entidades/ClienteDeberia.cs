@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ApiClases_20270722_Proyecto.Entidades;
 
 
-namespace ApiClases_20240722_Proyecto.Test
+namespace ApiClases_20240722_Proyecto.Test.Entidades
 {
     public class ClienteDeberia
     {
@@ -77,13 +77,13 @@ namespace ApiClases_20240722_Proyecto.Test
         public void DeberiaRetornarErrorSiFechaNacimientoEsFutura()
         {
             // Arrange
-            var cliente = new Cliente 
-            { 
-                Nombre = "Juan", 
-                Apellido = "Perez", 
-                FechaNacimiento = DateTime.Now.AddDays(1), 
-                PaisId = 1, 
-                Email = "test@example.com" 
+            var cliente = new Cliente
+            {
+                Nombre = "Juan",
+                Apellido = "Perez",
+                FechaNacimiento = DateTime.Now.AddDays(1),
+                PaisId = 1,
+                Email = "test@example.com"
             };
 
             // Act

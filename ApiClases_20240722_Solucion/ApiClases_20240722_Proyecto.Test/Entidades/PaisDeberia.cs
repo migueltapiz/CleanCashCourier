@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ApiClases_20270722_Proyecto.Entidades;
 
 
-namespace ApiClases_20240722_Proyecto.Test
+namespace ApiClases_20240722_Proyecto.Test.Entidades
 {
     public class PaisDeberia
     {
