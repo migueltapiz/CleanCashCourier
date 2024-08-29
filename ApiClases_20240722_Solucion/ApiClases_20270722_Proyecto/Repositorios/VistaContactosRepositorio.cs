@@ -8,7 +8,7 @@
             _contexto = contexto;
         }
 
-        public async Task<(List<VContacto> Data, int TotalCount)> GetVContactosAsync(VContactoParametrosFiltradoDto parametrosfiltro)
+        public async Task<(IEnumerable<VContacto> Data, int TotalCount)> GetVContactosAsync(VContactoParametrosFiltradoDto parametrosfiltro)
         {
             var query = _contexto.VContactos.AsQueryable();
             if (string.IsNullOrEmpty(parametrosfiltro.NombreUsuarioContacto))
@@ -36,7 +36,7 @@
             }
             var datos = new List<VContacto>();
             datos = await nuevaConsulta.Take(pageSize).ToListAsync();
-            return (datos, 0);
+            return (datos.AsQueryable(), 0);
         }
     }
 }

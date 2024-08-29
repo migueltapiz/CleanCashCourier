@@ -2,6 +2,6 @@
 {
     public interface IVistaContactoRepositorio<VContacto>
     {
-        Task<(List<VContacto> Data, int TotalCount)> GetVContactosAsync(VContactoParametrosFiltradoDto parametrosfiltro);
+        Task<(IEnumerable<VContacto> Data, int TotalCount)> GetVContactosAsync(VContactoParametrosFiltradoDto parametrosfiltro);
     }
 }
