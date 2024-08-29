@@ -37,6 +37,7 @@ export class TransaccionComponent implements OnInit,OnDestroy {
 
     this.subcliente = this.clienteService.getCliente(this.token).subscribe({
       next: cliente => {
+        this.identificaciorCliente = cliente.id;
         this.subTransaccion = this.transaccionService.getTransacciones(this.identificaciorCliente).subscribe(
           async (data: Transaccion[]) => {
             this.transacciones = data;
