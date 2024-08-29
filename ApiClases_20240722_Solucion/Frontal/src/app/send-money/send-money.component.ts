@@ -24,7 +24,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   subListaContactos!: Subscription;
   modalMessage: string = '';
   transaccion!: Transaccion;
-  identificaciorClienteEnvia!: number;
+  identificadorClienteEnvia!: number;
   identificadorClienteRecibe!: number;
 
   nombreClienteRecibe: string = '';
@@ -33,19 +33,20 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   currencyEnviada: string = '';
   currencyRecibida: string = ''; // Moneda por defecto para recibir
   factorConversion: number = 1.1; // Factor de conversión estático, debería obtenerse dinámicamente
-  tarifaTransferencia: number = 0.00; // Tarifa de transferencia fija por ahora
+  tarifaTransferencia: number = 0.00; 
   totalTransferencia: string = '0.00';
   private timeout: any;
 
   token: any;
   nombre!: string;
   constructor(private clienteService: ClienteService, private transaccionService: TransaccionService,private paisService: PaisService, private router: Router) { }
-
+  
   ngOnInit(): void {
     this.token = localStorage['token'];
 
     this.subcliente = this.clienteService.getCliente(this.token).subscribe({
       next: cliente => {
+        this.identificadorClienteEnvia = cliente.id;
         this.subPais = this.paisService.getPaisId(cliente.paisId).subscribe({
           next: pais => {
             this.currencyEnviada = pais.iso3;
@@ -67,6 +68,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       this.subcliente = this.clienteService.getCliente(this.nombreClienteRecibe).subscribe({
         next: cliente => {
           if (cliente) {
+            this.identificadorClienteRecibe = cliente.id;
             this.subTransaccion = this.paisService.getPaisId(cliente.paisId).subscribe({
               next: pais => {
                 this.currencyRecibida = pais.iso3;
@@ -128,11 +130,14 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       this.cantidadRecibida = value;
       this.cantidadEnviada = value ? (parseFloat(value) / this.factorConversion).toFixed(2) : '';
     }
-
+    this.tarifaTransferencia = parseFloat(this.calcularCosteAleatorio(1, 10));
     // Calcular el total de la transferencia
     this.totalTransferencia = (parseFloat(this.cantidadEnviada) + this.tarifaTransferencia).toFixed(2);
 
     input.value = value;
+  }
+  calcularCosteAleatorio(min: number, max: number) {
+    return (Math.random() * (max - min) + min).toFixed();
   }
   
   crearTransaccion() {
@@ -140,7 +145,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
     this.transaccion.cantidadEnvia = parseFloat(this.cantidadEnviada.replace(',', '.'));
     this.transaccion.cantidadRecibe = parseFloat(this.cantidadRecibida.replace(',', '.'));
-    this.transaccion.idEnvia = this.identificaciorClienteEnvia;
+    this.transaccion.idEnvia = this.identificadorClienteEnvia;
     this.transaccion.idRecibe = this.identificadorClienteRecibe === null ? 0 : this.identificadorClienteRecibe || 0;
     this.transaccion.fecha = new Date(Date.now()).toJSON();
     this.transaccion.monedaOrigen= this.currencyEnviada;
@@ -152,11 +157,11 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     // Validación de coincidencia exacta del usuario
     
 
-    if (!this.identificadorClienteRecibe) {
+    if (this.identificadorClienteRecibe == 0) {
       this.showInvalidUserModal();
       return;
     }
-    if (this.identificadorClienteRecibe === this.identificaciorClienteEnvia) {
+    if (this.identificadorClienteRecibe === this.identificadorClienteEnvia) {
       this.showInvalidUserModal();
       return;
     }
