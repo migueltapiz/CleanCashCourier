@@ -56,7 +56,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<int>("PaisId")
+                    b.Property<int>("Pais")
                         .HasColumnType("int");
 
                     b.Property<string>("Usuario")
@@ -65,7 +65,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PaisId");
+                    b.HasIndex("Pais");
 
                     b.ToTable("Clientes");
 
@@ -2600,7 +2600,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("PaisId")
+                    b.Property<int>("Pais")
                         .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
@@ -2643,7 +2643,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                     b.Property<string>("NombreContacto")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PaisId")
+                    b.Property<int>("Pais")
                         .HasColumnType("int");
 
                     b.ToTable((string)null);
@@ -2788,7 +2788,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                 {
                     b.HasOne("ApiClases_20270722_Proyecto.Entidades.Pais", "Pais")
                         .WithMany()
-                        .HasForeignKey("PaisId")
+                        .HasForeignKey("Pais")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
