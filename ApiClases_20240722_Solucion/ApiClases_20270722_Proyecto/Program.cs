@@ -17,6 +17,7 @@ builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD
 builder.Services.AddScoped<IServicioToken, ServicioToken>();
 builder.Services.AddScoped<IContarPaisesConClientes, ContarPaisesConClientesRepositorio>();
 builder.Services.AddScoped<IContarTransaccionesUltimos10AniosRepositorio, ContarTransaccionesUltimos10AniosRepositorio>();
+builder.Services.AddScoped<IVistaContactoRepositorio<VContacto>, VistaContactosRepositorio>();
 // Agregar BBDD (SQLServer)
 builder.Services.AddDbContext<Contexto>(options =>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
