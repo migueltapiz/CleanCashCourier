@@ -5,9 +5,10 @@ import { DatosService } from "../servicios/datos.service";
 import { IPais, PaisService } from '../servicios/pais.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CabeceraComponent } from '../cabecera/cabecera.component'
-import { jwtDecode } from 'jwt-decode';
+import { CabeceraComponent } from '../cabecera/cabecera.component';
+import { jwtDecode }  from 'jwt-decode';
 import { ActualizarPerfilCliente } from '../interfaces/registroCliente';
+
 @Component({
   selector: 'pm-profile-component',
   templateUrl: './profile.component.html',
