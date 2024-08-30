@@ -1,4 +1,8 @@
 ﻿
+using ApiClases_20270722_Proyecto.Modelos.Clientes;
+using ApiClases_20270722_Proyecto.Repositorios;
+using System.IdentityModel.Tokens.Jwt;
+
 namespace ApiClases_20270722_Proyecto.Controllers
 {
     [Route("api/[controller]")]
