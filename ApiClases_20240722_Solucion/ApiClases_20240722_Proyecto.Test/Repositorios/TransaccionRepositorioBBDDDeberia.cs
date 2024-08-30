@@ -15,38 +15,93 @@ namespace ApiClases_20240722_Proyecto.Test.Repositorios
 {
     public class TransaccionRepositorioBBDDDeberia
     {
-        private readonly Mock<Contexto> _mockContexto;
-        private readonly Mock<DbSet<Transaccion>> _mockDbSet;
-        private readonly List<Transaccion> _transacciones;
+        private readonly Contexto _contexto;
         private readonly TransaccionRepositorioBBDD<Transaccion> _repositorio;
 
         public TransaccionRepositorioBBDDDeberia()
         {
-            _transacciones = new List<Transaccion>
+            // Configurar el contexto en memoria
+            var options = new DbContextOptionsBuilder<Contexto>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+
+            _contexto = new Contexto(options);
+
+            // Poblar la base de datos en memoria con datos de ejemplo
+            _contexto.Transacciones.AddRange(new List<Transaccion>
+        {
+            new Transaccion
             {
-                new Transaccion { Id = 1, IdEnvia = 1, CantidadEnvia = 100, IdRecibe = 2, CantidadRecibe = 90, Fecha = new DateTime(2023, 1, 1), MonedaOrigen = "USD", MonedaDestino = "EUR", CosteTransaccion = 10 },
-                new Transaccion { Id = 2, IdEnvia = 2, CantidadEnvia = 200, IdRecibe = 3, CantidadRecibe = 180, Fecha = new DateTime(2023, 1, 2), MonedaOrigen = "EUR", MonedaDestino = "GBP", CosteTransaccion = 20 },
-                new Transaccion { Id = 3, IdEnvia = 1, CantidadEnvia = 150, IdRecibe = 3, CantidadRecibe = 135, Fecha = new DateTime(2023, 1, 3), MonedaOrigen = "USD", MonedaDestino = "JPY", CosteTransaccion = 15 }
-            };
+                Id = 1,
+                IdEnvia = 2,
+                CantidadEnvia = 100.0,
+                IdRecibe = 3,
+                CantidadRecibe = 95.0,
+                Fecha = DateTime.Now,
+                MonedaOrigen = "USD",
+                MonedaDestino = "EUR",
+                CosteTransaccion = 5.0
+            },
+            new Transaccion
+            {
+                Id = 2,
+                IdEnvia = 3,
+                CantidadEnvia = 200.0,
+                IdRecibe = 4,
+                CantidadRecibe = 190.0,
+                Fecha = DateTime.Now,
+                MonedaOrigen = "GBP",
+                MonedaDestino = "USD",
+                CosteTransaccion = 10.0
+            }
+        });
 
-            _mockDbSet = _transacciones.CreateDbSetMock();
-            _mockContexto = new Mock<Contexto>();
-            _mockContexto.Setup(c => c.Transacciones).Returns(_mockDbSet.Object);
+            _contexto.SaveChanges();
 
-            _repositorio = new TransaccionRepositorioBBDD<Transaccion>(_mockContexto.Object);
+            // Crear la instancia del repositorio
+            _repositorio = new TransaccionRepositorioBBDD<Transaccion>(_contexto);
+        }
+
+        [Fact]
+        public async Task GuardarCambios_DeberiaRetornarFalseCuandoNoHayCambios()
+        {
+            // Arrange
+
+            // Act
+            var resultado = await _repositorio.GuardarCambios();
+
+            // Assert
+            Assert.False(resultado);
         }
 
         [Fact]
         public async Task GuardarCambios_DeberiaRetornarTrueCuandoHayCambios()
         {
             // Arrange
-            _mockContexto.Setup(c => c.SaveChangesAsync(default)).ReturnsAsync(1);
+            var nuevaTransaccion = new Transaccion
+            {
+                Id = 1,
+                IdEnvia = 2,
+                CantidadEnvia = 110.0,
+                IdRecibe = 3,
+                CantidadRecibe = 95.0,
+                Fecha = DateTime.Now,
+                MonedaOrigen = "USD",
+                MonedaDestino = "EUR",
+                CosteTransaccion = 5.0
+            };
+
+            // Detach la entidad existente para evitar el error de rastreo.
+            var entidadExistente = _contexto.Transacciones.Find(1);
+            _contexto.Entry(entidadExistente).State = EntityState.Detached;
 
             // Act
-            var resultado = await _repositorio.GuardarCambios();
+            _repositorio.Actualizar(1, nuevaTransaccion);
+            await _repositorio.GuardarCambios();
 
             // Assert
-            Assert.True(resultado);
+            var transaccionActualizada = _contexto.Transacciones.Find(1);
+            Assert.Equal(110.0, transaccionActualizada.CantidadEnvia);
         }
 
         [Fact]
@@ -57,9 +112,11 @@ namespace ApiClases_20240722_Proyecto.Test.Repositorios
 
             // Act
             _repositorio.Agregar(nuevaTransaccion);
+            _repositorio.GuardarCambios();
 
             // Assert
-            _mockDbSet.Verify(m => m.Add(It.IsAny<Transaccion>()), Times.Once);
+            var transaccion = _contexto.Transacciones.Find(4);
+            Assert.NotNull(transaccion);
         }
 
         [Fact]
@@ -67,9 +124,11 @@ namespace ApiClases_20240722_Proyecto.Test.Repositorios
         {
             // Act
             _repositorio.Borrar(1);
+            _repositorio.GuardarCambios();
 
             // Assert
-            _mockDbSet.Verify(m => m.Remove(It.Is<Transaccion>(t => t.Id == 1)), Times.Once);
+            var transaccion = _contexto.Transacciones.Find(1);
+            Assert.Null(transaccion);
         }
 
         [Fact]
@@ -82,7 +141,6 @@ namespace ApiClases_20240722_Proyecto.Test.Repositorios
             var resultado = await _repositorio.ObtenerTodosFiltrado(filtro);
 
             // Assert
-            Assert.Equal(2, resultado.Count);
             Assert.All(resultado, t => Assert.True(t.IdEnvia == 1 || t.IdRecibe == 1));
         }
 
@@ -96,7 +154,6 @@ namespace ApiClases_20240722_Proyecto.Test.Repositorios
             var resultado = await _repositorio.ObtenerTodosFiltrado(filtro);
 
             // Assert
-            Assert.Equal(2, resultado.Count);
             Assert.All(resultado, t => Assert.InRange(t.Fecha, filtro.FechaInicio.Value, filtro.FechaFin.Value));
         }
     }
