@@ -2,7 +2,7 @@
 
 namespace ApiClases_20270722_Proyecto.Migrations
 {
-    public partial class added_contacts
+    public partial class newcontactviewstructure
     {
         public void CrearVistas(MigrationBuilder migrationBuilder)
         {

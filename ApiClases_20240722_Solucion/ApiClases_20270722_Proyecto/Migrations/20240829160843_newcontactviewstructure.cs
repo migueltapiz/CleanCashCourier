@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ApiClases_20270722_Proyecto.Migrations
 {
     /// <inheritdoc />
-    public partial class added_contacts : Migration
+    public partial class newcontactviewstructure : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,6 +55,16 @@ namespace ApiClases_20270722_Proyecto.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConteoResults",
+                columns: table => new
+                {
+                    Conteo = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
                 });
 
             migrationBuilder.CreateTable(
@@ -210,7 +220,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
                     Empleo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PaisId = table.Column<int>(type: "int", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Usuario = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true)
+                    Usuario = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -467,7 +477,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
 
             migrationBuilder.InsertData(
                 table: "Clientes",
-                columns: new[] { "Id", "Apellido", "Email", "Empleo", "FechaNacimiento", "Nombre", "Pais", "Usuario" },
+                columns: new[] { "Id", "Apellido", "Email", "Empleo", "FechaNacimiento", "Nombre", "PaisId", "Usuario" },
                 values: new object[,]
                 {
                     { 1, "Juanes", "ana777@gmail.com", "Ingeniera de Software", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ana", 4, "ana777" },
@@ -641,7 +651,7 @@ namespace ApiClases_20270722_Proyecto.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Clientes_PaisId",
                 table: "Clientes",
-                column: "Pais");
+                column: "PaisId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contactos_ClienteDestinoId",
@@ -675,6 +685,9 @@ namespace ApiClases_20270722_Proyecto.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contactos");
+
+            migrationBuilder.DropTable(
+                name: "ConteoResults");
 
             migrationBuilder.DropTable(
                 name: "Transacciones");

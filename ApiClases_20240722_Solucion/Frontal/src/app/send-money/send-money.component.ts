@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { PaisService } from '../servicios/pais.service';
 import { CabeceraComponent } from '../cabecera/cabecera.component'
 import { jwtDecode } from 'jwt-decode';
+import { Contacto, ContactoService } from '../servicios/contacto.service';
 declare var bootstrap: any;
 
 @Component({
@@ -37,9 +38,11 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   totalTransferencia: string = '0.00';
   private timeout: any;
 
+  listaContactos: Contacto[] = [];
+
   token: any;
   nombre!: string;
-  constructor(private clienteService: ClienteService, private transaccionService: TransaccionService,private paisService: PaisService, private router: Router) { }
+  constructor(private clienteService: ClienteService, private transaccionService: TransaccionService, private paisService: PaisService, private contactoService: ContactoService, private router: Router) { }
   
   ngOnInit(): void {
     this.token = localStorage['token'];
@@ -56,7 +59,13 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       },
       error: err => this.errorMessage = err
     });
-    
+    this.subListaContactos = this.contactoService.getListaContactosPorId(this.identificadorClienteEnvia).subscribe({
+      next: contactos => {
+        this.listaContactos = contactos
+      },
+      error: err => this.errorMessage = err
+    });
+    console.log(this.listaContactos);  
     
     
   }
