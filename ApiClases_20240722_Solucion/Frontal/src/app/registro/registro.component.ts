@@ -170,12 +170,19 @@ export class RegistroComponent implements OnInit {
 
 
   filterPaises(event: Event) {
-    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    const query = (event.target as HTMLInputElement).value;
     this.paisesFiltrado = this.paises.filter(pais =>
-      pais.nombre.toLowerCase().startsWith(query)
+      pais.nombre.toLowerCase().startsWith(query.toLowerCase())
     );
 
-    if (this.paisesFiltrado.length > 0) {
+    if (this.paisesFiltrado.length == 1) { // Para que, al autorrellenar 
+      setTimeout(() => {
+        if (query === this.paisesFiltrado[0].nombre) {
+          this.hideDropdown();
+        }
+      }, 0);
+    }
+    else if (this.paisesFiltrado.length > 1) {
       setTimeout(() => {
         const firstMatch = this.paisItems.first;
         if (firstMatch) {
@@ -183,6 +190,5 @@ export class RegistroComponent implements OnInit {
         }
       }, 0);
     }
-
   }
 }
