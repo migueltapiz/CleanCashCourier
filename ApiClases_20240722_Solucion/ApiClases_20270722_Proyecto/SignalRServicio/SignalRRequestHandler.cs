@@ -10,46 +10,45 @@ public class SignalRRequestHandler : IRequestHandler<SignalRRequest, string>
         _signalRServicio = signalRServicio;
     }
 
-    public async Task<string> Handle(SignalRRequest request, CancellationToken cancellationToken) // Para lo de inicio o registro habrá que añadir un campo nuevo.
+    public async Task<string> Handle(SignalRRequest request, CancellationToken cancellationToken)
     {
         if (request.MandamosCliente != null)
         {
             var cliente = request.MandamosCliente;
             var clienteData = new
             {
+                TipoAcceso = request.TipoAcceso, // Incluimos TipoAcceso
                 cliente.Nombre,
                 cliente.Apellido,
                 cliente.FechaNacimiento,
                 cliente.Empleo,
                 cliente.PaisId,
-                cliente.Email,
-                TipoAcceso = "Registro" // Esto se cambiará según se registra o se inicia sesión. CAMBIAR.
-
+                cliente.Email
+                
             };
 
-            await _signalRServicio.SendMessageAsync("NuevoRegistro", Newtonsoft.Json.JsonConvert.SerializeObject(clienteData));
-            request.MandamosCliente = null; // Limpiar la propiedad después de procesarla para que nos deje mandar la trnasacción después de su envio
+            await _signalRServicio.SendMessageAsync("", Newtonsoft.Json.JsonConvert.SerializeObject(clienteData));
+            request.MandamosCliente = null;
             return "Datos del cliente enviados correctamente.";
         }
-
         else if (request.MandamosTransaccion != null)
         {
             var transaccion = request.MandamosTransaccion;
             var transaccionData = new
             {
-                transaccion.IdEnvia, // hay que sacar de aquí el PaisOrigen y CilienteOrigen
-                transaccion.IdRecibe, // hay que sacar de aquí el PaisDestino y CilienteDestino
+                transaccion.IdEnvia,
+                transaccion.IdRecibe,
                 ValorOrigen = transaccion.CantidadEnvia,
                 ValorDestino = transaccion.CantidadRecibe,
-                Timestamp = transaccion.Fecha
-
+                Timestamp = transaccion.Fecha,
+                TipoAcceso = request.TipoAcceso, // Incluimos TipoAcceso
+               
             };
 
-            await _signalRServicio.SendMessageAsync("NuevaTransaccion", Newtonsoft.Json.JsonConvert.SerializeObject(transaccionData));
+            await _signalRServicio.SendMessageAsync("", Newtonsoft.Json.JsonConvert.SerializeObject(transaccionData));
             request.MandamosTransaccion = null;
             return "Datos de la transacción enviados correctamente.";
         }
-
         else if (!string.IsNullOrEmpty(request.Mensaje))
         {
             await _signalRServicio.SendMessageAsync("AplicaciónDeEnvio", request.Mensaje);
