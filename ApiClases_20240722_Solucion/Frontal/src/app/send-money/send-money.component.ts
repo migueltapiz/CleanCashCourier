@@ -59,13 +59,12 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       },
       error: err => this.errorMessage = err
     });
-    this.subListaContactos = this.contactoService.getListaContactosPorId(this.identificadorClienteEnvia).subscribe({
+    this.subListaContactos = this.contactoService.getListaContactosPorToken(this.token).subscribe({
       next: contactos => {
         this.listaContactos = contactos
       },
       error: err => this.errorMessage = err
     });
-    console.log(this.listaContactos);  
     
     
   }
@@ -84,21 +83,22 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
                 this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
                   next: factor => {
                     this.factorConversion = factor;
-                    this.cantidadRecibida = this.cantidadEnviada?(parseInt( this.cantidadEnviada) * factor).toString():'';
+                    this.cantidadRecibida = this.cantidadEnviada ? (parseInt(this.cantidadEnviada) * factor).toString() : '';
                   },
                   error: err => this.errorMessage = err
                 });
               },
               error: err => this.errorMessage = err
             });
-
-
           } else {
             this.currencyRecibida = '';
             this.factorConversion = 0;
           }
         },
-        error: err => this.errorMessage = err
+        error: err => {
+          this.errorMessage = err;
+          this.identificadorClienteRecibe = 0; ///ADDED BY OBELISKO BORRAR SI PROCEDE ES POR COMPROBAR UNA COSA
+        }
       });
 
      
@@ -109,6 +109,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     this.subcliente.unsubscribe();
     this.subPais.unsubscribe();
     this.subTransaccion?.unsubscribe();
+    this.subListaContactos.unsubscribe();
   }
 
   validateAmount(event: Event, isEnviada: boolean) {
@@ -164,12 +165,17 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
   sendMoney() {
     // Validación de coincidencia exacta del usuario
-    
-
     if (this.identificadorClienteRecibe == 0) {
       this.showInvalidUserModal();
       return;
     }
+
+    if (!this.listaContactos.some(contacto => contacto.NombreUsuarioContacto === this.nombreClienteRecibe)) {
+      this.showNotAContactModal();
+      console.log();
+      return;
+    }
+    
     if (this.identificadorClienteRecibe === this.identificadorClienteEnvia) {
       this.showInvalidUserModal();
       return;
@@ -200,6 +206,12 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
   showInvalidUserModal() {
     const modalElement = document.getElementById('invalidUserModal');
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+  }
+
+  showNotAContactModal() {
+    const modalElement = document.getElementById('notAContactModal');
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
   }

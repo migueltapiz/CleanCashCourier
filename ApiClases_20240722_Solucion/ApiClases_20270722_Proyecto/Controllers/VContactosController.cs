@@ -3,19 +3,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApiClases_20270722_Proyecto.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class VContactosController : Controller
     {
-        private readonly IVistaContactoRepositorio<VContacto> _vistacontactorepositorio;
+        private readonly IVistaContactoRepositorio<VContacto> _vistaContactoRepositorio;
+        private readonly IRepositorioGenerico<Cliente> _clienteRepositorio;
         public VContactosController(
             IVistaContactoRepositorio<VContacto> vistacontactorepositorio,
-            IMapper mapper)
+            IRepositorioGenerico<Cliente> clienteRepositorio)
         {
-            _vistacontactorepositorio = vistacontactorepositorio;
+            _vistaContactoRepositorio = vistacontactorepositorio;
+            _clienteRepositorio = clienteRepositorio;
         }
         [HttpPost("getAllContacts")]
         public async Task<ActionResult<IEnumerable<VContacto>>> GetVistaContactos(VContactoParametrosFiltradoDto filtro)
         {
-            var (contactos, count) = await _vistacontactorepositorio.GetVContactosAsync(filtro);
+            var (contactos, count) = await _vistaContactoRepositorio.GetVContactosAsync(filtro);
             return contactos.ToList();
         }
         [HttpGet("getAllContactsById")]
@@ -27,7 +31,34 @@ namespace ApiClases_20270722_Proyecto.Controllers
                 NumeroPaginas = 1,
                 TamanoPagina = 30
             };
-            var (contactos, count) = await _vistacontactorepositorio.GetVContactosAsync(filtro);
+            var (contactos, count) = await _vistaContactoRepositorio.GetVContactosAsync(filtro);
+            return contactos.ToList();
+        }
+        [HttpGet("{valor}", Name = "getAllContactsByToken")]
+
+        public async Task<ActionResult<IEnumerable<VContacto>>> ObtenerVistaContactosPorToken(string valor)
+        {
+            string nombre;
+            // Intentar decodificar el token JWT
+            var handler = new JwtSecurityTokenHandler();
+            try
+            {
+                var jwtToken = handler.ReadJwtToken(valor);
+                nombre = jwtToken.Claims.First(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value;
+            }
+            catch (ArgumentException)
+            {
+                // Si no es un token JWT válido, asumir que es un nombre
+                nombre = valor;
+            }
+            var idCliente = _clienteRepositorio.ObtenerPorNombre(nombre.ToString()).Id;
+            VContactoParametrosFiltradoDto filtro = new VContactoParametrosFiltradoDto
+            {
+                IdCliente = idCliente,
+                NumeroPaginas = 1,
+                TamanoPagina = 30
+            };
+            var (contactos, count) = await _vistaContactoRepositorio.GetVContactosAsync(filtro);
             return contactos.ToList();
         }
     }
