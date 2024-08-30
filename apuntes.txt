@@ -1,0 +1,11 @@
+tengo ahora mismo desplegado el backend
+cada vez que se haga un push al main, se desplegará (mirar githb actions)
+Falta front (staticwebserv), base de datos (tambien en azure puto azure de mierda mecaguendios)
+aplicacionwebstatica: tiene truco
+debugear jsonwebtoken del front y ver por que falla al desplegar
+
+Al ser una web statica, teneis que tener archivo xtra para el routing
+
+tendreis que poner environment.apiUrl en todos laos
+
+mirar apply-migrations en aplicaciones-estadistica
