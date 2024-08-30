@@ -9,8 +9,16 @@ export class ContactoService{
   
   private url = 'https://localhost:7138/api/VContactos';
   constructor(private http: HttpClient) { }
-  getListaContactosPorId(id: number) : Observable<Contacto[]>{
-    return this.http.get<Contacto[]>(`${this.url}/${id}`).pipe(
+  getListaContactosPorToken(token: string): Observable<Contacto[]>{
+    console.log(token);
+    return this.http.get<Contacto[]>(`${this.url}/${token}`).pipe(
+      tap(data => data),
+      catchError(this.handleError)
+    );
+  }
+
+  getListaContactosPorId(id: number): Observable<Contacto[]> {
+    return this.http.get<Contacto[]>(`${this.url}/getAllContactsByToken/${id}`).pipe(
       tap(data => data),
       catchError(this.handleError)
     );
