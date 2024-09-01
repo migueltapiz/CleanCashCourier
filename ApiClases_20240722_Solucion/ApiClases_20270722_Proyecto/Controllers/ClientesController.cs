@@ -11,6 +11,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<UsuarioAplicacion> _userManager;
         private readonly SignInManager<UsuarioAplicacion> _signInManager;
+        private readonly IMediator _mediator;
 
         public ClientesController(
             IRepositorioGenerico<Cliente> clienteRepositorio,
@@ -18,7 +19,8 @@ namespace ApiClases_20270722_Proyecto.Controllers
             IServicioToken servicioToken,
             IMapper mapper,
             UserManager<UsuarioAplicacion> userManager,
-            SignInManager<UsuarioAplicacion> signInManager)
+            SignInManager<UsuarioAplicacion> signInManager,
+            IMediator mediator)
         {
             _clienteRepositorio = clienteRepositorio;
             _paisRepositorio = paisRepositorio;
@@ -26,6 +28,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userManager = userManager;
             _signInManager = signInManager;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator)); ;
         }
 
         [HttpGet]
@@ -85,6 +88,10 @@ namespace ApiClases_20270722_Proyecto.Controllers
             {
                 var user = await _userManager.FindByNameAsync(modelo.Usuario);
                 var token = _servicioToken.GenerateJwtToken(user);
+
+                // Enviar el nombre de usuario utilizando el mediador
+                var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = new ClienteBaseDto { Nombre = modelo.Usuario }, TipoAcceso = "Login" });
+
                 return Ok(new { Token = token });
             }
 
@@ -130,6 +137,10 @@ namespace ApiClases_20270722_Proyecto.Controllers
             }
 
             var token = _servicioToken.GenerateJwtToken(usuario);
+
+            // Enviar los datos del usuario registrado utilizando el mediador
+            var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = new ClienteBaseDto { Nombre = usuario.Nombre, Apellido = usuario.Apellido, Usuario = usuario.UserName, Email = usuario.Email, FechaNacimiento = usuario.FechaNacimiento, Empleo = usuario.Empleo, PaisId = usuario.PaisId }, TipoAcceso = "Registro" });
+
             return Ok(new { Token = token });
         }
 

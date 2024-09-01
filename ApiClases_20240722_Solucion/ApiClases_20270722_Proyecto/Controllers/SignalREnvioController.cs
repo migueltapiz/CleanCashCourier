@@ -1,39 +1,44 @@
 ﻿
-namespace ApiClases_20270722_Proyecto.Controllers;
+/* using ApiClases_20270722_Proyecto.Modelos.Clientes;
+using ApiClases_20270722_Proyecto.Modelos.Transacciones;
+using ApiClases_20270722_Proyecto.SignalRServicio;
+using MediatR;
 
-[ApiController]
-[Route("api/[controller]")]
-public class SignalREnvioController : ControllerBase
+namespace ApiClases_20270722_Proyecto.Controllers
 {
-    private readonly IMediator _mediator;
-
-    public SignalREnvioController(IMediator mediator)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class SignalREnvioController : ControllerBase
     {
-        _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
 
-    [HttpPost("enviarCliente")]
-    public async Task<IActionResult> EnviarCliente([FromBody] ClienteBaseDto cliente, [FromQuery] string tipoAcceso)
-    {
-        if (cliente == null)
+        public SignalREnvioController(IMediator mediator)
         {
-            return BadRequest("El cliente no puede estar vacío.");
+            _mediator = mediator;
         }
 
-        var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = cliente, TipoAcceso = tipoAcceso });
-        return Ok(resultado);
-    }
-
-    [HttpPost("enviarTransaccion")]
-    public async Task<IActionResult> EnviarTransaccion([FromBody] TransaccionBaseDto transaccion, [FromQuery] string tipoAcceso)
-    {
-        if (transaccion == null)
+        [HttpPost("enviarCliente")]
+        public async Task<IActionResult> EnviarCliente([FromBody] ClienteBaseDto cliente, [FromQuery] string tipoAcceso)
         {
-            return BadRequest("La transacción no puede estar vacía.");
+            if (cliente == null)
+            {
+                return BadRequest("El cliente no puede estar vacío.");
+            }
+
+            var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = cliente, TipoAcceso = tipoAcceso });
+            return Ok(resultado);
         }
 
-        var resultado = await _mediator.Send(new SignalRRequest { MandamosTransaccion = transaccion, TipoAcceso = tipoAcceso });
-        return Ok(resultado);
-    }
-}
+        [HttpPost("enviarTransaccion")]
+        public async Task<IActionResult> EnviarTransaccion([FromBody] TransaccionBaseDto transaccion, [FromQuery] string tipoAcceso)
+        {
+            if (transaccion == null)
+            {
+                return BadRequest("La transacción no puede estar vacía.");
+            }
 
+            var resultado = await _mediator.Send(new SignalRRequest { MandamosTransaccion = transaccion, TipoAcceso = tipoAcceso });
+            return Ok(resultado);
+        }
+    }
+} */
