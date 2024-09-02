@@ -17,30 +17,30 @@
         <label for="nombre" class="text-gray-800 text-sm mb-2 block">Nombre</label>
         <input id="nombre" name="name" type="text" formControlName="Nombre" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Enter name" />
         <div *ngIf="registroForm.get('Nombre')?.invalid && (registroForm.get('Nombre')?.touched || registroForm.get('Nombre')?.dirty)" class="text-red-500 text-sm">
-          <div *ngIf="registroForm.get('Nombre')?.errors?.['required']">First Name is required.</div>
-          <div *ngIf="registroForm.get('Nombre')?.errors?.['minlength']">First Name must be at least 2 characters long.</div>
+          <div *ngIf="registroForm.get('Nombre')?.errors?.['required']">El nombre es obligatorio.</div>
+          <div *ngIf="registroForm.get('Nombre')?.errors?.['minlength']">El nombre tiene que tener al menos 2 letras.</div>
         </div>
       </div>
       <div>
         <label for="Apellido" class="text-gray-800 text-sm mb-2 block">Apellido</label>
         <input id="Apellido" name="lname" type="text" formControlName="Apellido" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Enter last name" />
         <div *ngIf="registroForm.get('Apellido')?.invalid && (registroForm.get('Apellido')?.touched || registroForm.get('Apellido')?.dirty)" class="text-red-500 text-sm">
-          <div *ngIf="registroForm.get('Apellido')?.errors?.['required']">Last Name is required.</div>
-          <div *ngIf="registroForm.get('Apellido')?.errors?.['minlength']">Last Name must be at least 2 characters long.</div>
+          <div *ngIf="registroForm.get('Apellido')?.errors?.['required']">El apellido es obligatorio.</div>
+          <div *ngIf="registroForm.get('Apellido')?.errors?.['minlength']">El apellido tiene que tener al menos 2 letras.</div>
         </div>
       </div>
       <div>
         <label for="Email" class="text-gray-800 text-sm mb-2 block">Correo</label>
         <input id="Email" name="Email" type="email" formControlName="Correo" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Introduce tu correo" />
         <div *ngIf="registroForm.get('Correo')?.invalid && (registroForm.get('Correo')?.touched || registroForm.get('Correo')?.dirty)" class="text-red-500 text-sm">
-          <div *ngIf="registroForm.get('Correo')?.errors?.['required']">Email is required.</div>
-          <div *ngIf="registroForm.get('Correo')?.errors?.['email']">Invalid email format.</div>
+          <div *ngIf="registroForm.get('Correo')?.errors?.['required']">El email es obligatorio.</div>
+          <div *ngIf="registroForm.get('Correo')?.errors?.['email']">El formato del correo es invalido.</div>
         </div>
       </div>
 
       <div>
         <label for="password" class="text-gray-800 text-sm mb-2 block">Contraseña</label>
-        <input id="password" name="password" type="password" formControlName="Contraseña" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Enter password" />
+        <input id="password" name="password" type="password" formControlName="Contraseña" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Introduce tu contraseña" />
         <div *ngIf="registroForm.get('Contraseña')?.invalid && (registroForm.get('Contraseña')?.touched || registroForm.get('Contraseña')?.dirty)" class="text-red-500 text-sm">
           <div *ngIf="registroForm.get('Contraseña')?.errors?.['required']">Password is required.</div>
           <div *ngIf="registroForm.get('Contraseña')?.errors?.['minlength']">Password must be at least 6 characters long.</div>
@@ -52,9 +52,9 @@
 
       <div>
         <label for="cpassword" class="text-gray-800 text-sm mb-2 block">Confirmar Contraseña</label>
-        <input id="cpassword" name="cpassword" type="password" formControlName="Contraseña2" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Confirm password" />
+        <input id="cpassword" name="cpassword" type="password" formControlName="Contraseña2" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all" placeholder="Confirma tu contraseña" />
         <div *ngIf="registroForm.errors?.['mismatch'] && (registroForm.get('Contraseña')?.touched || registroForm.get('Contraseña2')?.touched)" class="text-red-500 text-sm">
-          Passwords do not match.
+          Las contraseñas no coinciden
         </div>
       </div>
 
