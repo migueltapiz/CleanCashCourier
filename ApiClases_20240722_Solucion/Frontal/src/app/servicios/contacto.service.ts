@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
+import { Contacto } from '../interfaces/contactos';
 
 @Injectable({
   providedIn: 'root'
@@ -24,21 +25,6 @@ export class ContactoService{
     );
   }
 
-  //getListaContactosPorFiltro(id: number): Observable<IVistaContacto> {
-  //  const parametrosFiltro: FiltroParametrosVistaContacto = {
-  //    IdCliente: id,
-  //    NombreUsuarioContacto: null,
-  //    Pais: null,
-  //    NumeroPaginas: 1,
-  //    TamanoPagina: 30
-  //  };
-  //  return this.http.post<IVistaContacto>(`${this.url}/${id}`).pipe(
-  //    tap(data => data),
-  //    catchError(this.handleError)
-  //  );
-  //}
-
-
   private handleError(err: HttpErrorResponse) {
     // in a real world app, we may send the server to some remote logging infrastructure
     // instead of just logging it to the console
@@ -57,18 +43,3 @@ export class ContactoService{
 
 }
 
-export interface FiltroParametrosVistaContacto {
-  IdCliente: number;
-  NombreUsuarioContacto: string | null;
-  Pais: string | null;
-  NumeroPaginas: number;
-  TamanoPagina: number;
-}
-
-export interface Contacto {
-
-  constructor(): void;
-  IdCliente: number;
-  NombreUsuarioContacto: string;
-  Pais: string;
-}

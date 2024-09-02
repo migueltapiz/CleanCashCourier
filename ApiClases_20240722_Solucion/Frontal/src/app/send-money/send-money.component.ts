@@ -73,35 +73,38 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       clearTimeout(this.timeout);
     }
     this.timeout = setTimeout(() => {
-      this.subcliente = this.clienteService.getCliente(this.nombreClienteRecibe).subscribe({
-        next: cliente => {
-          if (cliente) {
-            this.identificadorClienteRecibe = cliente.id;
-            this.subTransaccion = this.paisService.getPaisId(cliente.paisId).subscribe({
-              next: pais => {
-                this.currencyRecibida = pais.iso3;
-                this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
-                  next: factor => {
-                    this.factorConversion = factor;
-                    this.cantidadRecibida = this.cantidadEnviada ? (parseInt(this.cantidadEnviada) * factor).toString() : '';
-                  },
-                  error: err => this.errorMessage = err
-                });
-              },
-              error: err => this.errorMessage = err
-            });
-          } else {
+      if (this.nombreClienteRecibe != '') {
+        this.subcliente = this.clienteService.getCliente(this.nombreClienteRecibe).subscribe({
+          next: cliente => {
+              this.identificadorClienteRecibe = cliente.id;
+              this.subTransaccion = this.paisService.getPaisId(cliente.paisId).subscribe({
+                next: pais => {
+                  this.currencyRecibida = pais.iso3;
+                  this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
+                    next: factor => {
+                      this.factorConversion = factor;
+                      this.cantidadRecibida = this.cantidadEnviada ? (parseInt(this.cantidadEnviada) * factor).toString() : '';
+                    },
+                    error: err => this.errorMessage = err
+                  });
+                },
+                error: err => this.errorMessage = err
+              });
+           
+          },
+          error: err => {
+            this.errorMessage = err;
+            this.identificadorClienteRecibe = 0; 
             this.currencyRecibida = '';
             this.factorConversion = 0;
           }
-        },
-        error: err => {
-          this.errorMessage = err;
-          this.identificadorClienteRecibe = 0; ///ADDED BY OBELISKO BORRAR SI PROCEDE ES POR COMPROBAR UNA COSA
-        }
-      });
+        });
 
-     
+      } else {
+        this.currencyRecibida = '';
+        this.factorConversion = 0;
+        this.identificadorClienteRecibe = 0;
+      }
       clearTimeout(this.timeout);
     }, 1000);
   }
