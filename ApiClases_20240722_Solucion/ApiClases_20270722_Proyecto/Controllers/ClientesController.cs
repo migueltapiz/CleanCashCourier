@@ -82,6 +82,12 @@ namespace ApiClases_20270722_Proyecto.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] ClienteInicioSesion modelo)
         {
+            var searchInServer = await _userManager.FindByNameAsync(modelo.Usuario);
+            if (searchInServer == null)
+            {
+                return NotFound(); // no se encuentra el usuario mencionado
+            }
+
             var result = await _signInManager.PasswordSignInAsync(
                 modelo.Usuario,
                 modelo.Contrasena,
@@ -92,10 +98,10 @@ namespace ApiClases_20270722_Proyecto.Controllers
             {
                 var user = await _userManager.FindByNameAsync(modelo.Usuario);
                 var token = _servicioToken.GenerateJwtToken(user);
-                return Ok(new { Token = token });
+                return Ok(new { Token = token });  //loggeado
             }
 
-            return Unauthorized();
+            return Unauthorized(); // Contraseña incorrecta
         }
 
         [HttpPost("register")]
