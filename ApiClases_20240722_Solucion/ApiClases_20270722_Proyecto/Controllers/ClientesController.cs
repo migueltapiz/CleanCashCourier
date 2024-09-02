@@ -101,6 +101,11 @@ namespace ApiClases_20270722_Proyecto.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] ClienteRegistro modelo)
         {
+            var searchInServer = await _userManager.FindByEmailAsync(modelo.Email);
+            if (searchInServer != null)
+            {
+                return Conflict(new { Message = "DuplicateUserName" }); // El username es el mismo que la primera parte del email
+            }
             var usuario = new UsuarioAplicacion
             {
                 Nombre = modelo.Nombre,
@@ -111,11 +116,22 @@ namespace ApiClases_20270722_Proyecto.Controllers
                 Empleo = modelo.Empleo,
                 PaisId = modelo.PaisId,
             };
+            
 
             var result = await _userManager.CreateAsync(usuario, modelo.Contrasena);
-            if (!result.Succeeded)
+            if (!result.Succeeded) //Actualmente no deberia llegar a esta situación (con lo actualmente planteado),
+                                   //por lo que deberia replantearse la logica en este lugar
             {
-                return BadRequest(result.Errors);
+                foreach (var error in result.Errors)
+                {
+                    //System.Diagnostics.Debug.WriteLine($"Código de Error: {error.Code}, Descripción: {error.Description}");
+                    if (error.Code.Equals("DuplicateUserName")){ // Solo deberia existir este caso (username duplicado), pero en caso de ser necesario dejo el bad Request
+                        System.Diagnostics.Debug.WriteLine("LLEGO AQUI");
+                        return Conflict(new {Message = "DuplicateUserName"});
+                        
+                    }
+                }
+                return BadRequest(new {Message = result.Errors});
             }
 
             var cliente = _mapper.Map<Cliente>(modelo);
@@ -127,7 +143,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
 
             if (!addClienteResult)
             {
-                return BadRequest("Error al guardar en la tabla Clientes");
+                return BadRequest(new { Message = "Error al guardar en la tabla Clientes"});
             }
 
             var addRoleResult = await _userManager.AddToRoleAsync(usuario, "Cliente");
