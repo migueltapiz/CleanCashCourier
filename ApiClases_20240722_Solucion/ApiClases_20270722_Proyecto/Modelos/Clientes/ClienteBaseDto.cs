@@ -1,6 +1,6 @@
 ﻿namespace ApiClases_20270722_Proyecto.Modelos.Clientes;
 
-public class ClientePostDto : IValidatableObject
+public class ClienteBaseDto : IValidatableObject
 {
     [Required]
     [StringLength(25)]

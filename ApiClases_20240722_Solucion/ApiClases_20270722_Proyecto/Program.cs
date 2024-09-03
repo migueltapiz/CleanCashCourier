@@ -21,6 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepositorioGenerico<Transaccion>, TransaccionRepositorioBBDD<Transaccion>>();
 builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();
 builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD<Cliente>>();
+builder.Services.AddScoped<IRepositorioGenerico<Contacto>, ContactosRepositorioBBDD<Contacto>>();
 builder.Services.AddScoped<ClienteRepositorioBBDD<Cliente>>();
 builder.Services.AddScoped<IServicioToken, ServicioToken>();
 builder.Services.AddScoped<IContarPaisesConClientes, ContarPaisesConClientesRepositorio>();

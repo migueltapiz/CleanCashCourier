@@ -5,24 +5,25 @@ namespace ApiClases_20270722_Proyecto.Profiles;
 public class ClientePerfil:Profile {
 
     public ClientePerfil(){
-        CreateMap<Cliente, ClientePostDto>()
+
+        CreateMap<Cliente, ClienteBaseDto>()
                     .ForMember(dest => dest.NombrePais, opt => opt.MapFrom(src => src.Pais.Nombre));  // Mapea el nombre del país
-        CreateMap<ClientePostDto, Cliente>();
+        CreateMap<ClienteBaseDto, Cliente>();
 
         // Mapeo de Cliente a ClienteGetDto y viceversa
         CreateMap<Cliente, ClienteGetDto>()
-            .IncludeBase<Cliente, ClientePostDto>(); 
+            .IncludeBase<Cliente, ClienteBaseDto>();
 
         // Mapeo de ClientePutDto a Cliente
         CreateMap<ClientePutDto, Cliente>()
-            .IncludeBase<ClientePostDto, Cliente>();
+            .IncludeBase<ClienteBaseDto, Cliente>();
 
         // Mapeo de ClienteDeleteDto a Cliente
         CreateMap<ClienteDeleteDto, Cliente>()
-            .IncludeBase<ClientePostDto, Cliente>();
+            .IncludeBase<ClienteBaseDto, Cliente>();
 
         CreateMap<ClienteRegistro, Cliente>().
-            IncludeBase<ClientePostDto, Cliente>();
+            IncludeBase<ClienteBaseDto, Cliente>();
 
 
         CreateMap<Pais, PaisDto>().ReverseMap();
