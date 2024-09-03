@@ -16,6 +16,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<UsuarioAplicacion> _userManager;
         private readonly SignInManager<UsuarioAplicacion> _signInManager;
+        private readonly IMediator _mediator;
 
         public ClientesController(
             IRepositorioGenerico<Cliente> clienteRepositorio,
@@ -24,7 +25,8 @@ namespace ApiClases_20270722_Proyecto.Controllers
             IServicioToken servicioToken,
             IMapper mapper,
             UserManager<UsuarioAplicacion> userManager,
-            SignInManager<UsuarioAplicacion> signInManager)
+            SignInManager<UsuarioAplicacion> signInManager,
+            IMediator mediator)
         {
             _clienteRepositorio = clienteRepositorio;
             _paisRepositorio = paisRepositorio;
@@ -33,13 +35,14 @@ namespace ApiClases_20270722_Proyecto.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userManager = userManager;
             _signInManager = signInManager;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator)); ;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClienteBaseDto>>> Get()
+        public async Task<ActionResult<IEnumerable<ClientePostDto>>> Get()
         {
             var clientes = await _clienteRepositorio.Obtener();
-            var clientesDto = _mapper.Map<IEnumerable<ClienteBaseDto>>(clientes);
+            var clientesDto = _mapper.Map<IEnumerable<ClientePostDto>>(clientes);
             return Ok(clientesDto);
         }
 
@@ -98,7 +101,30 @@ namespace ApiClases_20270722_Proyecto.Controllers
             {
                 var user = await _userManager.FindByNameAsync(modelo.Usuario);
                 var token = _servicioToken.GenerateJwtToken(user);
+
                 return Ok(new { Token = token });  //loggeado
+
+                var cliente = _clienteRepositorio.ObtenerPorNombre(modelo.Usuario);
+                if (cliente == null)
+                {
+                    return NotFound("Cliente no encontrado.");
+                }
+
+                // Enviar los datos del cliente utilizando el mediador. SignalR.
+                var resultado = await _mediator.Send(new SignalRRequest
+                {
+                    MandamosCliente = new ClientePostDto
+                    {
+                        Nombre = cliente.Nombre,
+                        Apellido = cliente.Apellido,
+                        FechaNacimiento = cliente.FechaNacimiento,
+                        Empleo = cliente.Empleo,
+                        PaisId = cliente.PaisId,
+                        Email = cliente.Email
+                    },
+                    TipoAcceso = "Login"
+                });
+                return Ok(new { Token = token });
             }
 
             return Unauthorized(); // Contraseña incorrecta
@@ -160,6 +186,8 @@ namespace ApiClases_20270722_Proyecto.Controllers
 
             var token = _servicioToken.GenerateJwtToken(usuario);
 
+            // Enviar los datos del usuario registrado utilizando el mediador. SignalR.S
+            var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = new ClientePostDto { Nombre = usuario.Nombre, Apellido = usuario.Apellido, Usuario = usuario.UserName, Email = usuario.Email, FechaNacimiento = usuario.FechaNacimiento, Empleo = usuario.Empleo, PaisId = usuario.PaisId }, TipoAcceso = "Registro" });
 
             var numClientes = (await _clienteRepositorio.Obtener()).Count();
             Random random = new Random();

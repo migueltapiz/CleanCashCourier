@@ -1,23 +1,22 @@
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-
-//Agregar servicio MVC
+// Agregar servicio MVC
 builder.Services.AddControllers();
 
-
-//Agregar servicio swagger (OpenAPI)
+// Agregar servicio swagger (OpenAPI)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Registro de repositorios
 builder.Services.AddScoped<IRepositorioGenerico<Transaccion>, TransaccionRepositorioBBDD<Transaccion>>();
 builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();
 builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD<Cliente>>();
-builder.Services.AddScoped<IRepositorioGenerico<Contacto>, ContactosRepositorioBBDD<Contacto>>();
 builder.Services.AddScoped<IServicioToken, ServicioToken>();
 builder.Services.AddScoped<IContarPaisesConClientes, ContarPaisesConClientesRepositorio>();
 builder.Services.AddScoped<IContarTransaccionesUltimos10AniosRepositorio, ContarTransaccionesUltimos10AniosRepositorio>();
 builder.Services.AddScoped<IVistaContactoRepositorio<VContacto>, VistaContactosRepositorio>();
-
 
 // Agregar BBDD (SQLServer)
 builder.Services.AddDbContext<Contexto>(options =>
@@ -25,16 +24,13 @@ builder.Services.AddDbContext<Contexto>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
 // Configurar Identity
 builder.Services.AddIdentity<UsuarioAplicacion, IdentityRole>()
     .AddEntityFrameworkStores<Contexto>()
     .AddDefaultTokenProviders();
 
-
 // Configurar MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
-
 
 // Registra SignalRServicio
 builder.Services.AddSingleton<SignalRServicio>(provider =>
@@ -44,15 +40,11 @@ builder.Services.AddSingleton<SignalRServicio>(provider =>
     return new SignalRServicio(hubUrl, serviceScopeFactory);
 });
 
-
 // Registra IRequestHandler
 builder.Services.AddTransient<IRequestHandler<SignalRRequest, string>, SignalRRequestHandler>();
 
-
 // Configurar SignalR
 builder.Services.AddSignalR();
-
-
 
 // Configurar JWT
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
@@ -78,73 +70,63 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-
-//Añadir Autommaper
+// Añadir AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 
 // Configuración CORS
 builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+    builder =>
     {
-        options.AddPolicy("AllowAllOrigins",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-
-        });
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
     });
+});
 
+// Registrar HttpClient
+builder.Services.AddHttpClient();
 
-
-//Agregar servicios a la aplicación
+// Agregar servicios a la aplicación
 var app = builder.Build();
 
 app.UseCors("AllowAllOrigins");
 
 app.MapHub<SignalRHubNotificacion>("/signalrhubnotificacion");
 
-
 // Iniciar el cliente SignalR
 var signalRServicio = app.Services.GetRequiredService<SignalRServicio>();
 await signalRServicio.StartListeningAsync();
 
-
 await CreateRoles(app);
 
-
-
-
-
-//Comprobar si el entorno es de desarrollo
-
+// Comprobar si el entorno es de desarrollo
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//Redirección a https
+
+// Redirección a https
 app.UseHttpsRedirection();
 
 // Middleware de autenticación
 app.UseAuthentication();
 
-//Middleweare de autorización 
+// Middleware de autorización
 app.UseAuthorization();
 
-//Middleweare de enrutamiento --> determina que acción y controlador se utilizara en función de la url solicitada
+// Middleware de enrutamiento --> determina qué acción y controlador se utilizará en función de la URL solicitada
 app.MapControllers();
-
 
 // Start listening to the SignalR hub
 var signalRServicios = app.Services.GetServices<SignalRServicio>();
 var tareaEscucha = signalRServicios.Select(service => service.StartListeningAsync());
 await Task.WhenAll(tareaEscucha);
 
-// Runeamos la aplicacion
+// Ejecutar la aplicación
 app.Run();
-
 
 async Task CreateRoles(WebApplication app)
 {
