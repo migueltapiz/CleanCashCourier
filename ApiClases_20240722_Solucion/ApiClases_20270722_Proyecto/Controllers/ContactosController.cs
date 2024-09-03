@@ -95,18 +95,14 @@ namespace ApiClases_20270722_Proyecto.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(string nombreNuevoContacto, string token) {
+        public async Task<IActionResult> Post([FromBody] ContactoRequest request) {
             string nombre;
-            // Intentar decodificar el token JWT
             var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
+            var jwtToken = handler.ReadJwtToken(request.token);
             nombre = jwtToken.Claims.First(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value;
 
-
-            var idContactoNuevo = _clienteRepositorio.ObtenerPorNombre(nombreNuevoContacto.ToString()).Id;
-            var idContactoRelacionado = _clienteRepositorio.ObtenerPorNombre(nombre.ToString()).Id;
-
-            
+            var idContactoNuevo = _clienteRepositorio.ObtenerPorNombre(request.nombreNuevoContacto).Id;
+            var idContactoRelacionado = _clienteRepositorio.ObtenerPorNombre(nombre).Id;
 
             _contactosRepositorio.Agregar(new Contacto
             {

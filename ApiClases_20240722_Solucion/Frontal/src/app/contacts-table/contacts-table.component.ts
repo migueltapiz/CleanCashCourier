@@ -39,7 +39,20 @@ export class ContactsTableComponent implements OnInit {
   }
 
 
-  aniadirContacto():void  { };
+  aniadirContacto(): void  {
+    this.contactService.aniadirContacto(this.nombreNuevoContacto.trim(), localStorage['token']).pipe(
+      switchMap(() => this.contactService.getListaContactosPorToken(localStorage['token']))
+    ).subscribe(
+      (data: Contacto[]) => {
+        this.contacts = data;
+        this.cdr.detectChanges(); // Forzar la detección de cambios
+      },
+      (error) => {
+        console.error('Error al obtener los contactos', error);
+      }
+    );
+
+  }
   
 }
 
