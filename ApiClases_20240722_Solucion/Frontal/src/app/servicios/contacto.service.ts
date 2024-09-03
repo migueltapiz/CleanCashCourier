@@ -10,6 +10,14 @@ export class ContactoService{
   
   private url = 'https://localhost:7138/api/VContactos';
   constructor(private http: HttpClient) { }
+
+  checkIfExists(token: string, nombreClienteABuscar: string): Observable<any> {
+  const modelo : ModeloBusquedaContacto = {
+    tokenCliente: token,
+    NombreUsuarioClienteABuscar: nombreClienteABuscar
+  }
+    return this.http.post<any>(`${this.url}/checkIfExists`, modelo);
+  }
   getListaContactosPorToken(token: string): Observable<Contacto[]>{
     console.log(token);
     return this.http.get<Contacto[]>(`${this.url}/${token}`).pipe(
@@ -42,4 +50,7 @@ export class ContactoService{
   }
 
 }
-
+export interface ModeloBusquedaContacto {
+  tokenCliente: string;
+  NombreUsuarioClienteABuscar: string;
+}
