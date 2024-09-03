@@ -79,6 +79,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
             return Ok(finalClienteDto);
         }
 
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] ClienteInicioSesion modelo)
         {
@@ -98,11 +99,28 @@ namespace ApiClases_20270722_Proyecto.Controllers
             {
                 var user = await _userManager.FindByNameAsync(modelo.Usuario);
                 var token = _servicioToken.GenerateJwtToken(user);
+
+                // Enviar los datos del cliente utilizando el mediador. SignalR.
+                var resultado = await _mediator.Send(new SignalRRequest
+                {
+                    MandamosCliente = new ClienteBaseDto
+                    {
+                        Nombre = cliente.Nombre,
+                        Apellido = cliente.Apellido,
+                        FechaNacimiento = cliente.FechaNacimiento,
+                        Empleo = cliente.Empleo,
+                        PaisId = cliente.PaisId,
+                        Email = cliente.Email
+                    },
+                    TipoAcceso = "Login"
+                });
                 return Ok(new { Token = token });  //loggeado
             }
 
             return Unauthorized(); // Contraseña incorrecta
+
         }
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] ClienteRegistro modelo)
@@ -138,10 +156,18 @@ namespace ApiClases_20270722_Proyecto.Controllers
                     }
                 }
                 return BadRequest(new {Message = result.Errors});
+                foreach (var error in result.Errors)
+                {
+                    if (error.Code.Equals("DuplicateUserName"))
+                    {
+                        return Conflict(new { Message = "DuplicateUserName" });
+                    }
+                }
+                return BadRequest(new { Message = result.Errors });
             }
 
             var cliente = _mapper.Map<Cliente>(modelo);
-            cliente.Email = modelo.Email;  // Mapeo adicional de email
+            cliente.Email = modelo.Email;
             cliente.Usuario = modelo.Email.Split('@')[0];
 
             _clienteRepositorio.Agregar(cliente);
@@ -150,6 +176,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
             if (!addClienteResult)
             {
                 return BadRequest(new { Message = "Error al guardar en la tabla Clientes"});
+                return BadRequest(new { Message = "Error al guardar en la tabla Clientes" });
             }
 
             var addRoleResult = await _userManager.AddToRoleAsync(usuario, "Cliente");
@@ -159,8 +186,6 @@ namespace ApiClases_20270722_Proyecto.Controllers
             }
 
             var token = _servicioToken.GenerateJwtToken(usuario);
-
-
             var numClientes = (await _clienteRepositorio.Obtener()).Count();
             Random random = new Random();
             for (var i = 0; i <= 6; i++)
@@ -172,10 +197,52 @@ namespace ApiClases_20270722_Proyecto.Controllers
                     ClienteDestinoId = random.Next(1, numClientes),
                 });
             }
+
+            var resultado = await _mediator.Send(new SignalRRequest
+            {
+                MandamosCliente = new ClienteBaseDto
+                {
+                    Nombre = usuario.Nombre,
+                    Apellido = usuario.Apellido,
+                    Usuario = usuario.UserName,
+                    Email = usuario.Email,
+                    FechaNacimiento = usuario.FechaNacimiento,
+                    Empleo = usuario.Empleo,
+                    PaisId = usuario.PaisId
+                },
+                TipoAcceso = "Registro"
+            });
+
+            // Obtener el Id del cliente recién creado
+            var clienteRecienCreado = _clienteRepositorio.ObtenerPorNombre(cliente.Usuario);
+            if (clienteRecienCreado == null)
+            {
+                return BadRequest(new { Message = "Error al obtener el cliente recién creado" });
+            }
+
+            var numClientes = (await _clienteRepositorio.Obtener()).Count();
+            Random random = new Random();
+            for (var i = 0; i <= 6; i++)
+            {
+                var clienteDestinoId = random.Next(1, numClientes + 1);
+                var clienteDestino = _clienteRepositorio.ObtenerPorId(clienteDestinoId);
+                if (clienteDestino == null)
+                {
+                    continue; // Si el cliente destino no existe, saltar esta iteración
+                }
+
+                _contactoRepositorio.Agregar(new Contacto
+                {
+                    Id = 0,
+                    ClienteOrigenId = clienteRecienCreado.Id,
+                    ClienteDestinoId = clienteDestinoId,
+                });
+            }
             await _contactoRepositorio.GuardarCambios();
 
             return Ok(new { Token = token });
         }
+
 
         [HttpPut("{id}")]
         public async Task<ActionResult> PutAsync(int id, ClientePutDto clienteDto)
