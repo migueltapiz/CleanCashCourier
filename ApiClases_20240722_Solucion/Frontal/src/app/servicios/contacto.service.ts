@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Contacto } from '../interfaces/contactos';
@@ -8,7 +8,7 @@ import { Contacto } from '../interfaces/contactos';
 })
 export class ContactoService{
   
-  private url = 'https://localhost:7138/api/VContactos';
+  private url = 'https://localhost:7138/api/Contactos';
   constructor(private http: HttpClient) { }
 
   checkIfExists(token: string, nombreClienteABuscar: string): Observable<any> {
@@ -19,9 +19,8 @@ export class ContactoService{
     return this.http.post<any>(`${this.url}/checkIfExists`, modelo);
   }
   getListaContactosPorToken(token: string): Observable<Contacto[]>{
-    console.log(token);
     return this.http.get<Contacto[]>(`${this.url}/${token}`).pipe(
-      tap(data => data),
+      tap(data => console.log(data)),
       catchError(this.handleError)
     );
   }
@@ -32,6 +31,26 @@ export class ContactoService{
       catchError(this.handleError)
     );
   }
+
+  eliminarContacto(nombre: string, token: string) {
+
+    const url = `${this.url}?nombreAEliminar=${nombre}&token=${token}`;
+    return this.http.delete<void>(url).pipe(
+      tap(() => console.log(`Contacto eliminado: ${nombre}`)),
+      catchError(this.handleError)
+    );
+  }
+
+  aniadirContacto(nombreNuevoContacto: string, token: string) {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+
+    const body = { nombreNuevoContacto,token };
+    return this.http.post<void>(this.url, body, {headers}).pipe(
+      tap(() => console.log(`Contacto añadido: ${nombreNuevoContacto}`)),
+      catchError(this.handleError)
+    );
+  }
+
 
   private handleError(err: HttpErrorResponse) {
     // in a real world app, we may send the server to some remote logging infrastructure

@@ -10,7 +10,7 @@ export interface FiltroParametrosVistaContacto {
 export interface Contacto {
 
   constructor(): void;
-  IdCliente: number;
-  NombreUsuarioContacto: string;
-  Pais: string;
+  idCliente: number;
+  nombreUsuarioContacto: string;
+  pais: string;
 }

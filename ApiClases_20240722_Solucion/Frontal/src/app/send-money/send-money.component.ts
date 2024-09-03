@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { PaisService } from '../servicios/pais.service';
 import { CabeceraComponent } from '../cabecera/cabecera.component'
 import { jwtDecode } from 'jwt-decode';
-import { ContactoService } from '../servicios/contacto.service';
+import {ContactoService } from '../servicios/contacto.service';
 import { Contacto } from '../interfaces/contactos';
 declare var bootstrap: any;
 
@@ -39,7 +39,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
   totalTransferencia: string = '0.00';
   private timeout: any;
 
-  //listaContactos: Contacto[] = [];
+  listaContactos: Contacto[] = [];
 
   token: any;
   nombre!: string;
@@ -60,12 +60,12 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       },
       error: err => this.errorMessage = err
     });
-    //this.subListaContactos = this.contactoService.getListaContactosPorToken(this.token).subscribe({
-    //  next: contactos => {
-    //    this.listaContactos = contactos
-    //  },
-    //  error: err => this.errorMessage = err
-    //});
+    this.subListaContactos = this.contactoService.getListaContactosPorToken(this.token).subscribe({
+      next: contactos => {
+        this.listaContactos = contactos
+      },
+      error: err => this.errorMessage = err
+    });
     
     
   }
@@ -75,40 +75,36 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     }
     this.timeout = setTimeout(() => {
       if (this.nombreClienteRecibe != '') {
-
-        this.contactoService.checkIfExists(this.token, this.nombreClienteRecibe).subscribe({
-          next: next => {
-            this.subcliente = this.clienteService.getCliente(this.nombreClienteRecibe).subscribe({
-              next: cliente => {
-                this.identificadorClienteRecibe = cliente.id;
-                this.subTransaccion = this.paisService.getPaisId(cliente.paisId).subscribe({
-                  next: pais => {
-                    this.currencyRecibida = pais.iso3;
-                    this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
-                      next: factor => {
-                        this.factorConversion = factor;
-                        this.cantidadRecibida = this.cantidadEnviada ? (parseInt(this.cantidadEnviada) * factor).toString() : '';
-                      },
-                      error: err => this.errorMessage = err
-                    });
-                  },
-                  error: err => this.errorMessage = err
-                });
-
-              },
-              error: err => {
-                this.errorMessage = err;
-                this.resetearVariables();
-              }
-            });
+        this.subcliente = this.clienteService.getCliente(this.nombreClienteRecibe).subscribe({
+          next: cliente => {
+              this.identificadorClienteRecibe = cliente.id;
+              this.subTransaccion = this.paisService.getPaisId(cliente.paisId).subscribe({
+                next: pais => {
+                  this.currencyRecibida = pais.iso3;
+                  this.subTransaccion = this.transaccionService.hacerConversion(this.currencyEnviada, this.currencyRecibida).subscribe({
+                    next: factor => {
+                      this.factorConversion = factor;
+                      this.cantidadRecibida = this.cantidadEnviada ? (parseInt(this.cantidadEnviada) * factor).toString() : '';
+                    },
+                    error: err => this.errorMessage = err
+                  });
+                },
+                error: err => this.errorMessage = err
+              });
+           
           },
           error: err => {
             this.errorMessage = err;
-            this.resetearVariables();
+            this.identificadorClienteRecibe = 0; 
+            this.currencyRecibida = '';
+            this.factorConversion = 0;
           }
         });
+
       } else {
-        this.resetearVariables();
+        this.currencyRecibida = '';
+        this.factorConversion = 0;
+        this.identificadorClienteRecibe = 0;
       }
       clearTimeout(this.timeout);
     }, 1000);
@@ -177,44 +173,39 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       this.showInvalidUserModal();
       return;
     }
-    this.contactoService.checkIfExists(this.token, this.nombreClienteRecibe).subscribe({
-      next: next => {
-        //Continua sin problema
-        if (this.identificadorClienteRecibe === this.identificadorClienteEnvia) {
-          this.showInvalidUserModal();
-          return;
-        }
 
-        const numericAmount = parseFloat(this.cantidadEnviada.replace(',', '.'));
-        if (!this.cantidadEnviada || this.cantidadEnviada.trim().length === 0) {
-          this.showInvalidAmountModal();
-          return;
-        } else if (numericAmount < 0.5) {
-          this.showAmountTooLowModal();
-          return;
-        }
+    if (!this.listaContactos.some(contacto => contacto.nombreUsuarioContacto === this.nombreClienteRecibe)) {
+      this.showNotAContactModal();
+      console.log();
+      return;
+    }
+    
+    if (this.identificadorClienteRecibe === this.identificadorClienteEnvia) {
+      this.showInvalidUserModal();
+      return;
+    }
 
-        this.crearTransaccion();
-        this.transaccionService.crearTransaccion(this.transaccion).subscribe({
-          next: (transaccion) => {
-          },
-          error: (err) => {
-            console.error('Error creando la transacción: ', err);
-          }
-        });
+    const numericAmount = parseFloat(this.cantidadEnviada.replace(',', '.'));
+    if (!this.cantidadEnviada || this.cantidadEnviada.trim().length === 0) {
+      this.showInvalidAmountModal();
+      return;
+    } else if (numericAmount < 0.5) {
+      this.showAmountTooLowModal();
+      return;
+    }
 
-        const user = this.nombreClienteRecibe === undefined ? 'unknown' : this.nombreClienteRecibe;
-        this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currencyEnviada} al destinatario ${user}.`;
-        this.showModal();
+    this.crearTransaccion();
+    this.transaccionService.crearTransaccion(this.transaccion).subscribe({
+      next: (transaccion) => {
       },
-      error: err => {
-        this.errorMessage = err;
-        this.showNotAContactModal();
-        return;
+      error: (err) => {
+        console.error('Error creando la transacción: ', err);
       }
     });
-    
-    
+
+    const user = this.nombreClienteRecibe === undefined ? 'unknown' : this.nombreClienteRecibe;
+    this.modalMessage = `Enviando ${numericAmount.toFixed(2)} ${this.currencyEnviada} al destinatario ${user}.`;
+    this.showModal();
   }
 
   showInvalidUserModal() {
@@ -249,13 +240,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
   navegarATransacciones() {
     this.router.navigate(['/transaction-history']);
-  }
-
-  resetearVariables() {
-    this.currencyRecibida = '';
-    this.factorConversion = 0;
-    this.identificadorClienteRecibe = 0;
-    this.cantidadRecibida = '';
   }
 }
 
