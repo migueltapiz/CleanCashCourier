@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
 import { PaisService } from '../servicios/pais.service';
 import { CabeceraComponent } from '../cabecera/cabecera.component'
 import { jwtDecode } from 'jwt-decode';
-import { Contacto, ContactoService } from '../servicios/contacto.service';
+import {ContactoService } from '../servicios/contacto.service';
+import { Contacto } from '../interfaces/contactos';
 declare var bootstrap: any;
 
 @Component({
