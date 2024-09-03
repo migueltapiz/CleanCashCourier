@@ -16,6 +16,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<UsuarioAplicacion> _userManager;
         private readonly SignInManager<UsuarioAplicacion> _signInManager;
+        private readonly IMediator _mediator;
 
         public ClientesController(
             IRepositorioGenerico<Cliente> clienteRepositorio,
@@ -99,6 +100,12 @@ namespace ApiClases_20270722_Proyecto.Controllers
             {
                 var user = await _userManager.FindByNameAsync(modelo.Usuario);
                 var token = _servicioToken.GenerateJwtToken(user);
+                // Obtener el cliente desde el repositorio
+                var cliente = _clienteRepositorio.ObtenerPorNombre(modelo.Usuario);
+                if (cliente == null)
+                {
+                    return NotFound("Cliente no encontrado.");
+                }
 
                 // Enviar los datos del cliente utilizando el mediador. SignalR.
                 var resultado = await _mediator.Send(new SignalRRequest
@@ -176,7 +183,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
             if (!addClienteResult)
             {
                 return BadRequest(new { Message = "Error al guardar en la tabla Clientes"});
-                return BadRequest(new { Message = "Error al guardar en la tabla Clientes" });
+      
             }
 
             var addRoleResult = await _userManager.AddToRoleAsync(usuario, "Cliente");
@@ -186,17 +193,6 @@ namespace ApiClases_20270722_Proyecto.Controllers
             }
 
             var token = _servicioToken.GenerateJwtToken(usuario);
-            var numClientes = (await _clienteRepositorio.Obtener()).Count();
-            Random random = new Random();
-            for (var i = 0; i <= 6; i++)
-            {
-                _contactoRepositorio.Agregar(new Contacto
-                {
-                    Id = 0,
-                    ClienteOrigenId = numClientes,
-                    ClienteDestinoId = random.Next(1, numClientes),
-                });
-            }
 
             var resultado = await _mediator.Send(new SignalRRequest
             {
