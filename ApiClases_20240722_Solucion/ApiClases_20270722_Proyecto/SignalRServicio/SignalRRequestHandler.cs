@@ -48,8 +48,8 @@ namespace ApiClases_20270722_Proyecto.SignalRServicio
                 var transaccionData = new
                 {
                     TipoAcceso = request.TipoAcceso, // Incluimos TipoAcceso
-                    PaisOrigen = clienteEnvia.PaisId,
-                    PaisDestino = clienteRecibe.PaisId,
+                    PaisOrigen = clienteEnvia.PaisId, // Accedemos a la propiedad Nombre de la entidad Pais de manera segura
+                    PaisDestino = clienteRecibe.PaisId, // Accedemos a la propiedad Nombre de la entidad Pais de manera segura
                     ClienteOrigen = clienteEnvia.Usuario,
                     ClienteDestino = clienteRecibe.Usuario,
                     ValorOrigen = transaccion.CantidadEnvia,

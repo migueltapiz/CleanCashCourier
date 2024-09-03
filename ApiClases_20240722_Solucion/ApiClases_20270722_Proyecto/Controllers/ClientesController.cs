@@ -89,9 +89,27 @@ namespace ApiClases_20270722_Proyecto.Controllers
                 var user = await _userManager.FindByNameAsync(modelo.Usuario);
                 var token = _servicioToken.GenerateJwtToken(user);
 
-                // Enviar el nombre de usuario utilizando el mediador. SignalR.
-                var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = new ClientePostDto { Nombre = modelo.Usuario }, TipoAcceso = "Login" });
+                // Obtener el cliente desde el repositorio
+                var cliente = _clienteRepositorio.ObtenerPorNombre(modelo.Usuario);
+                if (cliente == null)
+                {
+                    return NotFound("Cliente no encontrado.");
+                }
 
+                // Enviar los datos del cliente utilizando el mediador. SignalR.
+                var resultado = await _mediator.Send(new SignalRRequest
+                {
+                    MandamosCliente = new ClientePostDto
+                    {
+                        Nombre = cliente.Nombre,
+                        Apellido = cliente.Apellido,
+                        FechaNacimiento = cliente.FechaNacimiento,
+                        Empleo = cliente.Empleo,
+                        PaisId = cliente.PaisId,
+                        Email = cliente.Email
+                    },
+                    TipoAcceso = "Login"
+                });
                 return Ok(new { Token = token });
             }
 

@@ -70,6 +70,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
                 {
                     MandamosTransaccion = transaccionDto,
                     TipoAcceso = "Transaccion",
+
                 });
 
                 return CreatedAtAction(
