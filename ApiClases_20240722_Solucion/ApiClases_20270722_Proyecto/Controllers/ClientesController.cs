@@ -25,7 +25,8 @@ namespace ApiClases_20270722_Proyecto.Controllers
             IServicioToken servicioToken,
             IMapper mapper,
             UserManager<UsuarioAplicacion> userManager,
-            SignInManager<UsuarioAplicacion> signInManager)
+            SignInManager<UsuarioAplicacion> signInManager,
+            IMediator mediator)
         {
             _clienteRepositorio = clienteRepositorio;
             _paisRepositorio = paisRepositorio;
@@ -34,6 +35,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userManager = userManager;
             _signInManager = signInManager;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         [HttpGet]
@@ -84,12 +86,14 @@ namespace ApiClases_20270722_Proyecto.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] ClienteInicioSesion modelo)
         {
+            // Verificar si el usuario existe en el servidor
             var searchInServer = await _userManager.FindByNameAsync(modelo.Usuario);
             if (searchInServer == null)
             {
-                return NotFound(); // no se encuentra el usuario mencionado
+                return NotFound(); // Usuario no encontrado
             }
 
+            // Intentar iniciar sesión
             var result = await _signInManager.PasswordSignInAsync(
                 modelo.Usuario,
                 modelo.Contrasena,
@@ -98,8 +102,10 @@ namespace ApiClases_20270722_Proyecto.Controllers
 
             if (result.Succeeded)
             {
+                // Obtener el usuario
                 var user = await _userManager.FindByNameAsync(modelo.Usuario);
                 var token = _servicioToken.GenerateJwtToken(user);
+
                 // Obtener el cliente desde el repositorio
                 var cliente = _clienteRepositorio.ObtenerPorNombre(modelo.Usuario);
                 if (cliente == null)
@@ -107,7 +113,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
                     return NotFound("Cliente no encontrado.");
                 }
 
-                // Enviar los datos del cliente utilizando el mediador. SignalR.
+                // Enviar los datos del cliente utilizando el mediador
                 var resultado = await _mediator.Send(new SignalRRequest
                 {
                     MandamosCliente = new ClienteBaseDto
@@ -121,12 +127,14 @@ namespace ApiClases_20270722_Proyecto.Controllers
                     },
                     TipoAcceso = "Login"
                 });
-                return Ok(new { Token = token });  //loggeado
+
+                return Ok(new { Token = token });
             }
 
             return Unauthorized(); // Contraseña incorrecta
-
         }
+
+
 
 
         [HttpPost("register")]
@@ -147,7 +155,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
                 Empleo = modelo.Empleo,
                 PaisId = modelo.PaisId,
             };
-            
+
 
             var result = await _userManager.CreateAsync(usuario, modelo.Contrasena);
             if (!result.Succeeded) //Actualmente no deberia llegar a esta situación (con lo actualmente planteado),
@@ -156,18 +164,11 @@ namespace ApiClases_20270722_Proyecto.Controllers
                 foreach (var error in result.Errors)
                 {
                     //System.Diagnostics.Debug.WriteLine($"Código de Error: {error.Code}, Descripción: {error.Description}");
-                    if (error.Code.Equals("DuplicateUserName")){ // Solo deberia existir este caso (username duplicado), pero en caso de ser necesario dejo el bad Request
-                        System.Diagnostics.Debug.WriteLine("LLEGO AQUI");
-                        return Conflict(new {Message = "DuplicateUserName"});
-                        
-                    }
-                }
-                return BadRequest(new {Message = result.Errors});
-                foreach (var error in result.Errors)
-                {
                     if (error.Code.Equals("DuplicateUserName"))
-                    {
+                    { // Solo deberia existir este caso (username duplicado), pero en caso de ser necesario dejo el bad Request
+                        System.Diagnostics.Debug.WriteLine("LLEGO AQUI");
                         return Conflict(new { Message = "DuplicateUserName" });
+
                     }
                 }
                 return BadRequest(new { Message = result.Errors });
@@ -182,8 +183,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
 
             if (!addClienteResult)
             {
-                return BadRequest(new { Message = "Error al guardar en la tabla Clientes"});
-      
+                return BadRequest(new { Message = "Error al guardar en la tabla Clientes" });
             }
 
             var addRoleResult = await _userManager.AddToRoleAsync(usuario, "Cliente");
