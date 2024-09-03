@@ -1,10 +1,46 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ContactoService } from '../servicios/contacto.service';
+import { Contacto } from '../interfaces/contactos';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'pm-contacts-table',
   templateUrl: './contacts-table.component.html',
   styleUrl: './contacts-table.component.css'
 })
-export class ContactsTableComponent {
+export class ContactsTableComponent implements OnInit {
+  contacts: Contacto[] = [];
+  nombreNuevoContacto: string = '';
 
+  constructor(private contactService: ContactoService, private cdr: ChangeDetectorRef) { }
+
+  ngOnInit(): void {
+    this.contactService.getListaContactosPorToken(localStorage['token']).subscribe(
+      (data: Contacto[]) => {
+        this.contacts = data;
+      },
+      (error) => {
+        console.error('Error al obtener los contactos', error);
+      }
+    );
+  }
+  deleteContact(nombre: string): void {
+    this.contactService.eliminarContacto(nombre, localStorage['token']).pipe(
+      switchMap(() => this.contactService.getListaContactosPorToken(localStorage['token']))
+    ).subscribe(
+      (data: Contacto[]) => {
+        this.contacts = data;
+        this.cdr.detectChanges(); // Forzar la detección de cambios
+      },
+      (error) => {
+        console.error('Error al obtener los contactos', error);
+      }
+    );
+  }
+
+
+  aniadirContacto():void  { };
+  
 }
+
+

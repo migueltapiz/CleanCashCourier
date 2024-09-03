@@ -18,6 +18,9 @@ builder.Services.AddScoped<IContarPaisesConClientes, ContarPaisesConClientesRepo
 builder.Services.AddScoped<IContarTransaccionesUltimos10AniosRepositorio, ContarTransaccionesUltimos10AniosRepositorio>();
 builder.Services.AddScoped<IVistaContactoRepositorio<VContacto>, VistaContactosRepositorio>();
 
+builder.Services.AddScoped<ContactosRepositorioBBDD<Contacto>>();
+
+
 
 // Agregar BBDD (SQLServer)
 builder.Services.AddDbContext<Contexto>(options =>

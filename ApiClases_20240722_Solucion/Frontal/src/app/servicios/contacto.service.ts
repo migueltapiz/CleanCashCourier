@@ -8,12 +8,11 @@ import { Contacto } from '../interfaces/contactos';
 })
 export class ContactoService{
   
-  private url = 'https://localhost:7138/api/VContactos';
+  private url = 'https://localhost:7138/api/Contactos';
   constructor(private http: HttpClient) { }
   getListaContactosPorToken(token: string): Observable<Contacto[]>{
-    console.log(token);
     return this.http.get<Contacto[]>(`${this.url}/${token}`).pipe(
-      tap(data => data),
+      tap(data => console.log(data)),
       catchError(this.handleError)
     );
   }
@@ -21,6 +20,15 @@ export class ContactoService{
   getListaContactosPorId(id: number): Observable<Contacto[]> {
     return this.http.get<Contacto[]>(`${this.url}/getAllContactsByToken/${id}`).pipe(
       tap(data => data),
+      catchError(this.handleError)
+    );
+  }
+
+  eliminarContacto(nombre: string, token: string) {
+
+    const url = `${this.url}?nombreAEliminar=${nombre}&token=${token}`;
+    return this.http.delete<void>(url).pipe(
+      tap(() => console.log(`Contacto eliminado: ${nombre}`)),
       catchError(this.handleError)
     );
   }

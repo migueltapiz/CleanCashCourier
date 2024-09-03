@@ -1,20 +1,24 @@
 ﻿using ApiClases_20270722_Proyecto.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 
 namespace ApiClases_20270722_Proyecto.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VContactosController : Controller
+    public class ContactosController : Controller
     {
         private readonly IVistaContactoRepositorio<VContacto> _vistaContactoRepositorio;
         private readonly IRepositorioGenerico<Cliente> _clienteRepositorio;
-        public VContactosController(
+        private readonly ContactosRepositorioBBDD<Contacto> _contactosRepositorio;
+        public ContactosController(
             IVistaContactoRepositorio<VContacto> vistacontactorepositorio,
-            IRepositorioGenerico<Cliente> clienteRepositorio)
+            IRepositorioGenerico<Cliente> clienteRepositorio,
+            ContactosRepositorioBBDD<Contacto> contactosRepositorio)
         {
             _vistaContactoRepositorio = vistacontactorepositorio;
             _clienteRepositorio = clienteRepositorio;
+            _contactosRepositorio = contactosRepositorio;
         }
         [HttpPost("getAllContacts")]
         public async Task<ActionResult<IEnumerable<VContacto>>> GetVistaContactos(VContactoParametrosFiltradoDto filtro)
@@ -60,6 +64,32 @@ namespace ApiClases_20270722_Proyecto.Controllers
             };
             var (contactos, count) = await _vistaContactoRepositorio.GetVContactosAsync(filtro);
             return contactos.ToList();
+        }
+
+        [HttpDelete("")]
+        public async Task<ActionResult> DeleteAsync(string nombreAEliminar,string token) {
+            string nombre;
+            // Intentar decodificar el token JWT
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            nombre = jwtToken.Claims.First(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value;
+
+
+            var idContactoAEliminar = _clienteRepositorio.ObtenerPorNombre(nombreAEliminar.ToString()).Id;
+            var idContactoRelacionado = _clienteRepositorio.ObtenerPorNombre(nombre.ToString()).Id;
+
+            var contacto = _contactosRepositorio.ObtenerPorIds(idContactoRelacionado, idContactoAEliminar);
+
+            if(contacto == null) return NotFound();
+
+            _contactosRepositorio.Borrar(contacto.Id);
+
+            if(await _contactosRepositorio.GuardarCambios())
+            {
+                return NoContent();
+            }
+
+            return BadRequest("Error al borrar el cliente");
         }
     }
 }

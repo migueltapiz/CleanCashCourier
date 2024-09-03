@@ -174,7 +174,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.listaContactos.some(contacto => contacto.NombreUsuarioContacto === this.nombreClienteRecibe)) {
+    if (!this.listaContactos.some(contacto => contacto.nombreUsuarioContacto === this.nombreClienteRecibe)) {
       this.showNotAContactModal();
       console.log();
       return;
