@@ -20,7 +20,7 @@ public class SignalREnvioController : ControllerBase
             return BadRequest("El cliente no puede estar vacío.");
         }
 
-        var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = cliente });
+        var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = (ClientePutDto)cliente });
         return Ok(resultado);
     }
 
