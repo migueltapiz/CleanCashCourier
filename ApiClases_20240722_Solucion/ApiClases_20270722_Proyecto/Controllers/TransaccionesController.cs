@@ -12,7 +12,10 @@ namespace ApiClases_20270722_Proyecto.Controllers
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public TransaccionesController(IRepositorioGenerico<Transaccion> repositorio, IMapper mapper, IMediator mediator)
+        public TransaccionesController(
+            IRepositorioGenerico<Transaccion> repositorio,
+            IMapper mapper,
+            IMediator mediator)
         {
             _repositorio = repositorio;
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -61,8 +64,13 @@ namespace ApiClases_20270722_Proyecto.Controllers
             {
                 var transaccionDto = _mapper.Map<TransaccionPostDto>(transaccionEntidad);
 
-                // Enviar los datos de la transacción utilizando el mediador
-                var resultado = await _mediator.Send(new SignalRRequest { MandamosTransaccion = transaccionDto, TipoAcceso = "TransaccionCreada" });
+
+                // Enviar los datos de la transacción utilizando el mediador. SignalR.
+                var resultado = await _mediator.Send(new SignalRRequest
+                {
+                    MandamosTransaccion = transaccionDto,
+                    TipoAcceso = "Transaccion",
+                });
 
                 return CreatedAtAction(
                     nameof(Get),
@@ -80,5 +88,3 @@ namespace ApiClases_20270722_Proyecto.Controllers
     // No usamos ni PUT ni DELETE. No se pueden ni modificar ni eliminar transacciones.
 
 }
-
-

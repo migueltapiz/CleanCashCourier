@@ -32,10 +32,10 @@ namespace ApiClases_20270722_Proyecto.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClienteBaseDto>>> Get()
+        public async Task<ActionResult<IEnumerable<ClientePostDto>>> Get()
         {
             var clientes = await _clienteRepositorio.Obtener();
-            var clientesDto = _mapper.Map<IEnumerable<ClienteBaseDto>>(clientes);
+            var clientesDto = _mapper.Map<IEnumerable<ClientePostDto>>(clientes);
             return Ok(clientesDto);
         }
 
@@ -89,8 +89,8 @@ namespace ApiClases_20270722_Proyecto.Controllers
                 var user = await _userManager.FindByNameAsync(modelo.Usuario);
                 var token = _servicioToken.GenerateJwtToken(user);
 
-                // Enviar el nombre de usuario utilizando el mediador
-                var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = new ClienteBaseDto { Nombre = modelo.Usuario }, TipoAcceso = "Login" });
+                // Enviar el nombre de usuario utilizando el mediador. SignalR.
+                var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = new ClientePostDto { Nombre = modelo.Usuario }, TipoAcceso = "Login" });
 
                 return Ok(new { Token = token });
             }
@@ -138,8 +138,8 @@ namespace ApiClases_20270722_Proyecto.Controllers
 
             var token = _servicioToken.GenerateJwtToken(usuario);
 
-            // Enviar los datos del usuario registrado utilizando el mediador
-            var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = new ClienteBaseDto { Nombre = usuario.Nombre, Apellido = usuario.Apellido, Usuario = usuario.UserName, Email = usuario.Email, FechaNacimiento = usuario.FechaNacimiento, Empleo = usuario.Empleo, PaisId = usuario.PaisId }, TipoAcceso = "Registro" });
+            // Enviar los datos del usuario registrado utilizando el mediador. SignalR.S
+            var resultado = await _mediator.Send(new SignalRRequest { MandamosCliente = new ClientePostDto { Nombre = usuario.Nombre, Apellido = usuario.Apellido, Usuario = usuario.UserName, Email = usuario.Email, FechaNacimiento = usuario.FechaNacimiento, Empleo = usuario.Empleo, PaisId = usuario.PaisId }, TipoAcceso = "Registro" });
 
             return Ok(new { Token = token });
         }

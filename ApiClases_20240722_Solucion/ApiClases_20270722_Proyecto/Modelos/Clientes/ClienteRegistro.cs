@@ -1,6 +1,6 @@
 ﻿namespace ApiClases_20270722_Proyecto.Modelos.Clientes
 {
-    public class ClienteRegistro : ClienteBaseDto
+    public class ClienteRegistro : ClientePostDto
     {
 
         [Required]

@@ -2,6 +2,11 @@
 using ApiClases_20270722_Proyecto.Repositorios;
 using ApiClases_20270722_Proyecto.SignalRServicio;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +16,12 @@ builder.Services.AddControllers();
 // Agregar servicio swagger (OpenAPI)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Registro de repositorios
 builder.Services.AddScoped<IRepositorioGenerico<Transaccion>, TransaccionRepositorioBBDD<Transaccion>>();
 builder.Services.AddScoped<IRepositorioGenerico<Pais>, PaisRepositorioBBDD<Pais>>();
 builder.Services.AddScoped<IRepositorioGenerico<Cliente>, ClienteRepositorioBBDD<Cliente>>();
+builder.Services.AddScoped<ClienteRepositorioBBDD<Cliente>>();
 builder.Services.AddScoped<IServicioToken, ServicioToken>();
 builder.Services.AddScoped<IContarPaisesConClientes, ContarPaisesConClientesRepositorio>();
 builder.Services.AddScoped<IContarTransaccionesUltimos10AniosRepositorio, ContarTransaccionesUltimos10AniosRepositorio>();
@@ -148,4 +156,3 @@ async Task CreateRoles(WebApplication app)
         }
     }
 }
-
