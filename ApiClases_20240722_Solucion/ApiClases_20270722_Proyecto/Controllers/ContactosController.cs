@@ -1,5 +1,7 @@
 ﻿using ApiClases_20270722_Proyecto.Repositorios;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Drawing;
 
 namespace ApiClases_20270722_Proyecto.Controllers
@@ -91,5 +93,35 @@ namespace ApiClases_20270722_Proyecto.Controllers
 
             return BadRequest("Error al borrar el cliente");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(string nombreNuevoContacto, string token) {
+            string nombre;
+            // Intentar decodificar el token JWT
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            nombre = jwtToken.Claims.First(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value;
+
+
+            var idContactoNuevo = _clienteRepositorio.ObtenerPorNombre(nombreNuevoContacto.ToString()).Id;
+            var idContactoRelacionado = _clienteRepositorio.ObtenerPorNombre(nombre.ToString()).Id;
+
+            
+
+            _contactosRepositorio.Agregar(new Contacto
+            {
+                Id = 0,
+                ClienteOrigenId = idContactoRelacionado,
+                ClienteDestinoId = idContactoNuevo,
+            });
+            var addContactoResult = await _contactosRepositorio.GuardarCambios();
+
+            if(!addContactoResult)
+            {
+                return BadRequest(new { Message = "Error al guardar en la tabla Clientes" });
+            }
+            return Ok();
+        }
+        
     }
 }
