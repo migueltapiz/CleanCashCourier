@@ -93,6 +93,31 @@ namespace ApiClases_20270722_Proyecto.Controllers
 
             return BadRequest("Error al borrar el cliente");
         }
+        [HttpPost("checkIfExists")]
+        public async Task<ActionResult> CheckIfExists([FromBody] ModeloBusquedaContacto modelo) {
+            string nombre;
+            // Intentar decodificar el token JWT
+            var handler = new JwtSecurityTokenHandler();
+            try
+            {
+                var jwtToken = handler.ReadJwtToken(modelo.tokenCliente);
+                nombre = jwtToken.Claims.First(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value;
+            }
+            catch(ArgumentException)
+            {
+                // Si no es un token JWT válido, asumir que es un nombre
+                nombre = modelo.tokenCliente;
+            }
+            var idCliente = _clienteRepositorio.ObtenerPorNombre(nombre.ToString()).Id;
+            if(await _vistaContactoRepositorio.CheckIfExistsInView(idCliente, modelo.NombreUsuarioClienteABuscar))
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ContactoRequest request) {
