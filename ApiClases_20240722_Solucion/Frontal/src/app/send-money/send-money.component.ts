@@ -5,7 +5,7 @@ import { ICliente } from "../interfaces/cliente";
 import { ClienteService } from "../servicios/cliente.service";
 import { TransaccionService } from "../servicios/transaccion.service";
 import { ITransaccion, Transaccion } from "../interfaces/transaccion";
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PaisService } from '../servicios/pais.service';
 import { CabeceraComponent } from '../cabecera/cabecera.component'
 import { jwtDecode } from 'jwt-decode';
@@ -43,7 +43,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
   token: any;
   nombre!: string;
-  constructor(private clienteService: ClienteService, private transaccionService: TransaccionService, private paisService: PaisService, private contactoService: ContactoService, private router: Router) { }
+  constructor(private clienteService: ClienteService, private transaccionService: TransaccionService, private paisService: PaisService, private contactoService: ContactoService, private router: Router, private route: ActivatedRoute) { }
   
   ngOnInit(): void {
     this.token = localStorage['token'];
@@ -65,6 +65,12 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
         this.listaContactos = contactos
       },
       error: err => this.errorMessage = err
+    })
+    this.route.queryParams.subscribe(params => {
+      if (params['nombreClienteRecibe']) {
+        this.nombreClienteRecibe = params['nombreClienteRecibe'];
+        this.prueba();
+      }
     });
     
     
