@@ -167,3 +167,17 @@
 .action-button-CTA:hover {
   background-color: #ADD96A;
 }
+
+/* Para alinear los íconos con los números */
+.icon-with-number {
+  display: flex;
+  align-items: center;
+}
+
+.icon-with-number .number {
+  margin-left: 10px;
+  font-size: 50px; 
+  color: black;
+  font-weight: bold;
+}
+
