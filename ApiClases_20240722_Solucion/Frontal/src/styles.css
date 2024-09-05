@@ -4,11 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
-
 html, body {
-  margin: 0;
-  width: 100%;
+  padding: 0; /* Elimina cualquier padding predeterminado */
+  margin: 0 10px;
+  width: calc(100% -20px); /* Ajusta el ancho para compensar el margen */
   height: 100%;
 }
-
 
