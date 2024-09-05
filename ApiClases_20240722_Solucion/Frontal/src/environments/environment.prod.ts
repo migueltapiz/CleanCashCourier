@@ -1,4 +1,8 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://backend-estadistica-g6afbvbagbe3d6gr.spaincentral-01.azurewebsites.net/api/usuarios'
+    apiUrl: 'https://cleancashcourierapi-fdg9f7d4chb4gshy.spaincentral-01.azurewebsites.net/api',
+    apiClientes: 'https://cleancashcourierapi-fdg9f7d4chb4gshy.spaincentral-01.azurewebsites.net/api/Clientes',
+    apiContactos: 'https://cleancashcourierapi-fdg9f7d4chb4gshy.spaincentral-01.azurewebsites.net/api/Contactos',
+    apiTransacciones: 'https://cleancashcourierapi-fdg9f7d4chb4gshy.spaincentral-01.azurewebsites.net/api/Transacciones', //Ni se utiliza en un principio
+    apiPaises: 'https://cleancashcourierapi-fdg9f7d4chb4gshy.spaincentral-01.azurewebsites.net/api/Paises'
   };

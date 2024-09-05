@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from "rxjs";
 import { ICliente } from "../interfaces/cliente";
 import { ActualizarPerfilCliente, InicioSesionCliente, RegistroCliente } from "../interfaces/registroCliente";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
-  private clientesUrl = 'https://localhost:7138/api/Clientes';
+  //private clientesUrl = 'https://localhost:7138/api/Clientes';
+  private clientesUrl = environment.apiClientes;
   
   constructor(private http: HttpClient) { }
   

@@ -2,13 +2,15 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Contacto } from '../interfaces/contactos';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactoService{
   
-  private url = 'https://localhost:7138/api/Contactos';
+  //private url = 'https://localhost:7138/api/Contactos';
+  private url = environment.apiContactos;
   constructor(private http: HttpClient) { }
 
   checkIfExists(token: string, nombreClienteABuscar: string): Observable<any> {
