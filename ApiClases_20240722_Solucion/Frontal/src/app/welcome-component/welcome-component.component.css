@@ -3,7 +3,9 @@
   width: 100%;
   height: auto;
 }
-
+.main-content {
+  width: 100%;
+}
 /* Banner styles */
 .banner {
   position: relative;
