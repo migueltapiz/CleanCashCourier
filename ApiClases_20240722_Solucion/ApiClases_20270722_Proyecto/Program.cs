@@ -43,7 +43,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 builder.Services.AddSingleton<SignalRServicio>(provider =>
 {
     var serviceScopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
-    var hubUrl = "https://localhost:7040/SimuladorHub"; // Reemplaza con la URL de tu hub de SignalR
+    var hubUrl = "https://chachibackend-cudsb0anfdcncddp.spaincentral-01.azurewebsites.net/notificationHub"; // Reemplaza con la URL de tu hub de SignalR
     return new SignalRServicio(hubUrl, serviceScopeFactory);
 });
 

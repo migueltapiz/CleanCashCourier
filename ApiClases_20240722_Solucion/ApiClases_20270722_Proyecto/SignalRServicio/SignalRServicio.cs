@@ -29,9 +29,35 @@ public class SignalRServicio
         if (!_isEventRegistered) // Queremos que el mensaje solo llegue 1 vez y sin repeticiones. Antes lo mandaba 2 veces.
         {
             // Configura el manejo de mensajes recibidos
-            _hubConnection.On<string>("RecibirMensaje", (mensaje) =>
+            //_hubConnection.On<string>("RecibirMensaje", (mensaje) =>
+            //{
+            //    Console.WriteLine($"GestionTransacciones: {mensaje}");
+            //});
+            _hubConnection.On<string>("ReceiveNotification", (message) =>
+
             {
-                Console.WriteLine($"GestionTransacciones: {mensaje}");
+
+                Console.WriteLine($"Notificación recibida: {message}");
+
+            });
+
+
+
+            _hubConnection.On<dynamic>("OutlierDetected", (data) =>
+
+            {
+
+                Console.WriteLine($"Outlier detectado: {data.Cliente}, Importe: {data.ImporteEnviado}");
+
+            });
+
+
+
+            _hubConnection.On<dynamic>("OutlierRemoved", (data) =>
+
+            {
+                Console.WriteLine($"Outlier eliminado: Cliente ID: {data.IDCliente}");
+
             });
             _isEventRegistered = true;
         }
