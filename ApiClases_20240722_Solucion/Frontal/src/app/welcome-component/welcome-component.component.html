@@ -1,7 +1,7 @@
 <cabecera></cabecera>
 <!-- welcome.component.html -->
 <div class="main-content">
-  
+
   <!-- Banner Principal -->
   <div class="banner">
     <img src="assets/Banner.jpg" alt="Banner Image" class="responsive">
@@ -16,15 +16,24 @@
 
   <!-- Servicios Destacados -->
   <div class="services">
+    <!-- Transferencias Internacionales -->
     <div class="service">
-      <h2>Transferencias Internacionales</h2>
-      <img src="assets/international-trade.png" alt="Transferencias Internacionales" class="icon">
-      <p>Envía dinero a cualquier parte del mundo de manera rápida y económica.</p>
+      <h2>Países con clientes</h2>
+      <div class="icon-with-number">
+        <img src="assets/international-trade.png" alt="Transferencias Internacionales" class="icon">
+        <span *ngIf="paisesConClientes !== undefined" class="number">{{ paisesConClientes }}</span>
+      </div>
+      <p>Envía dinero a cualquier parte del mundo de manera rápida y económica. Estamos presentes en {{ paisesConClientes || '...' }} países distintos.</p>
     </div>
+
+    <!-- Transferencias Nacionales (Ahora estadísticas de transacciones) -->
     <div class="service">
-      <h2>Transferencias Nacionales</h2>
-      <img src="assets/save-money.png" alt="Transferencias Nacionales" class="icon">
-      <p>Transfiere dinero dentro del país con tarifas bajas y tiempos de entrega rápidos.</p>
+      <h2>Transacciones en los últimos 10 años</h2>
+      <div class="icon-with-number">
+        <img src="assets/save-money.png" alt="Transacciones en los últimos 10 años" class="icon">
+        <span *ngIf="transaccionesUltimos10Anios !== undefined" class="number">{{ transaccionesUltimos10Anios }}</span>
+      </div>
+      <p>Hemos procesado {{ transaccionesUltimos10Anios || '...' }} transacciones en los últimos 10 años con tarifas bajas y tiempos de entrega rápidos.</p>
     </div>
   </div>
 
@@ -67,6 +76,4 @@
       </div>
     </div>
   </div>
-
-  
 </div>
