@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { Observable, catchError, tap, throwError } from 'rxjs';
 export class PaisService {
 
   // private clientesUrl = 'api/clientes/clientes.json';
-  private url = 'https://localhost:7138/api/Paises';
+  //private url = 'https://localhost:7138/api/Paises';
+  private url = environment.apiPaises;
   constructor(private http: HttpClient) { }
 
   getPaisId(id: number): Observable<IPais> {
