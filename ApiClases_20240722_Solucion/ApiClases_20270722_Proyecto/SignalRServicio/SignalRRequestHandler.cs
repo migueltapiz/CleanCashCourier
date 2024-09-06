@@ -52,6 +52,8 @@ namespace ApiClases_20270722_Proyecto.SignalRServicio
                     PaisDestino = clienteRecibe.PaisId,
                     ClienteOrigen = clienteEnvia.Usuario,
                     ClienteDestino = clienteRecibe.Usuario,
+                    ClienteOrigenId = transaccion.IdEnvia,
+                    ClienteDestinoId = transaccion.IdRecibe,
                     ValorOrigen = transaccion.CantidadEnvia,
                     ValorDestino = transaccion.CantidadRecibe,
                     Timestamp = transaccion.Fecha,

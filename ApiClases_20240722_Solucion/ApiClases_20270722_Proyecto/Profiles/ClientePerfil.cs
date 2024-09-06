@@ -6,8 +6,7 @@ public class ClientePerfil:Profile {
 
     public ClientePerfil(){
 
-        CreateMap<Cliente, ClienteBaseDto>()
-                    .ForMember(dest => dest.NombrePais, opt => opt.MapFrom(src => src.Pais.Nombre));  // Mapea el nombre del país
+        CreateMap<Cliente, ClienteBaseDto>();  
         CreateMap<ClienteBaseDto, Cliente>();
 
         // Mapeo de Cliente a ClienteGetDto y viceversa
