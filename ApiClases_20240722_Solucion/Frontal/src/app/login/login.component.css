@@ -18,13 +18,13 @@
   background-color: red; /* Cambia esto al color que prefieras */
 }
 
-  .btn-close:hover {
-    background-color: darkred; /* Cambia esto al color que prefieras */
-  }
+.btn-close:hover {
+  background-color: darkred; /* Cambia esto al color que prefieras */
+}
 
-  .btn-close:focus {
-    box-shadow: none;
-  }
+.btn-close:focus {
+  box-shadow: none;
+}
 
 .btn-secondary {
   background-color: #84BF49;
