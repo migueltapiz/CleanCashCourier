@@ -17,7 +17,5 @@ public class ClienteFaker : Faker<ClienteBaseDto>
             .RuleFor(c => c.Email, f => f.Internet.Email())
             .RuleFor(c => c.PaisId, f => f.PickRandom(paises).Id) // Selecciona un PaisId existente 
             .RuleFor(c => c.Usuario, f => f.Internet.UserName());
-
-           
     }
 }
