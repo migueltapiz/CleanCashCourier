@@ -49,7 +49,7 @@ public class GenerarController : Controller
     {
         var paises = await _paisRepositorio.Obtener();
         Random random = new Random((int)DateTime.Now.Ticks);
-        var contactos = await _contactoRepositorio.Obtener();
+        var contactos = await _contactoRepositorio.Obtener(); // Cuidado que puede ser que no haya contactos, revisar o generar clientes -> contactos -> transacciones
         var contacto = contactos[random.Next(0, contactos.Count)];
         var clienteOrigen = _clientesRepositorio.ObtenerPorId(contacto.ClienteOrigenId);
         var clienteDestino = _clientesRepositorio.ObtenerPorId(contacto.ClienteDestinoId);
@@ -61,6 +61,33 @@ public class GenerarController : Controller
             _transaccionRepositorio.Agregar(nuevaTransaccion);
         }
         if (await _transaccionRepositorio.GuardarCambios())
+        {
+            return Ok();
+        }
+        else
+        {
+            return StatusCode(500); // Para debug
+        }
+    }
+    [HttpGet("generarContactos/{n_contactos}")]
+    public async Task<IActionResult> GenerarContactos(int n_contactos)
+    {
+        var clientes = await _clientesRepositorio.Obtener();
+        Random random = new Random((int)DateTime.Now.Ticks);
+        var clienteOrigenId = clientes[random.Next(clientes.Count)].Id;
+        var clienteDestinoId = clientes[random.Next(clientes.Count)].Id;
+        while (clienteDestinoId == clienteOrigenId)
+        {
+            clienteDestinoId = clientes[random.Next(clientes.Count)].Id;
+        }
+        _contactoRepositorio.Agregar(new Contacto
+        {
+            Id = 0,
+            ClienteOrigenId = clienteOrigenId,
+            ClienteDestinoId = clienteDestinoId,
+        });
+
+        if (await _contactoRepositorio.GuardarCambios())
         {
             return Ok();
         }
