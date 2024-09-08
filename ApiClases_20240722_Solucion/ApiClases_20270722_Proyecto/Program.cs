@@ -97,6 +97,12 @@ builder.Services.AddCors(options =>
                    .AllowAnyHeader();
 
         });
+        options.AddPolicy("AllowSpecificOrigin",
+        builder => builder
+            .WithOrigins("http://localhost:4200")  // Origen permitido
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials());
     });
 
 
@@ -104,7 +110,8 @@ builder.Services.AddCors(options =>
 //Agregar servicios a la aplicación
 var app = builder.Build();
 
-app.UseCors("AllowAllOrigins");
+//app.UseCors("AllowAllOrigins");
+app.UseCors("AllowSpecificOrigin");
 
 app.MapHub<SignalRHubNotificacion>("/signalrhubnotificacion");
 

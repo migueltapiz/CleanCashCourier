@@ -6,24 +6,32 @@ namespace ApiClases_20270722_Proyecto.Controllers;
 
 [Route("api/Clientes/{id_cliente}/Transacciones")]
 [ApiController]
-public class TransaccionesController : ControllerBase{
+public class TransaccionesController : ControllerBase
+{
 
     public readonly IRepositorioGenerico<Transaccion> _repositorio;
+    public readonly IRepositorioGenerico<Cliente> _clienteRepositorio;
+
     private readonly IMapper _mapper;
-    private readonly IMediator _mediator;
+    //private readonly IMediator _mediator;
+    private readonly IHubContext<SignalRHubNotificacion> _hubContext;
     public TransaccionesController(
             IRepositorioGenerico<Transaccion> repositorio,
             IMapper mapper,
-            IMediator mediator)
+            IHubContext<SignalRHubNotificacion> hubcontext,
+            IRepositorioGenerico<Cliente> clienteRepositorio
+            /*IMediator mediator*/)
     {
         _repositorio = repositorio;
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        //_mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _hubContext = hubcontext ?? throw new ArgumentNullException(nameof(hubcontext));
+        _clienteRepositorio = clienteRepositorio;
     }
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TransaccionGetDto>>> GetAsync([FromRoute] int id_cliente,[FromQuery] DateTime? fechaInicio,[FromQuery] DateTime? fechaFin,[FromQuery] double? cantidadEnviadaMin,[FromQuery] double? cantidadEnviadaMax,[FromQuery] double? cantidadRecibidaMin,[FromQuery] double? cantidadRecibidaMax)
+    public async Task<ActionResult<IEnumerable<TransaccionGetDto>>> GetAsync([FromRoute] int id_cliente, [FromQuery] DateTime? fechaInicio, [FromQuery] DateTime? fechaFin, [FromQuery] double? cantidadEnviadaMin, [FromQuery] double? cantidadEnviadaMax, [FromQuery] double? cantidadRecibidaMin, [FromQuery] double? cantidadRecibidaMax)
     {
         var filtro = new FiltroTransacciones
         {
@@ -40,7 +48,7 @@ public class TransaccionesController : ControllerBase{
     }
 
 
-    [HttpGet("{id_transaccion}",  Name = "getTransaccion") ]
+    [HttpGet("{id_transaccion}", Name = "getTransaccion")]
     public ActionResult<TransaccionGetDto> Get([FromRoute] int id_cliente, [FromRoute] int id_transaccion)
     {
         var transaccion = _repositorio.ObtenerTransaccionId(id_cliente, id_transaccion);
@@ -71,10 +79,42 @@ public class TransaccionesController : ControllerBase{
             var transaccionDto = _mapper.Map<TransaccionPostDto>(transaccionEntidad);
 
             // Enviar los datos de la transacción utilizando el mediador. SignalR.
-            var resultado = await _mediator.Send(new SignalRRequest
+            //var resultado = await _mediator.Send(new SignalRRequest
+            //{
+            //    MandamosTransaccion = transaccionDto,
+            //    TipoAcceso = "Transaccion",
+            //});
+            /*
+             var transaccionData = new
+                {
+                    TipoAcceso = request.TipoAcceso, // Incluimos TipoAcceso
+                    PaisOrigen = clienteEnvia.PaisId,
+                    PaisDestino = clienteRecibe.PaisId,
+                    ClienteOrigen = clienteEnvia.Usuario,
+                    ClienteDestino = clienteRecibe.Usuario,
+                    ClienteOrigenId = transaccion.IdEnvia,
+                    ClienteDestinoId = transaccion.IdRecibe,
+                    ValorOrigen = transaccion.CantidadEnvia,
+                    ValorDestino = transaccion.CantidadRecibe,
+                    Timestamp = transaccion.Fecha,
+                    CosteTransaccion = transaccion.CosteTransaccion // Incluimos el campo CosteTransaccion
+                };*/
+            // Obtener datos de los clientes desde la base de datos
+            var clienteEnvia = _clienteRepositorio.ObtenerPorId(transaccion.IdEnvia);
+            var clienteRecibe = _clienteRepositorio.ObtenerPorId(transaccion.IdRecibe);
+            await _hubContext.Clients.All.SendAsync("newtransaction", new
             {
-                MandamosTransaccion = transaccionDto,
-                TipoAcceso = "Transaccion",
+                Message = "Nueva Transaccion",
+                PaisOrigen = clienteEnvia.PaisId,
+                PaisDestino = clienteRecibe.PaisId,
+                ClienteOrigen = clienteEnvia.Usuario,
+                ClienteDestino = clienteRecibe.Usuario,
+                ClienteOrigenId = transaccion.IdEnvia,
+                ClienteDestinoId = transaccion.IdRecibe,
+                ValorOrigen = transaccion.CantidadEnvia,
+                ValorDestino = transaccion.CantidadRecibe,
+                Timestamp = transaccion.Fecha,
+                transaccion.CosteTransaccion // Incluimos el campo CosteTransaccion
             });
 
             return CreatedAtAction(
