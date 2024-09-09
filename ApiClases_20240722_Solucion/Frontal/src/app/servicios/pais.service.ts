@@ -47,6 +47,7 @@ export interface IPais {
   constructor(): void;
   id: number;
   nombre: string;
+  iso3Pais: string;
   divisa: string;
-  iso3: string;
+  iso3Divisa: string;
 }
