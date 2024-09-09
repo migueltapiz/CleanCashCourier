@@ -57,7 +57,9 @@
     <thead>
       <tr>
         <th>Usuario</th>
-        <th>Cantidad</th>
+        <th>Monto</th>
+        <th>Moneda</th>
+        <th>Coste Transacción</th>
         <th>Fecha</th>
         <th>Tipo</th>
       </tr>
@@ -65,7 +67,9 @@
     <tbody>
       <tr *ngFor="let transaccion of transaccionesTabla">
         <td>{{ transaccion.nombre }}</td>
-        <td>{{ transaccion.cantidad }}</td>
+        <td>{{ transaccion.monto }}</td> <!-- Columna Monto -->
+        <td>{{ transaccion.moneda }}</td> <!-- Columna Moneda -->
+        <td>{{ transaccion.costeTransaccion || 'N/A' }}</td> <!-- Columna Coste Transacción -->
         <td>{{ transaccion.fecha }}</td>
         <td>{{ transaccion.tipo }}</td>
       </tr>
