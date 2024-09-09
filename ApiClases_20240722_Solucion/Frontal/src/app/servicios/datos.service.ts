@@ -11,7 +11,7 @@ export class DatosService {
     return [
       'Desarrollador de Software', 'Ingeniero Civil', 'Diseñador Gráfico',
       'Médico', 'Abogado', 'Profesor', 'Contador', 'Consultor de Negocios',
-      'Arquitecto', 'Marketing Digital'
+      'Arquitecto', 'Marketing Digital','Otros'
     ];
   }
 }
