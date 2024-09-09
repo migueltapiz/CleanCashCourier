@@ -96,6 +96,38 @@ export class TransaccionComponent implements OnInit, OnDestroy {
     return transaccion.idEnvia === this.identificaciorCliente ? 'Enviada' : 'Recibida';
   }
 
+  actualizarFechaInicio(event: any): void {
+    this.fechaInicio = event.target.value || null;
+  }
+
+  actualizarFechaFin(event: any): void {
+    this.fechaFin = event.target.value || null;
+  }
+
+  actualizarCantidadMin(event: any): void {
+    this.cantidadMin = event.target.value ? parseFloat(event.target.value) : null;
+  }
+
+  actualizarCantidadMax(event: any): void {
+    this.cantidadMax = event.target.value ? parseFloat(event.target.value) : null;
+  }
+
+  borrarCantidadMin(): void {
+    this.cantidadMin = null;
+    const cantidadMinElement = document.getElementById('cantidadMin') as HTMLInputElement;
+    if (cantidadMinElement) {
+      cantidadMinElement.value = '';
+    }
+  }
+
+  borrarCantidadMax(): void {
+    this.cantidadMax = null;
+    const cantidadMaxElement = document.getElementById('cantidadMax') as HTMLInputElement;
+    if (cantidadMaxElement) {
+      cantidadMaxElement.value = '';
+    }
+  }
+
   filtrarTransacciones(): void {
     this.subTransaccion = this.transaccionService.getTransaccionesFiltradas({
       fechaInicio: this.fechaInicio,
