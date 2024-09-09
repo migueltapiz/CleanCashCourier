@@ -227,7 +227,7 @@ public class Contexto: IdentityDbContext<UsuarioAplicacion>{
                 new Pais { Id = 172, Nombre = "Zimbabue", Divisa = "Dólar zimbabuense", Iso3 = "ZWL" }
             );
         */
-        modelBuilder.Entity<Pais>().HasData(LoadPaisesJson("./data/listaPaises.json"));
+        modelBuilder.Entity<Pais>().HasData(LoadPaisesJson("./data/listapaises.json"));
 
         // Agregar tres paises por defecto a la base de datos
         modelBuilder.Entity<Cliente>().HasData(
