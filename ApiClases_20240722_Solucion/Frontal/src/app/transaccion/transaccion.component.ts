@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { BaseChartDirective } from 'ng2-charts';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TransaccionService } from '../servicios/transaccion.service';
 import { Transaccion, TransaccionTabla } from '../interfaces/transaccion';
 import { ClienteService } from '../servicios/cliente.service';
 import { format } from 'date-fns';
 import { Subscription } from 'rxjs';
-import { ChartData, ChartOptions } from 'chart.js';
+import * as Highcharts from 'highcharts';
+import { Options } from 'highcharts';
 
 @Component({
   selector: 'pm-transaccion',
@@ -13,48 +13,14 @@ import { ChartData, ChartOptions } from 'chart.js';
   styleUrls: ['./transaccion.component.css']
 })
 export class TransaccionComponent implements OnInit, OnDestroy {
-  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
-
+  Highcharts: typeof Highcharts = Highcharts;
+  chartOptions: Options = {};
   transacciones: Transaccion[] = [];
   transaccionesTabla: TransaccionTabla[] = [];
   fechaInicio: string | null = null;
   fechaFin: string | null = null;
   cantidadMin: number | null = null;
   cantidadMax: number | null = null;
-
-  lineChartData: ChartData<'line'> = {
-    labels: [],  // Etiquetas para el eje X (fechas)
-    datasets: [
-      {
-        data: [],  // Datos del gráfico
-        label: 'Balance Diario',
-        fill: false,
-        borderColor: 'rgba(75,192,192,1)',  // Color de la línea
-        tension: 0.1  // Curvatura de la línea
-      }
-    ],
-
-  };
-
-  lineChartOptions: ChartOptions<'line'> = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-      }
-    },
-    scales: {
-      x: {
-        type: 'time',
-        time: {
-          unit: 'day'
-        }
-      },
-      y: {
-        beginAtZero: true
-      }
-    }
-  };
 
   subcliente!: Subscription;
   subTransaccion!: Subscription;
@@ -66,6 +32,7 @@ export class TransaccionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.token = localStorage['token'];
+    this.procesarTransacciones();
 
     this.subcliente = this.clienteService.getCliente(this.token).subscribe({
       next: cliente => {
@@ -113,14 +80,38 @@ export class TransaccionComponent implements OnInit, OnDestroy {
       balanceDiario[fecha] += balanceCambio;
     });
 
-    this.lineChartData.labels = Object.keys(balanceDiario).sort();
-    this.lineChartData.datasets[0].data = (this.lineChartData.labels as string[]).map((fecha: string) => balanceDiario[fecha]);
+    const fechas = Object.keys(balanceDiario).sort();
+    const datos = fechas.map((fecha) => balanceDiario[fecha]);
 
-
-    if (this.chart) {
-      this.chart.update();
-    }
+    this.chartOptions = {
+      chart: {
+        type: 'line' // Especifica el tipo de gráfico
+      },
+      title: {
+        text: 'Balance Diario'
+      },
+      xAxis: {
+        categories: fechas,
+        title: {
+          text: 'Fecha'
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'Monto'
+        }
+      },
+      series: [
+        {
+          type: 'line', // Especifica el tipo de serie
+          name: 'Balance Diario',
+          data: datos
+        }
+      ]
+    };
   }
+
+
 
   obtenerIdUsuario(transaccion: Transaccion): Promise<string> {
     const clienteIdAux = transaccion.idRecibe === this.identificaciorCliente ? transaccion.idEnvia : transaccion.idRecibe;
