@@ -1,9 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { BaseChartDirective } from 'ng2-charts';
 import { TransaccionService } from '../servicios/transaccion.service';
 import { Transaccion, TransaccionTabla } from '../interfaces/transaccion';
 import { ClienteService } from '../servicios/cliente.service';
 import { format } from 'date-fns';
 import { Subscription } from 'rxjs';
+import { ChartData, ChartOptions } from 'chart.js';
 
 @Component({
   selector: 'pm-transaccion',
@@ -11,12 +13,48 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./transaccion.component.css']
 })
 export class TransaccionComponent implements OnInit, OnDestroy {
+  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
+
   transacciones: Transaccion[] = [];
   transaccionesTabla: TransaccionTabla[] = [];
   fechaInicio: string | null = null;
   fechaFin: string | null = null;
   cantidadMin: number | null = null;
   cantidadMax: number | null = null;
+
+  lineChartData: ChartData<'line'> = {
+    labels: [],  // Etiquetas para el eje X (fechas)
+    datasets: [
+      {
+        data: [],  // Datos del gráfico
+        label: 'Balance Diario',
+        fill: false,
+        borderColor: 'rgba(75,192,192,1)',  // Color de la línea
+        tension: 0.1  // Curvatura de la línea
+      }
+    ],
+
+  };
+
+  lineChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+      }
+    },
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: 'day'
+        }
+      },
+      y: {
+        beginAtZero: true
+      }
+    }
+  };
 
   subcliente!: Subscription;
   subTransaccion!: Subscription;
@@ -35,12 +73,13 @@ export class TransaccionComponent implements OnInit, OnDestroy {
         this.subTransaccion = this.transaccionService.getTransacciones(this.identificaciorCliente).subscribe(
           async (data: Transaccion[]) => {
             this.transacciones = data;
+            this.procesarTransacciones();
             await Promise.all(this.transacciones.map(async (transaccion) => {
               const transaccionTabla = new TransaccionTabla();
               transaccionTabla.nombre = await this.obtenerIdUsuario(transaccion);
-              transaccionTabla.monto = this.obtenerMonto(transaccion); // Calcula el monto
-              transaccionTabla.moneda = this.obtenerMoneda(transaccion); // Calcula la moneda
-              transaccionTabla.costeTransaccion = this.obtenerCosteTransaccion(transaccion); // Calcula el coste de transacción
+              transaccionTabla.monto = this.obtenerMonto(transaccion);
+              transaccionTabla.moneda = this.obtenerMoneda(transaccion);
+              transaccionTabla.costeTransaccion = this.obtenerCosteTransaccion(transaccion);
               transaccionTabla.fecha = this.obtenerFecha(transaccion);
               transaccionTabla.tipo = this.obtenerTipoTransaccion(transaccion);
               this.transaccionesTabla.push(transaccionTabla);
@@ -56,6 +95,31 @@ export class TransaccionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subcliente?.unsubscribe();
     this.subTransaccion?.unsubscribe();
+  }
+
+  procesarTransacciones(): void {
+    const balanceDiario: { [key: string]: number } = {};
+
+    this.transacciones.forEach((transaccion) => {
+      const fecha = format(new Date(transaccion.fecha), 'yyyy-MM-dd');
+      const monto = this.obtenerMonto(transaccion);
+      const tipo = this.obtenerTipoTransaccion(transaccion);
+
+      const balanceCambio = tipo === 'Enviada' ? -monto : monto;
+
+      if (!balanceDiario[fecha]) {
+        balanceDiario[fecha] = 0;
+      }
+      balanceDiario[fecha] += balanceCambio;
+    });
+
+    this.lineChartData.labels = Object.keys(balanceDiario).sort();
+    this.lineChartData.datasets[0].data = (this.lineChartData.labels as string[]).map((fecha: string) => balanceDiario[fecha]);
+
+
+    if (this.chart) {
+      this.chart.update();
+    }
   }
 
   obtenerIdUsuario(transaccion: Transaccion): Promise<string> {
@@ -74,17 +138,14 @@ export class TransaccionComponent implements OnInit, OnDestroy {
   }
 
   obtenerMonto(transaccion: Transaccion): number {
-    // Si la transacción fue enviada, el monto es la cantidad enviada, si fue recibida, es la cantidad recibida
     return transaccion.idEnvia === this.identificaciorCliente ? transaccion.cantidadEnvia : transaccion.cantidadRecibe;
   }
 
   obtenerMoneda(transaccion: Transaccion): string {
-    // Si la transacción fue enviada, la moneda es la moneda de origen, si fue recibida, es la moneda de destino
     return transaccion.idEnvia === this.identificaciorCliente ? transaccion.monedaOrigen : transaccion.monedaDestino;
   }
 
   obtenerCosteTransaccion(transaccion: Transaccion): number | null {
-    // Solo devuelve el coste de la transacción si fue enviada, de lo contrario no aplica
     return transaccion.idEnvia === this.identificaciorCliente ? transaccion.costeTransaccion : null;
   }
 
@@ -147,6 +208,8 @@ export class TransaccionComponent implements OnInit, OnDestroy {
           transaccionTabla.tipo = this.obtenerTipoTransaccion(transaccion);
           this.transaccionesTabla.push(transaccionTabla);
         }));
+
+        this.procesarTransacciones();
       },
       error => console.error(error)
     );

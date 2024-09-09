@@ -52,6 +52,18 @@
     <button class="action-button align-self-end" (click)="filtrarTransacciones()">Filtrar</button> <!-- Botón alineado con los selectores -->
   </div>
 
+  <!-- Gráfico del Balance de Cuenta -->
+  <!-- TransaccionComponent.html -->
+  <div style="display: block;">
+    <canvas baseChart
+            [datasets]="lineChartData.datasets"
+            [labels]="lineChartData.labels"
+            [options]="lineChartOptions"
+            [legend]="true"
+            [chartType]="'line'">
+    </canvas>
+  </div>
+
   <!-- Tabla de transacciones -->
   <table class="table table-striped">
     <thead>
