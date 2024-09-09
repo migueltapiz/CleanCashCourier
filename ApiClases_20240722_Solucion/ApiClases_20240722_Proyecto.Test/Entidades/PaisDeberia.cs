@@ -30,7 +30,7 @@ namespace ApiClases_20240722_Proyecto.Test.Entidades
         public void DeberiaRetornarErrorParaNombreInvalido(string nombre)
         {
             // Arrange
-            var pais = new Pais { Nombre = nombre, Divisa = "USD", Iso3 = "USA" };
+            var pais = new Pais { Nombre = nombre, Divisa = "USD", Iso3Divisa = "USA" };
 
             // Act
             var resultados = ValidarModelo(pais);
@@ -46,7 +46,7 @@ namespace ApiClases_20240722_Proyecto.Test.Entidades
         public void DeberiaRetornarErrorParaDivisaInvalida(string divisa)
         {
             // Arrange
-            var pais = new Pais { Nombre = "Estados Unidos", Divisa = divisa, Iso3 = "USA" };
+            var pais = new Pais { Nombre = "Estados Unidos", Divisa = divisa, Iso3Divisa = "USA" };
 
             // Act
             var resultados = ValidarModelo(pais);
@@ -63,20 +63,20 @@ namespace ApiClases_20240722_Proyecto.Test.Entidades
         public void DeberiaRetornarErrorParaIso3Invalido(string iso3)
         {
             // Arrange
-            var pais = new Pais { Nombre = "Estados Unidos", Divisa = "USD", Iso3 = iso3 };
+            var pais = new Pais { Nombre = "Estados Unidos", Divisa = "USD", Iso3Divisa = iso3 };
 
             // Act
             var resultados = ValidarModelo(pais);
 
             // Assert
-            Assert.Contains(resultados, r => r.MemberNames.Contains(nameof(Pais.Iso3)));
+            Assert.Contains(resultados, r => r.MemberNames.Contains(nameof(Pais.Iso3Divisa)));
         }
 
         [Fact]
         public void DeberiaSerValidoCuandoPropiedadesSonCorrectas()
         {
             // Arrange
-            var pais = new Pais { Nombre = "Estados Unidos", Divisa = "USD", Iso3 = "USA" };
+            var pais = new Pais { Nombre = "Estados Unidos", Divisa = "USD", Iso3Divisa = "USA" };
 
             // Act
             var resultados = ValidarModelo(pais);
