@@ -79,26 +79,6 @@ public class TransaccionesController : ControllerBase
             var transaccionDto = _mapper.Map<TransaccionPostDto>(transaccionEntidad);
 
             // Enviar los datos de la transacción utilizando el mediador. SignalR.
-            //var resultado = await _mediator.Send(new SignalRRequest
-            //{
-            //    MandamosTransaccion = transaccionDto,
-            //    TipoAcceso = "Transaccion",
-            //});
-            /*
-             var transaccionData = new
-                {
-                    TipoAcceso = request.TipoAcceso, // Incluimos TipoAcceso
-                    PaisOrigen = clienteEnvia.PaisId,
-                    PaisDestino = clienteRecibe.PaisId,
-                    ClienteOrigen = clienteEnvia.Usuario,
-                    ClienteDestino = clienteRecibe.Usuario,
-                    ClienteOrigenId = transaccion.IdEnvia,
-                    ClienteDestinoId = transaccion.IdRecibe,
-                    ValorOrigen = transaccion.CantidadEnvia,
-                    ValorDestino = transaccion.CantidadRecibe,
-                    Timestamp = transaccion.Fecha,
-                    CosteTransaccion = transaccion.CosteTransaccion // Incluimos el campo CosteTransaccion
-                };*/
             // Obtener datos de los clientes desde la base de datos
             var clienteEnvia = _clienteRepositorio.ObtenerPorId(transaccion.IdEnvia);
             var clienteRecibe = _clienteRepositorio.ObtenerPorId(transaccion.IdRecibe);

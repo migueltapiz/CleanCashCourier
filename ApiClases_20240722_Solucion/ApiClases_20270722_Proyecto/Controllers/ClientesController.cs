@@ -117,20 +117,7 @@ namespace ApiClases_20270722_Proyecto.Controllers
                     return NotFound("Cliente no encontrado.");
                 }
 
-                // Enviar los datos del cliente utilizando el mediador
-                //var resultado = await _mediator.Send(new SignalRRequest
-                //{
-                //    MandamosCliente = new ClienteBaseDto
-                //    {
-                //        Nombre = cliente.Nombre,
-                //        Apellido = cliente.Apellido,
-                //        FechaNacimiento = cliente.FechaNacimiento,
-                //        Empleo = cliente.Empleo,
-                //        PaisId = cliente.PaisId,
-                //        Email = cliente.Email
-                //    },
-                //    TipoAcceso = "Login"
-                //});
+                // Enviar los datos del cliente utilizando el Hub
                 await _hubContext.Clients.All.SendAsync("newlogin", new
                 {
                     Message = "Nuevo inicio sesion",
