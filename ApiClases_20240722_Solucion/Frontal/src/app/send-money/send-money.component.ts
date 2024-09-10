@@ -167,7 +167,6 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
 
   }
 
-
   calcularCosteTransaccion(cantidad: number): number {
     let tarifa = 0;
 
