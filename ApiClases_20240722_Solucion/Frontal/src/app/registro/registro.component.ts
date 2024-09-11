@@ -130,6 +130,7 @@ export class RegistroComponent implements OnInit {
         });
       },
       error => {
+        console.log(error);
         if (error.status === 400) {
           this.showErrorModal('Error al registrar usuario: ' + error.error);
         } else if (error.status === 409) {
@@ -180,6 +181,7 @@ export class RegistroComponent implements OnInit {
   }
 
   showErrorModal(message: string) {
+    console.log(message);
     Swal.fire({
       icon: 'error',
       title: 'Error',
@@ -264,7 +266,7 @@ export class RegistroComponent implements OnInit {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const today = new Date();
       const birthDate = new Date(control.value);
-      const age = today.getFullYear() - birthDate.getFullYear();
+      let age = today.getFullYear() - birthDate.getFullYear();
       const monthDiff = today.getMonth() - birthDate.getMonth();
 
       if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
@@ -277,5 +279,8 @@ export class RegistroComponent implements OnInit {
         return of(null).pipe(delay(1000));
       }
     };
+  }
+  closeErrorModal() {
+    this.errorMessage = null;
   }
 }
