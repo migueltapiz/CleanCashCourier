@@ -6,6 +6,7 @@ import { IPais, PaisService } from '../servicios/pais.service';
 import { ClienteService } from '../servicios/cliente.service';
 import { Observable, of, delay, map } from 'rxjs';
 import { DatosService } from '../servicios/datos.service';
+import Swal from 'sweetalert2';  // Importación de SweetAlert2
 
 @Component({
   selector: 'app-registro',
@@ -18,19 +19,24 @@ export class RegistroComponent implements OnInit {
   @ViewChild('empleoDropdownMenu') empleoDropdownMenu!: ElementRef;
   @ViewChildren('empleoItem') empleoItems!: QueryList<ElementRef>;
 
-
   registroForm!: FormGroup;
   errorMessage: string | null = null; // Mensaje de error general
   paises: IPais[] = [];
   paisesFiltrado: IPais[] = [];
-  empleos: string[] = []; 
+  empleos: string[] = [];
   empleosFiltrado: string[] = [];
   paisSeleccionado: number = -1;
   isDropdownVisible = false;
   isEmpleoDropdownVisible = false;
 
+  constructor(
+    private fb: FormBuilder,
+    private datosService: DatosService,
+    private clienteService: ClienteService,
+    private paisService: PaisService,
+    private router: Router
+  ) { }
 
-  constructor(private fb: FormBuilder,private datosService:DatosService ,private clienteService: ClienteService, private paisService: PaisService, private router: Router) { }
   showDropdown() {
     this.isDropdownVisible = true;
   }
@@ -46,6 +52,7 @@ export class RegistroComponent implements OnInit {
   hideEmpleoDropdown() {
     this.isEmpleoDropdownVisible = false;
   }
+
   ngOnInit(): void {
     this.paisSeleccionado = 1;
     this.registroForm = this.fb.group({
@@ -57,10 +64,11 @@ export class RegistroComponent implements OnInit {
       Rol: ['Client', Validators.required],
       PaisNombre: ['', Validators.required],
       Empleo: [''],
-      FechaNac: ['', Validators.required,this.mayorDeEdadValidator()]
+      FechaNac: ['', Validators.required, this.mayorDeEdadValidator()]
     }, {
       validator: this.passwordMatchValidator('Contraseña', 'Contraseña2')
     });
+
     this.paisService.getPaises().subscribe({
       next: paises => {
         this.paises = paises;
@@ -68,6 +76,7 @@ export class RegistroComponent implements OnInit {
       },
       error: err => this.errorMessage = err
     });
+
     this.empleos = this.datosService.getTrabajos();
     this.empleosFiltrado = this.empleos;
   }
@@ -96,7 +105,7 @@ export class RegistroComponent implements OnInit {
     }
 
     if (this.registroForm.value.Contraseña !== this.registroForm.value.Contraseña2) {
-      alert('Las contraseñas no coinciden.');
+      this.showErrorModal('Las contraseñas no coinciden.');
       return;
     }
 
@@ -111,32 +120,26 @@ export class RegistroComponent implements OnInit {
       PaisId: this.paisSeleccionado,
       Empleo: this.registroForm.value.Empleo,
       NombrePais: this.registroForm.value.PaisNombre,
-
       FechaNacimiento: fechaNac
-    }
-
+    };
 
     this.clienteService.registrarCliente(clienteRegistro).subscribe(
       next => {
-        this.router.navigate(['/login']);
+        this.showSuccessModal('Registro exitoso. Redirigiendo al inicio de sesión...', () => {
+          this.router.navigate(['/login']);
+        });
       },
       error => {
-        console.log(error);
-        console.log(error.error.message)
-        console.error(error);
         if (error.status === 400) {
-          console.error('Error de validación', error);
-          alert('Error al registrar usuario: ' + error.error);
+          this.showErrorModal('Error al registrar usuario: ' + error.error);
         } else if (error.status === 409) {
-          alert('El email ya existe en CleanCashCourier, intentelo de nuevo');
+          this.showErrorModal('El email ya existe en CleanCashCourier, intentelo de nuevo');
         } else if (error.status === 0) {
-          alert('No se pudo conectar al servidor.');
+          this.showErrorModal('No se pudo conectar al servidor.');
         } else {
-          console.error(`Error ${error.status}: ${error.message} --- ${error.error.message}`);
-          alert('Error en el proceso de registro: ' + error.message);
+          this.showErrorModal('Error en el proceso de registro: ' + error.message);
         }
-      },
-      
+      }
     );
   }
 
@@ -173,13 +176,33 @@ export class RegistroComponent implements OnInit {
       errorMessage = 'Hay errores en el formulario. Por favor, corrígelos antes de enviar.';
     }
 
-    alert(errorMessage);
+    this.showErrorModal(errorMessage);
   }
 
-  
+  showErrorModal(message: string) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: message,
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  showSuccessModal(message: string, callback: () => void) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Registro exitoso',
+      text: message,
+      confirmButtonText: 'Ok'
+    }).then(result => {
+      if (result.isConfirmed) {
+        callback();
+      }
+    });
+  }
 
   selectPais(paisNombre: string) {
-    this.registroForm.patchValue({ PaisNombre: paisNombre })
+    this.registroForm.patchValue({ PaisNombre: paisNombre });
 
     var resultado = this.paises.find(pais => pais.nombre === paisNombre)?.id;
     if (resultado != undefined) {
@@ -188,23 +211,19 @@ export class RegistroComponent implements OnInit {
     }
   }
 
-
-
-
   filterPaises(event: Event) {
     const query = (event.target as HTMLInputElement).value;
     this.paisesFiltrado = this.paises.filter(pais =>
       pais.nombre.toLowerCase().startsWith(query.toLowerCase())
     );
 
-    if (this.paisesFiltrado.length == 1) { // Para que, al autorrellenar 
+    if (this.paisesFiltrado.length == 1) {
       setTimeout(() => {
         if (query === this.paisesFiltrado[0].nombre) {
           this.hideDropdown();
         }
       }, 0);
-    }
-    else if (this.paisesFiltrado.length > 1) {
+    } else if (this.paisesFiltrado.length > 1) {
       setTimeout(() => {
         const firstMatch = this.paisItems.first;
         if (firstMatch) {
@@ -213,10 +232,9 @@ export class RegistroComponent implements OnInit {
       }, 0);
     }
   }
+
   selectEmpleo(empleoNombre: string) {
     this.registroForm.patchValue({ Empleo: empleoNombre });
-
-    // No necesitas buscar un ID ya que los empleos son strings
     this.hideEmpleoDropdown();
   }
 
@@ -226,7 +244,7 @@ export class RegistroComponent implements OnInit {
       empleo.toLowerCase().startsWith(query.toLowerCase())
     );
 
-    if (this.empleosFiltrado.length == 1) { // Para que, al autorrellenar
+    if (this.empleosFiltrado.length == 1) {
       setTimeout(() => {
         if (query === this.empleosFiltrado[0]) {
           this.hideEmpleoDropdown();
@@ -242,26 +260,22 @@ export class RegistroComponent implements OnInit {
     }
   }
 
- 
-
   mayorDeEdadValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const fechaNac = new Date(control.value);
-      const hoy = new Date();
-      let edad = hoy.getFullYear() - fechaNac.getFullYear();
-      const mes = hoy.getMonth() - fechaNac.getMonth();
-      const dia = hoy.getDate() - fechaNac.getDate();
+      const today = new Date();
+      const birthDate = new Date(control.value);
+      const age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
 
-      if (mes < 0 || (mes === 0 && dia < 0)) {
-        edad--;
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
       }
 
-      return of(edad).pipe(
-        delay(1000), // Simula una llamada asíncrona
-        map(() => {
-          return edad >= 18 ? null : { menorDeEdad: true };
-        })
-      );
+      if (age < 18) {
+        return of({ menorDeEdad: true }).pipe(delay(1000));
+      } else {
+        return of(null).pipe(delay(1000));
+      }
     };
   }
 }
