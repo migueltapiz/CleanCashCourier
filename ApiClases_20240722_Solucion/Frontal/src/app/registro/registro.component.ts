@@ -17,7 +17,7 @@ export class RegistroComponent implements OnInit {
   @ViewChildren('paisItem') paisItems!: QueryList<ElementRef>;
   @ViewChild('empleoDropdownMenu') empleoDropdownMenu!: ElementRef;
   @ViewChildren('empleoItem') empleoItems!: QueryList<ElementRef>;
-
+  
 
   registroForm!: FormGroup;
   errorMessage: string | null = null; // Mensaje de error general
@@ -28,7 +28,7 @@ export class RegistroComponent implements OnInit {
   paisSeleccionado: number = -1;
   isDropdownVisible = false;
   isEmpleoDropdownVisible = false;
-
+  emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/;
 
   constructor(private fb: FormBuilder,private datosService:DatosService ,private clienteService: ClienteService, private paisService: PaisService, private router: Router) { }
   showDropdown() {
@@ -51,7 +51,7 @@ export class RegistroComponent implements OnInit {
     this.registroForm = this.fb.group({
       Nombre: ['', [Validators.required, Validators.minLength(2)]],
       Apellido: ['', [Validators.required, Validators.minLength(2)]],
-      Correo: ['', [Validators.required, Validators.email]],
+      Correo: ['', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]],
       Contraseña: ['', [Validators.required, Validators.minLength(6)]],
       Contraseña2: ['', [Validators.required]],
       Rol: ['Client', Validators.required],

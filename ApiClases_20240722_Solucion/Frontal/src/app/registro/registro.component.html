@@ -34,7 +34,7 @@
         <input id="Email" name="Email" type="email" formControlName="Correo" class="tw-bg-gray-100 tw-w-full tw-text-gray-800 tw-text-sm tw-px-4 tw-py-3.5 tw-rounded-md focus:tw-bg-transparent tw-outline-blue-500 tw-transition-all" placeholder="Introduce tu correo" />
         <div *ngIf="registroForm.get('Correo')?.invalid && (registroForm.get('Correo')?.touched || registroForm.get('Correo')?.dirty)" class="tw-text-red-500 tw-text-sm">
           <div *ngIf="registroForm.get('Correo')?.errors?.['required']">El email es obligatorio.</div>
-          <div *ngIf="registroForm.get('Correo')?.errors?.['email']">El formato del correo es invalido.</div>
+          <div *ngIf="registroForm.get('Correo')?.errors?.['email'] || registroForm.get('Correo')?.errors?.['pattern']">El formato del correo es invalido.</div>
         </div>
       </div>
 
