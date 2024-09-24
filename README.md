@@ -1,6 +1,7 @@
 # Introduction 
 TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 En este repositorio desarrollaremos una aplicación que nos permitirá enviar dinero a diferentes usuarios
+https://www.notion.so/Proyecto-CleanCashCourier-ce5ed6f49c0548e3ad9ecd968ac5e723
 
 Desarrolladores:
     - Amaia Vertiz
